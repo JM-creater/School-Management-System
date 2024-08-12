@@ -3,12 +3,12 @@ import { MenuItemProps } from "./props/menu-props";
 import { headerNameStyle } from "../themes/main-styles";
 import { TeacherScreen } from "../../teacher/teacher-screen";
 import { DashboardScreen } from "../../dashboard/dashboard";
-import StudentScreen from "../../student/main/student-screen";
 import { MenuItemContextType } from "../types/menu-types";
 import { ParentsScreen } from "../../parents/parents-screen";
 import { CourseScreen } from "../../curriculum/course/course-screen";
 import { ClassScreen } from "../../curriculum/class/class-screen";
 import { AttendanceScreen } from "../../attendance/attendance-screen";
+import { StudentScreen } from "../../student/student-screen";
 
 export const MenuItemContext = createContext<MenuItemContextType | null>(null);
 
