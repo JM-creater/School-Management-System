@@ -1,9 +1,19 @@
+import { ModalProvider } from "../../components/modal/context/modal-context";
 import { MenuItemProvider } from "../../screens/main/context/menu-context";
+import { ParentProvider } from "../../screens/parents/context/parent-context";
 
-export const RootProviders: React.FC<{ children: React.ReactNode }> = ({ children }) => {
+interface RootProps {
+    children: React.ReactNode
+}
+
+export const RootProviders: React.FC<RootProps> = ({ children }) => {
     return (
         <MenuItemProvider>
-            {children}
+            <ParentProvider>
+                <ModalProvider>
+                    {children}
+                </ModalProvider>
+            </ParentProvider>
         </MenuItemProvider>
     )
 };

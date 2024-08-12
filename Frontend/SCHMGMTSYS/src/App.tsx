@@ -1,21 +1,18 @@
 import './App.css'
 import React from 'react'
 import { RootProviders } from './configs/providers/rootproviders'
-import { BrowserRouter, Route, Routes } from 'react-router-dom'
-import MainScreen from './screens/main/main-screen'
+import { ToastContainer } from 'react-toastify'
+import { toastConfig } from './configs/toastConfig'
+import 'react-toastify/dist/ReactToastify.css';
+import { AppRoutes } from './AppRoutes'
 
-const App = () => {
+export const App = () => {
   return (
     <React.Fragment>
+      <ToastContainer {...toastConfig} />
       <RootProviders>
-        <BrowserRouter>
-          <Routes>
-            <Route index element={ <MainScreen/> } />
-          </Routes>
-        </BrowserRouter>
+        <AppRoutes/>
       </RootProviders>
     </React.Fragment>
   )
 }
-
-export default App
