@@ -29,6 +29,15 @@ public class ParentServiceImpl implements ParentService {
     }
 
     @Override
+    public Parent fetchParentById(Long id) {
+        Optional<Parent> parent = parentRepository.findById(id);
+        if(parent.isPresent()) {
+            return parent.get();
+        }
+        return null;    
+    }
+
+    @Override
     public Parent updateParentById(Long id, Parent parent) {
         Optional<Parent> optionalParent = parentRepository.findById(id);
 

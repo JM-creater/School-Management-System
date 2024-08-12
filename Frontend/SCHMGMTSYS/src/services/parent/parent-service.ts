@@ -1,4 +1,4 @@
-import { CREATE_PARENT_URL, GET_PARENT_URL } from "../../configs/url";
+import { CREATE_PARENT_URL, GET_PARENT_BY_ID_URL, GET_PARENT_URL, UPDATE_PARENT_URL } from "../../configs/url";
 import { ParentData } from "../../screens/parents/data/parents";
 import { axiosInstance } from "../api/axiosInstance";
 
@@ -16,7 +16,18 @@ export const getAllParent = async (): Promise<ParentData[]> => {
     return response.data;
 };
 
-// export const updateParent = async (parent: ParentData): Promise<ParentData> => {
-//     const response = await axiosInstance.put()
-// }
+export const getAllParentById = async (id: number): Promise<ParentData> => {
+    const response = await axiosInstance.get(`${GET_PARENT_BY_ID_URL}${id}`);
+    return response.data;
+};
+
+
+export const updateParent = async (parent: Omit<ParentData, 'id'>, id: number): Promise<ParentData> => {
+    const response = await axiosInstance.put(`${UPDATE_PARENT_URL}${id}`, parent, {
+        headers: {
+          'Content-Type': 'application/json',
+        }
+    });
+    return response.data;
+};
 

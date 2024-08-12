@@ -10,5 +10,7 @@ public interface ParentService {
 
     List<Parent> fetchAllParent();
 
+    Parent fetchParentById(Long id);
+
     Parent updateParentById(Long id, Parent parent);
 }

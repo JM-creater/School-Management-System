@@ -25,6 +25,11 @@ public class ParentController {
         return parentService.fetchAllParent();
     }
 
+    @GetMapping("/parent/{id}")
+    public Parent fetchParentById(@PathVariable Long id) {
+        return parentService.fetchParentById(id);
+    }
+
     @PutMapping("/parent/{id}")
     public Parent updateParent(@PathVariable("id") Long id, @RequestBody Parent parent) {
         return parentService.updateParentById(id, parent);
