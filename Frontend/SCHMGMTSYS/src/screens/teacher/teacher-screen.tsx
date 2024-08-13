@@ -3,11 +3,12 @@ import { ButtonContainer, buttonWidthStyles, marginBottomStyles } from '../dashb
 import { CustomButton } from '../../components/button/button';
 import { TeacherTable } from './components/table/teacher-table';
 import { CustomModal } from '../../components/modal/modal';
-import { Col, DatePicker, Form, Input, Row } from 'antd';
+import { Col, DatePicker, Form, Input, Row, Select } from 'antd';
 import { TeacherData } from './data/teachers';
 import { useModal } from '../../hooks/use-modal';
 import { useTeacher } from '../../hooks/use-teacher';
 import moment from 'moment';
+import { useClass } from '../../hooks/use-class';
 
 export const TeacherScreen: React.FC = () => {
 
@@ -25,6 +26,7 @@ export const TeacherScreen: React.FC = () => {
     editTeacher,
     selectedTeacher
   } = useTeacher();
+  const { classes } = useClass();
 
   const handleEdit = async (teacher: Omit<TeacherData, 'id'>) => {
     if (selectedTeacher) {
@@ -42,7 +44,8 @@ export const TeacherScreen: React.FC = () => {
         phoneNumber: selectedTeacher.phoneNumber,
         dateOfBirth: moment(selectedTeacher.dateOfBirth),
         employmentDate: moment(selectedTeacher.employmentDate),
-        address: selectedTeacher.address
+        address: selectedTeacher.address,
+        classroom_id: selectedTeacher.classroom.id
       });
     }
   }, [selectedTeacher, form]);
@@ -53,6 +56,7 @@ export const TeacherScreen: React.FC = () => {
         <CustomButton 
           type='primary' 
           onClick={() => {
+            form.resetFields();
             showModal();
           }} 
           style={{ 
@@ -147,7 +151,31 @@ export const TeacherScreen: React.FC = () => {
                   <Input placeholder="Please enter address" />
                 </Form.Item>
               </Col>
-            </Row>
+              <Col span={12}>
+                <Form.Item<TeacherData>
+                  name="classroom_id"
+                  label="Classroom"
+                  rules={[{ required: true, message: 'Please select a classroom' }]}
+                >
+                  <Select
+                    placeholder="Select a classroom to assign"
+                  >
+                    {
+                      classes.map(
+                        c => (
+                          <Select.Option
+                              key={c.id}
+                              value={c.id}
+                            >
+                              {c.name}
+                            </Select.Option>
+                          )
+                        )
+                      }
+                    </Select>
+                  </Form.Item>
+                </Col>
+              </Row>
           </Form>
       </CustomModal>
 
@@ -237,6 +265,30 @@ export const TeacherScreen: React.FC = () => {
                   <Input placeholder="Please enter address" />
                 </Form.Item>
               </Col>
+              <Col span={12}>
+                <Form.Item<TeacherData>
+                  name="classroom_id"
+                  label="Classroom"
+                  rules={[{ required: true, message: 'Please select a classroom' }]}
+                >
+                  <Select
+                    placeholder="Select a classroom to assign"
+                  >
+                    {
+                      classes.map(
+                        c => (
+                          <Select.Option
+                              key={c.id}
+                              value={c.id}
+                            >
+                              {c.name}
+                            </Select.Option>
+                          )
+                        )
+                      }
+                    </Select>
+                  </Form.Item>
+                </Col>
             </Row>
           </Form>
       </CustomModal>

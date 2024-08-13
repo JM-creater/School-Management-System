@@ -1,5 +1,5 @@
 import React from 'react';
-import { Col, Form, Input, Row, Select, Spin, Table } from 'antd';
+import { Col, Form, Input, Row, Spin, Table } from 'antd';
 import { ColumnTable } from './components/column/column';
 import { useClass } from '../../../hooks/use-class';
 import { CenteredContainer, ErrorDiv } from '../../parents/themes/parents-styles';
@@ -8,7 +8,6 @@ import { CustomButton } from '../../../components/button/button';
 import { useModal } from '../../../hooks/use-modal';
 import { CustomModal } from '../../../components/modal/modal';
 import { ClassData } from './data/class';
-import { useTeacher } from '../../../hooks/use-teacher';
 
 export const ClassScreen: React.FC = () => {
 
@@ -19,7 +18,6 @@ export const ClassScreen: React.FC = () => {
     createNewClass, 
     onFinishFailed 
   } = useClass();
-  const { teachers } = useTeacher();
   const { 
     form, 
     showModal, 
@@ -95,7 +93,7 @@ export const ClassScreen: React.FC = () => {
               </Form.Item>
             </Col>
           </Row>
-          <Row gutter={16}>
+          {/* <Row gutter={16}>
             <Col span={12}>
               <Form.Item<ClassData>
                 name="teacher_id"
@@ -103,7 +101,7 @@ export const ClassScreen: React.FC = () => {
                 rules={[{ required: true, message: 'Please select a teacher' }]}
               >
                 <Select
-                  placeholder="Teacher"
+                  placeholder="Select a teacher"
                 >
                   {
                     teachers.map(
@@ -120,7 +118,7 @@ export const ClassScreen: React.FC = () => {
                 </Select>
               </Form.Item>
             </Col>
-            </Row>
+            </Row> */}
           </Form>
        </CustomModal>
     

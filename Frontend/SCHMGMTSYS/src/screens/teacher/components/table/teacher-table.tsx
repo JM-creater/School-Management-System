@@ -1,4 +1,3 @@
-// TeacherTable.tsx
 import React from 'react';
 import { Space, Spin, Table } from 'antd';
 import { useTeacher } from '../../../../hooks/use-teacher';
@@ -40,6 +39,11 @@ export const TeacherTable: React.FC = () => {
                             <Column title="Email" dataIndex="email" key="email" />
                             <Column title="Employment date" dataIndex="employmentDate" key="employmentDate" />
                             <Column title="Phone Number" dataIndex="phoneNumber" key="phoneNumber" />
+                            <Column 
+                                title="Classroom" 
+                                dataIndex={["classroom", "name"]} 
+                                key="classroomId" 
+                            />
                             <Column
                                 title="Action"
                                 key="action"
