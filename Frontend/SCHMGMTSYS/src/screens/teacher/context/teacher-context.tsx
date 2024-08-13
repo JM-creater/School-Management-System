@@ -50,7 +50,14 @@ export const TeacherProvider: React.FC<TeacherProps> = ({ children }) => {
         setLoading(true);
 
         try {
-            const response = await createTeacher(teacher);
+            const formattedValues = {
+                ...teacher,
+                classroom: {
+                    id: teacher.classroom_id,
+                    name: teacher.classroom.name
+                }
+            };
+            const response = await createTeacher(formattedValues);
             setTeachers([...teachers, response]);
             toast.success("Teacher added successfully");
         } catch (error) {
@@ -64,7 +71,14 @@ export const TeacherProvider: React.FC<TeacherProps> = ({ children }) => {
     const editTeacher = async (id: number, updatedTeacher: Omit<TeacherData, 'id'>) => {
         setLoading(true);
         try {
-            const response = await updateTeacher(id, updatedTeacher);
+            const formattedValues = {
+                ...updatedTeacher,
+                classroom: {
+                    id: updatedTeacher.classroom_id,
+                    name: updatedTeacher.classroom.name
+                }
+            };
+            const response = await updateTeacher(id, formattedValues);
             setTeachers(teachers.map(t => t.id === id ? response : t));
             toast.success("Teacher updated successfully");
         } catch (error) {
@@ -83,6 +97,8 @@ export const TeacherProvider: React.FC<TeacherProps> = ({ children }) => {
         } catch (error) {
             console.log(error);
             setError('Failed to delete teacher');
+        } finally {
+            setLoading(false);
         }
     };
 

@@ -7,4 +7,6 @@ import java.util.List;
 public interface ClassroomService {
     Classroom createClassroom(Classroom classroom);
     List<Classroom> fetchAllClassroom();
+    Classroom fetchClassroomById(Long id);
+    String deleteClassroomById(Long id);
 }

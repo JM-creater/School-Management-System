@@ -9,4 +9,9 @@ export interface TeacherData {
     dateOfBirth: moment.Moment;
     employmentDate: moment.Moment;
     address: string;
+    classroom_id: number,
+    classroom: {
+        id: number;
+        name: string;
+    };
 }

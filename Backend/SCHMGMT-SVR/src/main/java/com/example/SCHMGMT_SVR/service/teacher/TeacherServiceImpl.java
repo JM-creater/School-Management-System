@@ -71,6 +71,9 @@ public class TeacherServiceImpl implements TeacherService {
             if (Objects.nonNull(teacher.getAddress()) && !"".equalsIgnoreCase(teacher.getAddress())) {
                 originalTeacher.setAddress(teacher.getAddress());
             }
+            if (Objects.nonNull(teacher.getClassroom())) {
+                originalTeacher.setClassroom(teacher.getClassroom());
+            }
             return teacherRepository.save(originalTeacher);
         }
         return null;

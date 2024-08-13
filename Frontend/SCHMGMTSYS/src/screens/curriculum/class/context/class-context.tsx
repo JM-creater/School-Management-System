@@ -1,8 +1,8 @@
-import { createContext, useEffect, useState } from "react";
+import { createContext, useCallback, useEffect, useState } from "react";
 import { ClassContextTypes } from "../types/class-types";
 import { ClassProps } from "./props/class-props";
 import { ClassData } from "../data/class";
-import { createClass, getAllClass } from "../../../../services/class/class-service";
+import { createClass, deleteClass, getAllClass, getClassById } from "../../../../services/class/class-service";
 import { toast } from "react-toastify";
 import { FormProps } from "antd";
 
@@ -13,7 +13,7 @@ export const ClassProvider: React.FC<ClassProps> = ({ children }) => {
     const [classes, setClasses] = useState<ClassData[]>([]);
     const [loading, setLoading] = useState<boolean>(false);
     const [error, setError] = useState<string | null>(null);
-    // const [selectedClasses, setSelectedClasses] = useState<ClassData | null>(null);
+    const [selectedClasses, setSelectedClasses] = useState<ClassData | null>(null);
 
     const onFinishFailed: FormProps<ClassData>['onFinishFailed'] = (errorInfo) => {
         console.log('Failed:', errorInfo);
@@ -36,6 +36,16 @@ export const ClassProvider: React.FC<ClassProps> = ({ children }) => {
         fetchClasses();
     }, []);
 
+    const fetchClassById = useCallback(async (classId: number) => {
+        try {
+            const response = await getClassById(classId);
+            setSelectedClasses(response);
+        } catch (error) {
+            console.log(error);
+            setError('Failed to fetch class by ID');
+        }
+    }, []);
+
     const createNewClass = async (values: Omit<ClassData, 'id'>) => {
         setLoading(true);
         try {
@@ -49,13 +59,29 @@ export const ClassProvider: React.FC<ClassProps> = ({ children }) => {
             setLoading(false);
         }
     };
+
+    const removeClass = async (id: number) => {
+        setLoading(true);
+        try {
+            await deleteClass(id);
+            setClasses((prevClass) => prevClass.filter(t => t.id !== id));
+        } catch (error) {
+            console.log(error);
+            setError('Failed to delete teacher');
+        } finally {
+            setLoading(false);
+        }
+    };
     
     const handleValues = {
+        selectedClasses,
         loading,
         error,
         classes,
         onFinishFailed,
-        createNewClass
+        createNewClass,
+        fetchClassById,
+        removeClass
     };
 
     return (

@@ -1,6 +1,7 @@
 package com.example.SCHMGMT_SVR.models;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Column;
 import jakarta.persistence.Table;
@@ -35,15 +36,15 @@ public class Classroom {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long Id;
 
-    @Column(unique = true, nullable = false)
+    @Column(nullable = false)
     private String name;
 
-    @Column(unique = true, nullable = false)
+    @Column(nullable = false)
     private String grade;
 
-    @OneToOne
-    @JoinColumn(name = "teacher_id")
-    private Teacher teacher;
+    @OneToMany(mappedBy = "classroom")
+    @JsonIgnore
+    private Set<Teacher> teachers = new HashSet<>();
 
     @OneToMany(mappedBy = "classroom")
     private Set<Student> students = new HashSet<>();
@@ -83,12 +84,12 @@ public class Classroom {
         this.grade = grade;
     }
 
-    public Teacher getTeacher() {
-        return teacher;
+    public Set<Teacher> getTeachers() {
+        return teachers;
     }
 
-    public void setTeacher(Teacher teacher) {
-        this.teacher = teacher;
+    public void setTeachers(Set<Teacher> teachers) {
+        this.teachers = teachers;
     }
 
     public LocalDateTime getCreatedAt() {

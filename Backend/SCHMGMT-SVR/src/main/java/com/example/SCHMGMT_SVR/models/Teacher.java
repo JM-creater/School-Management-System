@@ -2,14 +2,7 @@ package com.example.SCHMGMT_SVR.models;
 
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Table;
-import jakarta.persistence.Id;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToMany;
-import jakarta.persistence.JoinTable;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -46,6 +39,10 @@ public class Teacher {
 
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
+
+    @ManyToOne
+    @JoinColumn(name = "classroom_id")
+    private Classroom classroom;
 
     @ManyToMany
     @JoinTable(
