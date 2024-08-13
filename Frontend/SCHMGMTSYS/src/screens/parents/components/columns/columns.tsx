@@ -1,7 +1,11 @@
 import { Space } from "antd";
 import { ParentData } from "../../data/parents";
 
-export const ColumnTable = (showEditModal: any, fetchParentById: (id: number) => void) => [
+export const ColumnTable = (
+  showEditModal: any, 
+  fetchParentById: (id: number) => void, 
+  removeParent: (id: number) => void
+) => [
   {
     title: 'First Name',
     dataIndex: 'firstName',
@@ -27,14 +31,19 @@ export const ColumnTable = (showEditModal: any, fetchParentById: (id: number) =>
     key: 'action',
     render: (record: ParentData) => (
       <Space size="middle">
-        <a onClick={() => {
-            showEditModal();
-            fetchParentById(record.id)
-          }}
+        <a
+        onClick={async () => {
+          fetchParentById(record.id as number);
+          showEditModal();
+        }}
         >
           Edit
         </a>
-        <a>Delete</a>
+        <a 
+          onClick={() => removeParent(record.id as number)}
+        >
+          Delete
+        </a>
       </Space>
     ),
   },

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Col, Form, Input, Row, Spin, Table } from 'antd';
 import { useModal } from '../../hooks/use-modal';
 import { CustomModal } from '../../components/modal/modal';
@@ -28,22 +28,48 @@ export const ParentsScreen: React.FC = () => {
     createNewParents, 
     onFinishFailed,
     fetchParentById,
+    removeParent,
     editParent
   } = useParent();
 
-  const columns = ColumnTable(showEditModal, fetchParentById)
+  const columns = ColumnTable(
+    showEditModal, 
+    fetchParentById, 
+    removeParent
+  );
+
+  const handleEdit = async (record: Omit<ParentData, 'id'>) => {
+    if (selectedParent) {
+      await editParent(selectedParent.id, record);
+      closeEditModal();
+    }
+  };
+  
+  useEffect(() => {
+    if (selectedParent) {
+      form.setFieldsValue({
+        firstName: selectedParent.firstName,
+        lastName: selectedParent.lastName,
+        email: selectedParent.email,
+        phoneNumber: selectedParent.phoneNumber,
+      });
+    }
+  }, [selectedParent, form]);
 
   return (
     <React.Fragment>
       <ButtonContainer>
         <CustomButton 
           type='primary' 
-          onClick={showModal} 
+          onClick={() => {
+            showModal();
+            form.resetFields();
+          }} 
           style={{ 
             ...marginBottomStyles, 
             ...buttonWidthStyles 
-            }} 
-            label='Add Parent' 
+          }} 
+          label='Add Parent' 
         />
       </ButtonContainer>
 
@@ -63,7 +89,7 @@ export const ParentsScreen: React.FC = () => {
         }
       </React.Fragment>
        
-       <CustomModal
+      <CustomModal
         open={openModal}
         title='Add Parent'
         onOk={closeModal}
@@ -77,42 +103,42 @@ export const ParentsScreen: React.FC = () => {
           onFinishFailed={onFinishFailed}
         >
           <Row gutter={16}>
-              <Col span={12}>
-                <Form.Item<ParentData>
-                  name="firstName"
-                  label="First Name"
-                  rules={[{ required: true, message: 'Please enter first name' }]}
-                >
-                  <Input placeholder="Please enter first name" />
-                </Form.Item>
-              </Col>
-              <Col span={12}>
-                <Form.Item<ParentData>
-                  name="lastName"
-                  label="Last Name"
-                  rules={[{ required: true, message: 'Please enter last name' }]}
-                >
-                   <Input placeholder="Please enter last name" />
-                </Form.Item>
-              </Col>
-            </Row>
-            <Row gutter={16}>
-              <Col span={12}>
-                <Form.Item<ParentData>
-                  name="email"
-                  label="Email"
-                  rules={[{ required: true, message: 'Please enter email' }]}
-                >
-                    <Input placeholder="Please enter Phone Number" />
-                </Form.Item>
-              </Col>
-              <Col span={12}>
-                <Form.Item<ParentData>
-                  name="phoneNumber"
-                  label="Phone Number"
-                  rules={[{ required: true, message: 'Please enter phone number' }]}
-                >
-                    <Input maxLength={11} placeholder="Please enter phone number" />
+            <Col span={12}>
+              <Form.Item<ParentData>
+                name="firstName"
+                label="First Name"
+                rules={[{ required: true, message: 'Please enter first name' }]}
+              >
+                <Input placeholder="Please enter first name" />
+              </Form.Item>
+            </Col>
+            <Col span={12}>
+              <Form.Item<ParentData>
+                name="lastName"
+                label="Last Name"
+                rules={[{ required: true, message: 'Please enter last name' }]}
+              >
+                  <Input placeholder="Please enter last name" />
+              </Form.Item>
+            </Col>
+          </Row>
+          <Row gutter={16}>
+            <Col span={12}>
+              <Form.Item<ParentData>
+                name="email"
+                label="Email"
+                rules={[{ required: true, message: 'Please enter email' }]}
+              >
+                  <Input placeholder="Please enter Phone Number" />
+              </Form.Item>
+            </Col>
+            <Col span={12}>
+              <Form.Item<ParentData>
+                name="phoneNumber"
+                label="Phone Number"
+                rules={[{ required: true, message: 'Please enter phone number' }]}
+              >
+                  <Input maxLength={11} placeholder="Please enter phone number" />
                 </Form.Item>
               </Col>
             </Row>
@@ -120,72 +146,64 @@ export const ParentsScreen: React.FC = () => {
        </CustomModal>
 
        <CustomModal
-        open={openEditModal}
-        title='Edit Parent'
-        onOk={closeEditModal}
-        onCancel={closeEditModal}
-        centered  
-      >
-        {
-          selectedParent && (
-            <Form  
+          open={openEditModal}
+          title="Edit Parent"
+          onOk={form.submit}
+          onCancel={() => {
+            closeEditModal();
+            form.resetFields();
+          }}
+          centered
+        >
+            <Form
               form={form}
-              layout="vertical" 
-              onFinish={() => editParent(selectedParent.id as number, selectedParent)}
+              layout="vertical"
+              onFinish={handleEdit}
               onFinishFailed={onFinishFailed}
-              initialValues={{
-                id: selectedParent.id,
-                firstName: selectedParent.firstName,
-                lastName: selectedParent.lastName,
-                email: selectedParent.email,
-                phoneNumber: selectedParent.phoneNumber
-              }}
             >
               <Row gutter={16}>
-                  <Col span={12}>
-                    <Form.Item<ParentData>
-                      name="firstName"
-                      label="First Name"
-                      rules={[{ required: true, message: 'Please enter first name' }]}
-                    >
-                      <Input placeholder="Please enter first name" />
-                    </Form.Item>
-                  </Col>
-                  <Col span={12}>
-                    <Form.Item<ParentData>
-                      name="lastName"
-                      label="Last Name"
-                      rules={[{ required: true, message: 'Please enter last name' }]}
-                    >
-                      <Input placeholder="Please enter last name" />
-                    </Form.Item>
-                  </Col>
-                </Row>
-                <Row gutter={16}>
-                  <Col span={12}>
-                    <Form.Item<ParentData>
-                      name="email"
-                      label="Email"
-                      rules={[{ required: true, message: 'Please enter email' }]}
-                    >
-                        <Input placeholder="Please enter Phone Number" />
-                    </Form.Item>
-                  </Col>
-                  <Col span={12}>
-                    <Form.Item<ParentData>
-                      name="phoneNumber"
-                      label="Phone Number"
-                      rules={[{ required: true, message: 'Please enter phone number' }]}
-                    >
-                        <Input maxLength={11} placeholder="Please enter phone number" />
-                    </Form.Item>
-                  </Col>
-                </Row>
-              </Form>
-          )
-        }
-       </CustomModal>
+                <Col span={12}>
+                  <Form.Item<ParentData>
+                    name="firstName"
+                    label="First Name"
+                    rules={[{ required: true, message: 'Please enter first name' }]}
+                  >
+                    <Input placeholder="Please enter first name" />
+                  </Form.Item>
+                </Col>
+                <Col span={12}>
+                  <Form.Item<ParentData>
+                    name="lastName"
+                    label="Last Name"
+                    rules={[{ required: true, message: 'Please enter last name' }]}
+                  >
+                    <Input placeholder="Please enter last name" />
+                  </Form.Item>
+                </Col>
+              </Row>
+              <Row gutter={16}>
+                <Col span={12}>
+                  <Form.Item<ParentData>
+                    name="email"
+                    label="Email"
+                    rules={[{ required: true, message: 'Please enter email' }]}
+                  >
+                      <Input placeholder="Please enter Phone Number" />
+                  </Form.Item>
+                </Col>
+                <Col span={12}>
+                  <Form.Item<ParentData>
+                    name="phoneNumber"
+                    label="Phone Number"
+                    rules={[{ required: true, message: 'Please enter phone number' }]}
+                  >
+                      <Input maxLength={11} placeholder="Please enter phone number" />
+                  </Form.Item>
+                </Col>
+              </Row>
+            </Form>
+        </CustomModal>
+      
     </React.Fragment>
   )
 }
-

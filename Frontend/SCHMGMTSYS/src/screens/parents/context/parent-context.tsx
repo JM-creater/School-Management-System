@@ -2,8 +2,8 @@ import React, { createContext, useCallback, useEffect, useState } from "react";
 import { ParentContextType } from "../types/parent-types";
 import { ParentProps } from "./props/parent-props";
 import { ParentData } from "../data/parents";
-import { createParent, getAllParent, getAllParentById, updateParent } from "../../../services/parent/parent-service";
-import { Form, FormProps } from "antd";
+import { createParent, deleteParent, getAllParent, getParentById, updateParent } from "../../../services/parent/parent-service";
+import { FormProps } from "antd";
 import { toast } from "react-toastify";
 
 export const ParentContext = createContext<ParentContextType | null>(null);
@@ -13,7 +13,6 @@ export const ParentProvider: React.FC<ParentProps> = ({ children }) => {
     const [parents, setParents] = useState<ParentData[]>([]);
     const [loading, setLoading] = useState<boolean>(false);
     const [error, setError] = useState<string | null>(null);
-    const [form] = Form.useForm();
     const [selectedParent, setSelectedParent] = useState<ParentData | null>(null);
 
     const onFinishFailed: FormProps<ParentData>['onFinishFailed'] = (errorInfo) => {
@@ -28,7 +27,7 @@ export const ParentProvider: React.FC<ParentProps> = ({ children }) => {
                 setParents(response);
             } catch (error) {
                 console.log(error);
-                setError('Failed to catch employees');
+                setError('Failed to catch parents');
             } finally {
                 setLoading(false);
             }
@@ -38,26 +37,20 @@ export const ParentProvider: React.FC<ParentProps> = ({ children }) => {
     }, []);
 
     const fetchParentById = useCallback(async (parentId: number) => {
-        setLoading(true);
         try {
-            const response = await getAllParentById(parentId);
+            const response = await getParentById(parentId);
             setSelectedParent(response);
-            form.setFieldsValue(response);
         } catch (error) {
             console.log(error);
             setError('Failed to fetch parent by ID');
-        } finally {
-            setLoading(false);
         }
-    }, [form]);
+    }, []);
     
-
     const createNewParents = async (parent: Omit<ParentData, 'id'>) => {
         setLoading(true);
         try {
             const response = await createParent(parent);
             setParents([...parents, response]);
-            form.resetFields();
             toast.success("Parent added successfully");
         } catch (error) {
             console.log(error);
@@ -67,22 +60,36 @@ export const ParentProvider: React.FC<ParentProps> = ({ children }) => {
         }
     };
 
-    const editParent = async (parentId: number, parent: ParentData) =>  {
+    const editParent = async (id: number, updatedParent: Omit<ParentData, 'id'>) => {
         setLoading(true);
         try {
-            const updatedParent = await updateParent(parent, parentId);
-            setParents(parents.map(p => (p.id === updatedParent.id ? updatedParent : p)));
+            const response = await updateParent(id, updatedParent);
+            setParents(parents.map(parent => parent.id === id ? response : parent));
+            toast.success("Parent updated successfully");
         } catch (error) {
             console.log(error);
-            setError('Failed to edit parents');
+            setError('Failed to update parent'); 
         } finally {
             setLoading(false);
         }
     };
 
+    const removeParent = async (id: number) => {
+        setLoading(true);
+        try {
+            await deleteParent(id);
+            setParents((prevParent) => prevParent.filter(p => p.id !== id));
+        } catch (error) {
+            console.log(error);
+            setError('Failed to delete parent');
+        } finally {
+            setLoading(false);
+        }
+    };
 
     const handleValues = {
         editParent,
+        removeParent,
         fetchParentById,
         onFinishFailed,
         createNewParents,

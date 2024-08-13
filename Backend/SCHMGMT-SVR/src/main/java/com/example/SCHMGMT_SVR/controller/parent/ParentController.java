@@ -34,4 +34,9 @@ public class ParentController {
     public Parent updateParent(@PathVariable("id") Long id, @RequestBody Parent parent) {
         return parentService.updateParentById(id, parent);
     }
+
+    @DeleteMapping("/parent/{id}")
+    public String deleteParentId(@PathVariable("id") Long id) {
+        return parentService.deleteParentById(id);
+    }
 }

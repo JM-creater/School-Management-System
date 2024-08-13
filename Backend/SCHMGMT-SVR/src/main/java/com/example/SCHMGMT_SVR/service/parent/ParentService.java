@@ -13,4 +13,6 @@ public interface ParentService {
     Parent fetchParentById(Long id);
 
     Parent updateParentById(Long id, Parent parent);
+
+    String deleteParentById(Long id);
 }

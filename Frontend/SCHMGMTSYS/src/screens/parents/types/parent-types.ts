@@ -1,13 +1,14 @@
 import { FormProps } from "antd";
 import { ParentData } from "../data/parents";
 
-export interface ParentContextType{
-    editParent: (parentId: number, parent: ParentData) => Promise<void>;
+export interface ParentContextType {
+    createNewParents: (parent: Omit<ParentData, 'id'>) => void;
+    editParent: (id: number, updatedParent: Omit<ParentData, 'id'>) => Promise<void>;
+    removeParent: (id: number) => Promise<void>
     fetchParentById: (parentId: number) => Promise<void>;
     onFinishFailed: FormProps<ParentData>['onFinishFailed'];
-    createNewParents: (parent: Omit<ParentData, 'id'>) => void;
     parents: ParentData[];
     loading: boolean;
     error: string | null;
     selectedParent: ParentData | null;
-} 
+};
