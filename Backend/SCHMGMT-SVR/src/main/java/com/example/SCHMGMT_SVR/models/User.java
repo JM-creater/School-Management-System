@@ -1,6 +1,7 @@
 package com.example.SCHMGMT_SVR.models;
 
 import com.example.SCHMGMT_SVR.models.enums.UserStatus;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Table;
 import jakarta.persistence.Id;
@@ -14,6 +15,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.Builder;
+
+import java.time.LocalDateTime;
 
 @Entity
 @Getter
@@ -41,4 +44,6 @@ public class User {
     @Enumerated(EnumType.STRING)
     private UserStatus status;
 
+    private LocalDateTime createdAt;
+    private LocalDateTime updatedAt;
 }

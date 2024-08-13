@@ -1,100 +1,245 @@
-import React from 'react';
-import { Space, Table, Tag } from 'antd';
+import React, { useEffect } from 'react';
 import { ButtonContainer, buttonWidthStyles, marginBottomStyles } from '../dashboard/themes/dashboard-styles';
 import { CustomButton } from '../../components/button/button';
+import { TeacherTable } from './components/table/teacher-table';
+import { CustomModal } from '../../components/modal/modal';
+import { Col, DatePicker, Form, Input, Row } from 'antd';
+import { TeacherData } from './data/teachers';
+import { useModal } from '../../hooks/use-modal';
+import { useTeacher } from '../../hooks/use-teacher';
+import moment from 'moment';
 
-const { Column, ColumnGroup } = Table;
+export const TeacherScreen: React.FC = () => {
 
-interface DataType {
-  key: React.Key;
-  firstName: string;
-  lastName: string;
-  age: number;
-  address: string;
-  tags: string[];
-}
+  const { 
+    form, 
+    closeModal, 
+    showModal, 
+    openModal,
+    closeEditModal,
+    openEditModal
+  } = useModal();
+  const {
+    onFinishFailed,
+    createNewTeacher,
+    editTeacher,
+    selectedTeacher
+  } = useTeacher();
 
-const data: DataType[] = [
-  {
-    key: '1',
-    firstName: 'John',
-    lastName: 'Brown',
-    age: 32,
-    address: 'New York No. 1 Lake Park',
-    tags: ['nice', 'developer'],
-  },
-  {
-    key: '2',
-    firstName: 'Jim',
-    lastName: 'Green',
-    age: 42,
-    address: 'London No. 1 Lake Park',
-    tags: ['loser'],
-  },
-  {
-    key: '3',
-    firstName: 'Joe',
-    lastName: 'Black',
-    age: 32,
-    address: 'Sydney No. 1 Lake Park',
-    tags: ['cool', 'teacher'],
-  },
-];
+  const handleEdit = async (teacher: Omit<TeacherData, 'id'>) => {
+    if (selectedTeacher) {
+      await editTeacher(selectedTeacher.id as number, teacher);
+      closeEditModal();
+    }
+  };
 
-const handleClick = () => {
-  console.log('test');
-};
+  useEffect(() => {
+    if (selectedTeacher) {
+      form.setFieldsValue({
+        firstName: selectedTeacher.firstName,
+        lastName: selectedTeacher.lastName,
+        email: selectedTeacher.email,
+        phoneNumber: selectedTeacher.phoneNumber,
+        dateOfBirth: moment(selectedTeacher.dateOfBirth),
+        employmentDate: moment(selectedTeacher.employmentDate),
+        address: selectedTeacher.address
+      });
+    }
+  }, [selectedTeacher, form]);
 
-export const TeacherScreen: React.FC = () => (
-  <React.Fragment>
-    <ButtonContainer>
-      <CustomButton 
-        type='primary' 
-        onClick={handleClick} 
-        style={{ 
-          ...marginBottomStyles, 
-          ...buttonWidthStyles 
+  return (
+    <React.Fragment>
+      <ButtonContainer>
+        <CustomButton 
+          type='primary' 
+          onClick={() => {
+            showModal();
           }} 
-          label='Add Teacher' 
-      />
-    </ButtonContainer>
-    <Table dataSource={data}>
-      <ColumnGroup title="Name">
-        <Column title="First Name" dataIndex="firstName" key="firstName" />
-        <Column title="Last Name" dataIndex="lastName" key="lastName" />
-      </ColumnGroup>
-      <Column title="Age" dataIndex="age" key="age" />
-      <Column title="Address" dataIndex="address" key="address" />
-      <Column
-        title="Tags"
-        dataIndex="tags"
-        key="tags"
-        render={(tags: string[]) => (
-          <>
-            {tags.map((tag) => {
-              let color = tag.length > 5 ? 'geekblue' : 'green';
-              if (tag === 'loser') {
-                color = 'volcano';
-              }
-              return (
-                <Tag color={color} key={tag}>
-                  {tag.toUpperCase()}
-                </Tag>
-              );
-            })}
-          </>
-        )}
-      />
-      <Column
-        title="Action"
-        key="action"
-        render={(_: unknown, record: DataType) => (
-          <Space size="middle">
-            <a>Invite {record.lastName}</a>
-            <a>Delete</a>
-          </Space>
-        )}
-      />
-    </Table>
-  </React.Fragment>
-);
+          style={{ 
+            ...marginBottomStyles, 
+            ...buttonWidthStyles
+            }} 
+            label='Add Teacher' 
+        />
+      </ButtonContainer>
+      <TeacherTable/>
+
+      <CustomModal
+        open={openModal}
+        title='Add Parent'
+        onOk={closeModal}
+        onCancel={closeModal}
+        centered  
+      >
+        <Form  
+          form={form}
+          layout="vertical" 
+          onFinish={createNewTeacher}
+          onFinishFailed={onFinishFailed}
+        >
+          <Row gutter={16}>
+            <Col span={12}>
+              <Form.Item<TeacherData>
+                name="firstName"
+                label="First Name"
+                rules={[{ required: true, message: 'Please enter first name' }]}
+              >
+                <Input placeholder="Please enter first name" />
+              </Form.Item>
+            </Col>
+            <Col span={12}>
+              <Form.Item<TeacherData>
+                name="lastName"
+                label="Last Name"
+                rules={[{ required: true, message: 'Please enter last name' }]}
+              >
+                  <Input placeholder="Please enter last name" />
+              </Form.Item>
+            </Col>
+          </Row>
+          <Row gutter={16}>
+            <Col span={12}>
+              <Form.Item<TeacherData>
+                name="email"
+                label="Email"
+                rules={[{ required: true, message: 'Please enter email' }]}
+              >
+                  <Input placeholder="Please enter Phone Number" />
+              </Form.Item>
+            </Col>
+            <Col span={12}>
+              <Form.Item<TeacherData>
+                name="phoneNumber"
+                label="Phone Number"
+                rules={[{ required: true, message: 'Please enter phone number' }]}
+              >
+                  <Input maxLength={11} placeholder="Please enter phone number" />
+                </Form.Item>
+              </Col>
+            </Row>
+            <Row gutter={16}>
+              <Col span={12}>
+                <Form.Item<TeacherData>
+                  name="dateOfBirth"
+                  label="Date of Birth"
+                  rules={[{ required: true, message: 'Please enter date of birth' }]}
+                >
+                  <DatePicker placeholder='Birth Date' />
+                </Form.Item>
+              </Col>
+              <Col span={12}>
+                <Form.Item<TeacherData>
+                  name="employmentDate"
+                  label="Employment Date"
+                  rules={[{ required: true, message: 'Please enter employment date' }]}
+                >
+                  <DatePicker placeholder='Employment Date' />
+                </Form.Item>
+              </Col>
+            </Row>
+            <Row gutter={16}>
+              <Col span={12}>
+                <Form.Item<TeacherData>
+                  name="address"
+                  label="Address"
+                  rules={[{ required: true, message: 'Please enter address' }]}
+                >
+                  <Input placeholder="Please enter address" />
+                </Form.Item>
+              </Col>
+            </Row>
+          </Form>
+      </CustomModal>
+
+      <CustomModal
+        open={openEditModal}
+        title='Edit Parent'
+        onOk={form.submit}
+        onCancel={() => {
+          closeEditModal();
+          form.resetFields();
+        }}
+        centered  
+      >
+        <Form  
+          form={form}
+          layout="vertical" 
+          onFinish={handleEdit}
+          onFinishFailed={onFinishFailed}
+        >
+          <Row gutter={16}>
+            <Col span={12}>
+              <Form.Item<TeacherData>
+                name="firstName"
+                label="First Name"
+                rules={[{ required: true, message: 'Please enter first name' }]}
+              >
+                <Input placeholder="Please enter first name" />
+              </Form.Item>
+            </Col>
+            <Col span={12}>
+              <Form.Item<TeacherData>
+                name="lastName"
+                label="Last Name"
+                rules={[{ required: true, message: 'Please enter last name' }]}
+              >
+                  <Input placeholder="Please enter last name" />
+              </Form.Item>
+            </Col>
+          </Row>
+          <Row gutter={16}>
+            <Col span={12}>
+              <Form.Item<TeacherData>
+                name="email"
+                label="Email"
+                rules={[{ required: true, message: 'Please enter email' }]}
+              >
+                  <Input placeholder="Please enter Phone Number" />
+              </Form.Item>
+            </Col>
+            <Col span={12}>
+              <Form.Item<TeacherData>
+                name="phoneNumber"
+                label="Phone Number"
+                rules={[{ required: true, message: 'Please enter phone number' }]}
+              >
+                  <Input maxLength={11} placeholder="Please enter phone number" />
+                </Form.Item>
+              </Col>
+            </Row>
+            <Row gutter={16}>
+              <Col span={12}>
+                <Form.Item<TeacherData>
+                  name="dateOfBirth"
+                  label="Date of Birth"
+                  rules={[{ required: true, message: 'Please enter date of birth' }]}
+                >
+                  <DatePicker placeholder='Birth Date' />
+                </Form.Item>
+              </Col>
+              <Col span={12}>
+                <Form.Item<TeacherData>
+                  name="employmentDate"
+                  label="Employment Date"
+                  rules={[{ required: true, message: 'Please enter employment date' }]}
+                >
+                  <DatePicker placeholder='Employment Date' />
+                </Form.Item>
+              </Col>
+            </Row>
+            <Row gutter={16}>
+              <Col span={12}>
+                <Form.Item<TeacherData>
+                  name="address"
+                  label="Address"
+                  rules={[{ required: true, message: 'Please enter address' }]}
+                >
+                  <Input placeholder="Please enter address" />
+                </Form.Item>
+              </Col>
+            </Row>
+          </Form>
+      </CustomModal>
+    </React.Fragment>
+  )
+};

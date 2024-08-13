@@ -8,4 +8,4 @@ export const useParent = (): ParentContextType => {
         throw new Error("useParent must be used within a ParentProvider");
     }
     return context;
-}
+};

@@ -16,7 +16,7 @@ export const CustomModal: React.FC<CustomModalProps> = ({ open, title, onOk, onC
     <Modal
         title={title}
         open={open}
-        onOk={onOk}
+        onOk={handleSubmit}
         onCancel={onCancel}
         footer={[
             <Button key="cancel" onClick={onCancel}>
@@ -27,6 +27,7 @@ export const CustomModal: React.FC<CustomModalProps> = ({ open, title, onOk, onC
             </Button>,
         ]}
         centered={centered}
+        maskClosable={false}  
     >   
         {children}
     </Modal>

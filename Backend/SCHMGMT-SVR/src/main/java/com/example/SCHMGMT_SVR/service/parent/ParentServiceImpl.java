@@ -4,9 +4,9 @@ import com.example.SCHMGMT_SVR.models.Parent;
 import com.example.SCHMGMT_SVR.repositories.ParentRepository;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
-import java.util.Objects;
-import java.util.Optional;
+import java.time.LocalDateTime;
+import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 public class ParentServiceImpl implements ParentService {
@@ -19,13 +19,16 @@ public class ParentServiceImpl implements ParentService {
 
     @Override
     public Parent createParent(Parent parent) {
+        parent.setCreatedAt(LocalDateTime.now());
         return parentRepository.save(parent);
     }
 
     @Override
     public List<Parent> fetchAllParent() {
         List<Parent> allParents = parentRepository.findAll();
-        return allParents;
+        return allParents.stream()
+                .sorted(Comparator.comparing(Parent::getCreatedAt).reversed())
+                .collect(Collectors.toList());
     }
 
     @Override
@@ -59,5 +62,15 @@ public class ParentServiceImpl implements ParentService {
             return parentRepository.save(originalParent);
         }
         return null;
+    }
+
+    @Override
+    public String deleteParentById(Long id) {
+        if (parentRepository.findById(id).isPresent()) {
+            parentRepository.deleteById(id);
+            return "Employee deleted successfully";
+        } else {
+            return "Employee not found";
+        }
     }
 }
