@@ -5,10 +5,10 @@ import { TeacherScreen } from "../../teacher/teacher-screen";
 import { DashboardScreen } from "../../dashboard/dashboard";
 import { MenuItemContextType } from "../types/menu-types";
 import { ParentsScreen } from "../../parents/parents-screen";
-import { CourseScreen } from "../../curriculum/course/course-screen";
 import { ClassScreen } from "../../curriculum/class/class-screen";
 import { AttendanceScreen } from "../../attendance/attendance-screen";
 import { StudentScreen } from "../../student/student-screen";
+import { SubjectScreen } from "../../curriculum/subject/subject-screen";
 
 export const MenuItemContext = createContext<MenuItemContextType | null>(null);
 
@@ -45,7 +45,7 @@ export const MenuItemProvider: React.FC<MenuItemProps> = ({ children }) => {
                 )
             case '4': 
                 return (
-                    <CourseScreen/>
+                    <SubjectScreen/>
                 )
             case '5': 
                 return (
@@ -80,7 +80,7 @@ export const MenuItemProvider: React.FC<MenuItemProps> = ({ children }) => {
                 )
             case 4:
                 return (
-                    <span style={headerNameStyle}>Course</span>
+                    <span style={headerNameStyle}>Subject</span>
                 )
             case 5:
                 return (

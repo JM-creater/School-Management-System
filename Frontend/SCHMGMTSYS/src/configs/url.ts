@@ -18,3 +18,11 @@ export const GET_CLASS_URL = '/classroom';
 export const GET_CLASS_BY_ID_URL = '/classroom/';
 export const UPDATE_CLASS_URL= '/classroom/';
 export const DELETE_CLASS_URL= '/classroom/';
+
+// * Subject
+export const CREATE_SUBJECT_URL = '/subject';
+export const GET_SUBJECT_URL = '/subject';
+export const GET_SUBJECT_BY_ID_URL = '/subject/';
+export const UPDATE_SUBJECT_URL= '/subject/';
+export const DELETE_SUBJECT_URL= '/subject/';
+

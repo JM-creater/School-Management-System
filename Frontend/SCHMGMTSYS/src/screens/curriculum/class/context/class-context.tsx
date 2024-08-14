@@ -2,7 +2,7 @@ import { createContext, useCallback, useEffect, useState } from "react";
 import { ClassContextTypes } from "../types/class-types";
 import { ClassProps } from "./props/class-props";
 import { ClassData } from "../data/class";
-import { createClass, deleteClass, getAllClass, getClassById } from "../../../../services/class/class-service";
+import { createClass, deleteClass, getAllClass, getClassById, updateClass } from "../../../../services/class/class-service";
 import { toast } from "react-toastify";
 import { FormProps } from "antd";
 
@@ -42,7 +42,7 @@ export const ClassProvider: React.FC<ClassProps> = ({ children }) => {
             setSelectedClasses(response);
         } catch (error) {
             console.log(error);
-            setError('Failed to fetch class by ID');
+            setError('Failed to fetch class by Id');
         }
     }, []);
 
@@ -60,6 +60,20 @@ export const ClassProvider: React.FC<ClassProps> = ({ children }) => {
         }
     };
 
+    const editClass = async (id: number, updatedClasses: Omit<ClassData, 'id'>) => {
+        setLoading(true);
+        try {
+            const response = await updateClass(id, updatedClasses);
+            setClasses(classes.map(c => c.id === id ? response : c));
+            toast.success("Class updated successfully");
+        } catch (error) {
+            console.log(error);
+            setError('Failed to update class'); 
+        } finally {
+            setLoading(false);
+        }
+    };
+
     const removeClass = async (id: number) => {
         setLoading(true);
         try {
@@ -67,7 +81,7 @@ export const ClassProvider: React.FC<ClassProps> = ({ children }) => {
             setClasses((prevClass) => prevClass.filter(t => t.id !== id));
         } catch (error) {
             console.log(error);
-            setError('Failed to delete teacher');
+            setError('Failed to delete class');
         } finally {
             setLoading(false);
         }
@@ -81,7 +95,8 @@ export const ClassProvider: React.FC<ClassProps> = ({ children }) => {
         onFinishFailed,
         createNewClass,
         fetchClassById,
-        removeClass
+        removeClass,
+        editClass
     };
 
     return (

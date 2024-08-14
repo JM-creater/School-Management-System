@@ -7,7 +7,7 @@ export const createTeacher = async (teacher: Omit<TeacherData, 'id'>): Promise<T
     const formattedValues = {
         ...teacher,
         dateOfBirth: moment(teacher.dateOfBirth).format('YYYY-MM-DD'),
-        employmentDate: moment(teacher.employmentDate).format('YYYY-MM-DD'),
+        employmentDate: moment(teacher.employmentDate).format('YYYY-MM-DD')
     };
     const response = await axiosInstance.post(CREATE_TEACHER_URL, formattedValues);
     return response.data;

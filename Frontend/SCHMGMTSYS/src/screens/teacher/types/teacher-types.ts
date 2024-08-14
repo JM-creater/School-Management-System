@@ -2,6 +2,7 @@ import { FormProps } from "antd";
 import { TeacherData } from "../data/teachers";
 
 export interface TeacherContextTypes {
+    getTeacherFullNameById: (teacherId: number, teachers: TeacherData[]) => string;
     editTeacher: (id: number, updatedTeacher: Omit<TeacherData, 'id'>) => Promise<void>;
     fetchTeacherById: (teacherId: number) => Promise<void>;
     removeTeacher: (id: number) => Promise<void>; 

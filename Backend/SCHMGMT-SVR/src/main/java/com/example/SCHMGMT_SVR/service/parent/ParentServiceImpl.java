@@ -68,9 +68,9 @@ public class ParentServiceImpl implements ParentService {
     public String deleteParentById(Long id) {
         if (parentRepository.findById(id).isPresent()) {
             parentRepository.deleteById(id);
-            return "Employee deleted successfully";
+            return "Parent deleted successfully";
         } else {
-            return "Employee not found";
+            return "Parent not found";
         }
     }
 }

@@ -15,6 +15,8 @@ public class SecurityConfig {
                         .requestMatchers("/parent/**").permitAll()
                         .requestMatchers("/teacher/**").permitAll()
                         .requestMatchers("/classroom/**").permitAll()
+                        .requestMatchers("/subject/**").permitAll()
+                        .requestMatchers("/student/**").permitAll()
                         .anyRequest().authenticated()
                 );
 

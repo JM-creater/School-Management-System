@@ -70,7 +70,7 @@ export const TeacherScreen: React.FC = () => {
 
       <CustomModal
         open={openModal}
-        title='Add Parent'
+        title='Add Teacher'
         onOk={closeModal}
         onCancel={closeModal}
         centered  
@@ -181,7 +181,7 @@ export const TeacherScreen: React.FC = () => {
 
       <CustomModal
         open={openEditModal}
-        title='Edit Parent'
+        title='Edit Teacher'
         onOk={form.submit}
         onCancel={() => {
           closeEditModal();
