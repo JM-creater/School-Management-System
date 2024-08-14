@@ -1,6 +1,7 @@
 package com.example.SCHMGMT_SVR.models;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Table;
 import jakarta.persistence.Id;
@@ -39,6 +40,7 @@ public class Parent {
     private LocalDateTime updatedAt;
 
     @OneToMany(mappedBy = "parent")
+    @JsonIgnore
     private Set<Student> students = new HashSet<>();
 
     public Long getId() {

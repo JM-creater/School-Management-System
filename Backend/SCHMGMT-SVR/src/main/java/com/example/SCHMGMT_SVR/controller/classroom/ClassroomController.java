@@ -1,6 +1,7 @@
 package com.example.SCHMGMT_SVR.controller.classroom;
 
 import com.example.SCHMGMT_SVR.models.Classroom;
+import com.example.SCHMGMT_SVR.models.dto.ClassroomStudentCountDto;
 import com.example.SCHMGMT_SVR.service.classroom.ClassroomService;
 import org.springframework.web.bind.annotation.*;
 
@@ -28,6 +29,16 @@ public class ClassroomController {
     @GetMapping("/classroom/{id}")
     public Classroom fetchClassroomById(@PathVariable Long id) {
         return classroomService.fetchClassroomById(id);
+    }
+
+    @GetMapping("/classroom/count")
+    public long countClassroom() {
+        return classroomService.countClassrooms();
+    }
+
+    @GetMapping("/classroom/student-counts")
+    public List<ClassroomStudentCountDto> getClassroomStudentCounts() {
+        return classroomService.getClassroomStudentCounts();
     }
 
     @PutMapping("/classroom/{id}")

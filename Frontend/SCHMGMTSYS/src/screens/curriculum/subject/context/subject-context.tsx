@@ -2,7 +2,7 @@ import { createContext, useCallback, useEffect, useState } from "react";
 import { SubjectContextTypes } from "../types/subject-types";
 import { SubjectProps } from "./props/subject-props";
 import { SubjectData } from "../data/subject";
-import { createSubject, deleteSubject, getAllSubject, getSubjectById, updateSubject } from "../../../../services/subject/subject-service";
+import { createSubject, deleteSubject, getAllCountSubject, getAllSubject, getSubjectById, updateSubject } from "../../../../services/subject/subject-service";
 import { toast } from "react-toastify";
 import { FormProps } from "antd";
 
@@ -11,6 +11,7 @@ export const SubjectContext = createContext<SubjectContextTypes | null>(null);
 export const SubjectProvider: React.FC<SubjectProps> = ({ children }) => {
 
     const [subjects, setSubjects] = useState<SubjectData[]>([]);
+    const [overAllSubject, setOverAllSubject] = useState<number>(0);
     const [loading, setLoading] = useState<boolean>(false);
     const [error, setError] = useState<string | null>(null);
     const [selectedSubjects, setSelectedSubjects] = useState<SubjectData | null>(null);
@@ -25,6 +26,9 @@ export const SubjectProvider: React.FC<SubjectProps> = ({ children }) => {
             try {
                 const response = await getAllSubject();
                 setSubjects(response);
+
+                const overAllSubjectResponse = await getAllCountSubject();
+                setOverAllSubject(overAllSubjectResponse);
             } catch (error) {
                 console.log(error);
                 setError('Failed to catch subjects');
@@ -108,7 +112,8 @@ export const SubjectProvider: React.FC<SubjectProps> = ({ children }) => {
         selectedSubjects,
         subjects,
         loading,
-        error
+        error,
+        overAllSubject
     };
 
     return (

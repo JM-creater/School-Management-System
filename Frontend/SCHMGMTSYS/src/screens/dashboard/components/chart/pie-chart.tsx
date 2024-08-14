@@ -12,22 +12,7 @@ export function PieChart({ data, options }: PieChartProps) {
     <React.Fragment>
       <Row gutter={16} justify='center' style={spaceBetweenStyles}>
         <Col span={8}>
-          <h2 style={{ textAlign: "center" }}>Pie Chart</h2>
-          <Pie
-            data={data}
-            options={{
-              plugins: {
-                title: {
-                  display: true,
-                  text: "Users Gained between 2016-2020"
-                },
-                ...(options?.plugins || {})
-              }
-            }}
-          />
-        </Col>
-        <Col span={8}>
-          <h2 style={{ textAlign: "center" }}>Pie Chart</h2>
+          <h2 style={{ textAlign: "center" }}>Class</h2>
           <Pie
             data={data}
             options={{

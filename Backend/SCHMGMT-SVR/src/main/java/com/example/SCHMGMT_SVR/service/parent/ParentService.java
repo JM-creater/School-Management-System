@@ -15,4 +15,6 @@ public interface ParentService {
     Parent updateParentById(Long id, Parent parent);
 
     String deleteParentById(Long id);
+
+    long countParents();
 }

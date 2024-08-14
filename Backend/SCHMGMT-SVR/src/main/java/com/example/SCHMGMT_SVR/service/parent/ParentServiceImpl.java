@@ -41,6 +41,11 @@ public class ParentServiceImpl implements ParentService {
     }
 
     @Override
+    public long countParents() {
+        return parentRepository.count();
+    }
+
+    @Override
     public Parent updateParentById(Long id, Parent parent) {
         Optional<Parent> optionalParent = parentRepository.findById(id);
 

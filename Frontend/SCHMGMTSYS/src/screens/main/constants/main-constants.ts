@@ -6,7 +6,6 @@ export const COURSE_ITEM = 'Subject';
 export const CLASS_ITEM = 'Class';
 export const ATTENDANCE_ITEM = 'Attendance';
 export const PARENTS_ITEM = 'Parents';
-export const LOGOUT_ITEM = 'Logout';
 
 export const ONE_ITEM = '1';
 export const TWO_ITEM = '2';

@@ -11,4 +11,5 @@ export interface ClassContextTypes {
     error: string | null;
     classes: ClassData[];
     selectedClasses: ClassData | null;
+    overAllClass: number;
 };

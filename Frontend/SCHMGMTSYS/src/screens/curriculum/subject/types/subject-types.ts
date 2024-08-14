@@ -11,4 +11,5 @@ export interface SubjectContextTypes {
     subjects: SubjectData[];
     loading: boolean;
     error: string | null;
+    overAllSubject: number;
 }

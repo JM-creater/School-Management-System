@@ -40,4 +40,9 @@ public class SubjectController {
     public String deleteSubjectId(@PathVariable("id") Long id) {
         return subjectService.deleteSubjectById(id);
     }
+
+    @GetMapping("/subject/count")
+    public long countStudents() {
+        return subjectService.countSubjects();
+    }
 }

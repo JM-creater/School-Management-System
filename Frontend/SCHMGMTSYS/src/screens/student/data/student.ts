@@ -1,4 +1,7 @@
+import moment from "moment"
+
 export interface StudentData {
+    id: number,
     firstName: string,
     lastName: string,
     dateOfBirth: moment.Moment,
@@ -12,7 +15,7 @@ export interface StudentData {
         id: number
     }
     classroom_id: number,
-    clasroom: {
+    classroom: {
         id: number
     }
 }

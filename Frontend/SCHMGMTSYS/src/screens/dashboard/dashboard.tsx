@@ -1,10 +1,6 @@
 import React from 'react'
 import { StatsCard } from './components/card/stats-card'
 import { PieChart } from './components/chart/pie-chart'
-import { DashboardButton } from './components/button/button';
-import {  ButtonContainer, buttonWidthStyles, marginBottomStyles } from './themes/dashboard-styles';
-import { PrinterOutlined } from '@ant-design/icons';
-
 const data = {
   labels: [
     'Red',
@@ -23,23 +19,11 @@ const data = {
   }]
 };
 
-export const DashboardScreen: React.FC = () => {
 
-  const handleButtonClick = () => {
-    console.log('Button clicked!');
-  };
+export const DashboardScreen: React.FC = () => {
 
   return (
     <React.Fragment>
-      <ButtonContainer>
-        <DashboardButton 
-          label="Print" 
-          onClick={handleButtonClick} 
-          type="default" 
-          style={{ ...marginBottomStyles, ...buttonWidthStyles }}
-          prefix={<PrinterOutlined />}
-        />
-      </ButtonContainer>
       <StatsCard/>
       <PieChart data={data}/>
     </React.Fragment>

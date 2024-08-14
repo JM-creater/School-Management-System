@@ -11,4 +11,5 @@ export interface ParentContextType {
     loading: boolean;
     error: string | null;
     selectedParent: ParentData | null;
+    overAllParent: number;
 };

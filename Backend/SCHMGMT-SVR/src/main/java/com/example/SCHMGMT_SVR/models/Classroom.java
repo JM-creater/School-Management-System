@@ -47,6 +47,7 @@ public class Classroom {
     private Set<Teacher> teachers = new HashSet<>();
 
     @OneToMany(mappedBy = "classroom")
+    @JsonIgnore
     private Set<Student> students = new HashSet<>();
 
     private LocalDateTime createdAt;

@@ -15,4 +15,6 @@ public interface TeacherService {
     Teacher updateTeacherById(Long id, Teacher teacher);
 
     String deleteTeacherById(Long id);
+
+    long countTeachers();
 }

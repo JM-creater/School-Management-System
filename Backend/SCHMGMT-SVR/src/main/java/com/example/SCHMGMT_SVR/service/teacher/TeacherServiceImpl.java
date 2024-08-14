@@ -44,6 +44,11 @@ public class TeacherServiceImpl implements TeacherService {
     }
 
     @Override
+    public long countTeachers() {
+        return teacherRepository.count();
+    }
+
+    @Override
     public Teacher updateTeacherById(Long id, Teacher teacher) {
         Optional<Teacher> optionalTeacher = teacherRepository.findById(id);
 

@@ -1,4 +1,4 @@
-import { CREATE_PARENT_URL, DELETE_PARENT_URL, GET_PARENT_BY_ID_URL, GET_PARENT_URL, UPDATE_PARENT_URL } from "../../configs/url";
+import { CREATE_PARENT_URL, DELETE_PARENT_URL, GET_ALL_COUNT_PARENT, GET_PARENT_BY_ID_URL, GET_PARENT_URL, UPDATE_PARENT_URL } from "../../configs/url";
 import { ParentData } from "../../screens/parents/data/parents";
 import { axiosInstance } from "../api/axiosInstance";
 
@@ -14,6 +14,11 @@ export const getAllParent = async (): Promise<ParentData[]> => {
 
 export const getParentById = async (id: number): Promise<ParentData> => {
     const response = await axiosInstance.get(`${GET_PARENT_BY_ID_URL}${id}`);
+    return response.data;
+};
+
+export const getAllCountParent = async (): Promise<number> => {
+    const response = await axiosInstance.get(GET_ALL_COUNT_PARENT);
     return response.data;
 };
 
