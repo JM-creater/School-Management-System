@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Col, Form, Input, Row, Spin, Table } from 'antd';
 import { ColumnTable } from './components/column/column';
 import { useClass } from '../../../hooks/use-class';
@@ -15,17 +15,44 @@ export const ClassScreen: React.FC = () => {
     error, 
     loading, 
     classes, 
+    selectedClasses,
     createNewClass, 
-    onFinishFailed 
+    onFinishFailed, 
+    removeClass,
+    fetchClassById,
+    editClass
   } = useClass();
   const { 
     form, 
     showModal, 
     openModal, 
-    closeModal 
+    closeModal,
+    openEditModal,
+    closeEditModal,
+    showEditModal
   } = useModal();
 
-  const columns = ColumnTable();
+  const columns = ColumnTable(
+    showEditModal,
+    fetchClassById,
+    removeClass
+  );
+
+  const handleEdit = async (record: Omit<ClassData, 'id'>) => {
+    if (selectedClasses) {
+      await editClass(selectedClasses.id, record);
+      closeEditModal();
+    }
+  };
+
+  useEffect(() => {
+    if (selectedClasses) {
+      form.setFieldsValue({
+        name: selectedClasses.name,
+        grade: selectedClasses.grade
+      })
+    }
+  }, [selectedClasses, form]); 
 
   return (
     <React.Fragment>
@@ -40,7 +67,7 @@ export const ClassScreen: React.FC = () => {
             ...marginBottomStyles, 
             ...buttonWidthStyles 
           }} 
-          label='Add Parent' 
+          label='Add Class' 
         />
       </ButtonContainer>
 
@@ -62,7 +89,7 @@ export const ClassScreen: React.FC = () => {
 
       <CustomModal
         open={openModal}
-        title='Add Parent'
+        title='Add Class'
         onOk={closeModal}
         onCancel={closeModal}
         centered  
@@ -77,8 +104,8 @@ export const ClassScreen: React.FC = () => {
             <Col span={12}>
               <Form.Item<ClassData>
                 name="name"
-                label="Classroom Name"
-                rules={[{ required: true, message: 'Please enter classroom name' }]}
+                label="Class Name"
+                rules={[{ required: true, message: 'Please enter class name' }]}
               >
                 <Input placeholder="Please enter classroom name" />
               </Form.Item>
@@ -93,32 +120,45 @@ export const ClassScreen: React.FC = () => {
               </Form.Item>
             </Col>
           </Row>
-          {/* <Row gutter={16}>
-            <Col span={12}>
-              <Form.Item<ClassData>
-                name="teacher_id"
-                label="Teacher"
-                rules={[{ required: true, message: 'Please select a teacher' }]}
-              >
-                <Select
-                  placeholder="Select a teacher"
+          </Form>
+       </CustomModal>
+
+       <CustomModal
+          open={openEditModal}
+          title='Edit Class'
+          onOk={form.submit}
+          onCancel={() => {
+            form.resetFields();
+            closeEditModal();
+          }}
+          centered  
+        >
+          <Form  
+            form={form}
+            layout="vertical" 
+            onFinish={handleEdit}
+            onFinishFailed={onFinishFailed}
+          >
+            <Row gutter={16}>
+              <Col span={12}>
+                <Form.Item<ClassData>
+                  name="name"
+                  label="Classroom Name"
+                  rules={[{ required: true, message: 'Please enter classroom name' }]}
                 >
-                  {
-                    teachers.map(
-                      teacher => (
-                        <Select.Option
-                            key={teacher.id}
-                            value={teacher.id}
-                        >
-                          {teacher.firstName} {teacher.lastName}
-                        </Select.Option>
-                      )
-                    )
-                  }
-                </Select>
-              </Form.Item>
-            </Col>
-            </Row> */}
+                  <Input placeholder="Please enter classroom name" />
+                </Form.Item>
+              </Col>
+              <Col span={12}>
+                <Form.Item<ClassData>
+                  name="grade"
+                  label="Grade Level"
+                  rules={[{ required: true, message: 'Please enter grade level' }]}
+                >
+                    <Input placeholder="Please enter grade level" />
+                </Form.Item>
+              </Col>
+            </Row>
           </Form>
        </CustomModal>
     

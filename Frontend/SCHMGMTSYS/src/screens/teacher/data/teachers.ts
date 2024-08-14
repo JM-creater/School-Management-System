@@ -12,6 +12,5 @@ export interface TeacherData {
     classroom_id: number,
     classroom: {
         id: number;
-        name: string;
     };
 }

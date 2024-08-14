@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDateTime;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
@@ -41,6 +42,24 @@ public class ClassroomServiceImpl implements ClassroomService {
         Optional<Classroom> classroom = classroomRepository.findById(id);
         if(classroom.isPresent()) {
             return classroom.get();
+        }
+        return null;
+    }
+
+    @Override
+    public Classroom updateClassRoomById(Long id, Classroom classroom) {
+        Optional<Classroom> optionalClassroom = classroomRepository.findById(id);
+
+        if (optionalClassroom.isPresent()) {
+            Classroom originalClassRoom = optionalClassroom.get();
+
+            if (Objects.nonNull(classroom.getName()) && !"".equalsIgnoreCase(classroom.getName())) {
+                originalClassRoom.setName(classroom.getName());
+            }
+            if (Objects.nonNull(classroom.getGrade()) && !"".equalsIgnoreCase(classroom.getGrade())) {
+                originalClassRoom.setGrade(classroom.getGrade());
+            }
+            return classroomRepository.save(originalClassRoom);
         }
         return null;
     }

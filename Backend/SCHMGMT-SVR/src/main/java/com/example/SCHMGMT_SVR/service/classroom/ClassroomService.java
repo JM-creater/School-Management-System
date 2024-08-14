@@ -8,5 +8,6 @@ public interface ClassroomService {
     Classroom createClassroom(Classroom classroom);
     List<Classroom> fetchAllClassroom();
     Classroom fetchClassroomById(Long id);
+    Classroom updateClassRoomById(Long id, Classroom classroom);
     String deleteClassroomById(Long id);
 }

@@ -36,6 +36,12 @@ export const TeacherProvider: React.FC<TeacherProps> = ({ children }) => {
         fetchTeachers();
     }, []);
 
+    const getTeacherFullNameById = (teacherId: number, teachers: TeacherData[]): string => {
+        const teacher = teachers.find(t => t.id === teacherId);
+        return teacher ? `${teacher.firstName} ${teacher.lastName}` : 'No Teacher Assigned';
+    };
+
+
     const fetchTeacherById = useCallback(async (teacherId: number) => {
         try {
             const response = await getTeacherById(teacherId);
@@ -48,13 +54,12 @@ export const TeacherProvider: React.FC<TeacherProps> = ({ children }) => {
 
     const createNewTeacher = async (teacher: Omit<TeacherData, 'id'>) => {
         setLoading(true);
-
+    
         try {
             const formattedValues = {
                 ...teacher,
                 classroom: {
-                    id: teacher.classroom_id,
-                    name: teacher.classroom.name
+                    id: teacher.classroom_id
                 }
             };
             const response = await createTeacher(formattedValues);
@@ -67,15 +72,14 @@ export const TeacherProvider: React.FC<TeacherProps> = ({ children }) => {
             setLoading(false);
         }
     };
-
+    
     const editTeacher = async (id: number, updatedTeacher: Omit<TeacherData, 'id'>) => {
         setLoading(true);
         try {
             const formattedValues = {
                 ...updatedTeacher,
                 classroom: {
-                    id: updatedTeacher.classroom_id,
-                    name: updatedTeacher.classroom.name
+                    id: updatedTeacher.classroom_id
                 }
             };
             const response = await updateTeacher(id, formattedValues);
@@ -103,6 +107,7 @@ export const TeacherProvider: React.FC<TeacherProps> = ({ children }) => {
     };
 
     const handleValues = {
+        getTeacherFullNameById,
         onFinishFailed,
         fetchTeacherById,
         createNewTeacher,

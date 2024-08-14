@@ -32,6 +32,7 @@ public class Student {
 
     private String firstName;
     private String lastName;
+    @JsonFormat(pattern = "yyyy-MM-dd")
     private LocalDate dateOfBirth;
 
     private String gender;
@@ -39,10 +40,8 @@ public class Student {
     private String address;
     private String email;
     private String phoneNumber;
+    @JsonFormat(pattern = "yyyy-MM-dd")
     private LocalDate enrollmentDate;
-
-    private String parentName;
-    private String parentPhoneNumber;
 
     @ManyToOne
     @JoinColumn(name = "parent_id")
@@ -125,22 +124,6 @@ public class Student {
 
     public void setEnrollmentDate(LocalDate enrollmentDate) {
         this.enrollmentDate = enrollmentDate;
-    }
-
-    public String getParentName() {
-        return parentName;
-    }
-
-    public void setParentName(String parentName) {
-        this.parentName = parentName;
-    }
-
-    public String getParentPhoneNumber() {
-        return parentPhoneNumber;
-    }
-
-    public void setParentPhoneNumber(String parentPhoneNumber) {
-        this.parentPhoneNumber = parentPhoneNumber;
     }
 
     public Parent getParent() {

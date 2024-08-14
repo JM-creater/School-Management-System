@@ -4,6 +4,7 @@ import { useTeacher } from '../../../../hooks/use-teacher';
 import { TeacherData } from '../../data/teachers';
 import { useModal } from '../../../../hooks/use-modal';
 import { CenteredContainer, ErrorDiv } from '../../../parents/themes/parents-styles';
+import { useClass } from '../../../../hooks/use-class';
 
 const { Column, ColumnGroup } = Table;
 
@@ -19,6 +20,12 @@ export const TeacherTable: React.FC = () => {
     const {
         showEditModal
     } = useModal();
+    const { classes } = useClass();
+
+    const getClassName = (classroomId: number) => {
+        const classroom = classes.find(c => c.id === classroomId);
+        return classroom ? classroom.name : 'Unknown Classroom';
+    };
 
     return (
         <React.Fragment>
@@ -41,8 +48,8 @@ export const TeacherTable: React.FC = () => {
                             <Column title="Phone Number" dataIndex="phoneNumber" key="phoneNumber" />
                             <Column 
                                 title="Classroom" 
-                                dataIndex={["classroom", "name"]} 
-                                key="classroomId" 
+                                key="classroom"
+                                render={(record: TeacherData) => getClassName(record.classroom.id as number)}
                             />
                             <Column
                                 title="Action"

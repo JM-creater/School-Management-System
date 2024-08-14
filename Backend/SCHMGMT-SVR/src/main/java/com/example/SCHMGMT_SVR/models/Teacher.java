@@ -115,6 +115,14 @@ public class Teacher {
         this.address = address;
     }
 
+    public Classroom getClassroom() {
+        return classroom;
+    }
+
+    public void setClassroom(Classroom classroom) {
+        this.classroom = classroom;
+    }
+
     public LocalDateTime getCreatedAt() {
         return createdAt;
     }

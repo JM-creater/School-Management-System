@@ -114,7 +114,6 @@ export const StudentScreen: React.FC = () => {
         hideRequiredMark
         // onFinish={onFinishCreateProduct}
         // onFinishFailed={onFinishFailed}
-        // initialValues={{ supplierId: supplierId }}
       >
         <Row gutter={16}>
           <Col span={12}>

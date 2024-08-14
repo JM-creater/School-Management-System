@@ -1,7 +1,6 @@
 package com.example.SCHMGMT_SVR.controller.classroom;
 
 import com.example.SCHMGMT_SVR.models.Classroom;
-import com.example.SCHMGMT_SVR.models.Parent;
 import com.example.SCHMGMT_SVR.service.classroom.ClassroomService;
 import org.springframework.web.bind.annotation.*;
 
@@ -31,8 +30,13 @@ public class ClassroomController {
         return classroomService.fetchClassroomById(id);
     }
 
+    @PutMapping("/classroom/{id}")
+    public Classroom updateClassroomById(@PathVariable("id") Long id, @RequestBody Classroom classroom) {
+        return classroomService.updateClassRoomById(id, classroom);
+    }
+
     @DeleteMapping("/classroom/{id}")
-    public String deleteClassroomId(@PathVariable("id") Long id) {
+    public String deleteClassroomById(@PathVariable("id") Long id) {
         return classroomService.deleteClassroomById(id);
     }
 

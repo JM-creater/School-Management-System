@@ -9,6 +9,7 @@ import { ModalProvider } from './components/modal/context/modal-context';
 import { ClassProvider } from './screens/curriculum/class/context/class-context';
 import { TeacherProvider } from './screens/teacher/context/teacher-context';
 import { ParentProvider } from './screens/parents/context/parent-context';
+import { SubjectProvider } from './screens/curriculum/subject/context/subject-context';
 
 export const App = () => {
   return (
@@ -19,7 +20,9 @@ export const App = () => {
                 <ClassProvider>
                     <TeacherProvider>
                         <ParentProvider>
-                          <AppRoutes/>
+                          <SubjectProvider>
+                            <AppRoutes/>
+                          </SubjectProvider>
                         </ParentProvider>
                     </TeacherProvider>
                 </ClassProvider>
