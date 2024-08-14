@@ -5,12 +5,14 @@ import { TeacherData } from "../data/teachers";
 import { FormProps } from "antd";
 import { createTeacher, deleteTeacher, getAllTeacher, getTeacherById, updateTeacher } from "../../../services/teacher/teacher-service";
 import { toast } from "react-toastify";
+import { getAllCountStudent } from "../../../services/student/student-service";
 
 export const TeacherContext = createContext<TeacherContextTypes | null>(null);
 
 export const TeacherProvider: React.FC<TeacherProps> = ({ children }) => {
 
     const [teachers, setTeachers] = useState<TeacherData[]>([]);
+    const [overAllTeachers, setOverAllTeachers] = useState<number>(0);
     const [loading, setLoading] = useState<boolean>(false);
     const [error, setError] = useState<string | null>(null);
     const [selectedTeacher, setSelectedTeacher] = useState<TeacherData | null>(null);
@@ -25,6 +27,9 @@ export const TeacherProvider: React.FC<TeacherProps> = ({ children }) => {
             try {
                 const response = await getAllTeacher();
                 setTeachers(response);
+
+                const overAllTeacherResponse = await getAllCountStudent();
+                setOverAllTeachers(overAllTeacherResponse);
             } catch (error) {
                 console.log(error);
                 setError('Failed to catch teachers');
@@ -40,7 +45,6 @@ export const TeacherProvider: React.FC<TeacherProps> = ({ children }) => {
         const teacher = teachers.find(t => t.id === teacherId);
         return teacher ? `${teacher.firstName} ${teacher.lastName}` : 'No Teacher Assigned';
     };
-
 
     const fetchTeacherById = useCallback(async (teacherId: number) => {
         try {
@@ -116,7 +120,8 @@ export const TeacherProvider: React.FC<TeacherProps> = ({ children }) => {
         teachers,
         selectedTeacher,
         error,
-        loading
+        loading,
+        overAllTeachers
     };
 
     return (

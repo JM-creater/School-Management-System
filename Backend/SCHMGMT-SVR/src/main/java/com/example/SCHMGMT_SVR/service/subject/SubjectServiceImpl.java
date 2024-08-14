@@ -21,6 +21,11 @@ public class SubjectServiceImpl implements SubjectService{
     }
 
     @Override
+    public long countSubjects() {
+        return subjectRepository.count();
+    }
+
+    @Override
     public Subject createSubject(Subject subject) {
         subject.setCreatedAt(LocalDateTime.now());
         return subjectRepository.save(subject);

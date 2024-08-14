@@ -12,4 +12,5 @@ export interface TeacherContextTypes {
     selectedTeacher: TeacherData | null;
     loading: boolean;
     error: string | null;
+    overAllTeachers: number;
 };

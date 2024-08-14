@@ -2,7 +2,7 @@ import { createContext, useCallback, useEffect, useState } from "react";
 import { ClassContextTypes } from "../types/class-types";
 import { ClassProps } from "./props/class-props";
 import { ClassData } from "../data/class";
-import { createClass, deleteClass, getAllClass, getClassById, updateClass } from "../../../../services/class/class-service";
+import { createClass, deleteClass, getAllClass, getAllCountClass, getClassById, updateClass } from "../../../../services/class/class-service";
 import { toast } from "react-toastify";
 import { FormProps } from "antd";
 
@@ -11,6 +11,7 @@ export const ClassContext = createContext<ClassContextTypes | null>(null);
 export const ClassProvider: React.FC<ClassProps> = ({ children }) => {
     
     const [classes, setClasses] = useState<ClassData[]>([]);
+    const [overAllClass, setOverAllClass] = useState<number>(0);
     const [loading, setLoading] = useState<boolean>(false);
     const [error, setError] = useState<string | null>(null);
     const [selectedClasses, setSelectedClasses] = useState<ClassData | null>(null);
@@ -25,6 +26,9 @@ export const ClassProvider: React.FC<ClassProps> = ({ children }) => {
             try {
                 const response = await getAllClass();
                 setClasses(response);
+
+                const overAllClassResponse = await getAllCountClass();
+                setOverAllClass(overAllClassResponse);
             } catch (error) {
                 console.log(error);
                 setError('Failed to catch classes');
@@ -88,6 +92,7 @@ export const ClassProvider: React.FC<ClassProps> = ({ children }) => {
     };
     
     const handleValues = {
+        overAllClass,
         selectedClasses,
         loading,
         error,

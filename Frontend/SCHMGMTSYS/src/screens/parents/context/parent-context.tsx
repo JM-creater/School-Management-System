@@ -2,7 +2,7 @@ import React, { createContext, useCallback, useEffect, useState } from "react";
 import { ParentContextType } from "../types/parent-types";
 import { ParentProps } from "./props/parent-props";
 import { ParentData } from "../data/parents";
-import { createParent, deleteParent, getAllParent, getParentById, updateParent } from "../../../services/parent/parent-service";
+import { createParent, deleteParent, getAllCountParent, getAllParent, getParentById, updateParent } from "../../../services/parent/parent-service";
 import { FormProps } from "antd";
 import { toast } from "react-toastify";
 
@@ -11,6 +11,7 @@ export const ParentContext = createContext<ParentContextType | null>(null);
 export const ParentProvider: React.FC<ParentProps> = ({ children }) => {
     
     const [parents, setParents] = useState<ParentData[]>([]);
+    const [overAllParent, setOverAllParent] = useState<number>(0);
     const [loading, setLoading] = useState<boolean>(false);
     const [error, setError] = useState<string | null>(null);
     const [selectedParent, setSelectedParent] = useState<ParentData | null>(null);
@@ -25,6 +26,9 @@ export const ParentProvider: React.FC<ParentProps> = ({ children }) => {
             try {
                 const response = await getAllParent();
                 setParents(response);
+
+                const overAllParentResponse = await getAllCountParent();
+                setOverAllParent(overAllParentResponse);
             } catch (error) {
                 console.log(error);
                 setError('Failed to catch parents');
@@ -96,7 +100,8 @@ export const ParentProvider: React.FC<ParentProps> = ({ children }) => {
         loading,
         error,
         parents,
-        selectedParent
+        selectedParent,
+        overAllParent
     };
     
     return (

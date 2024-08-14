@@ -10,6 +10,7 @@ import { ClassProvider } from './screens/curriculum/class/context/class-context'
 import { TeacherProvider } from './screens/teacher/context/teacher-context';
 import { ParentProvider } from './screens/parents/context/parent-context';
 import { SubjectProvider } from './screens/curriculum/subject/context/subject-context';
+import { StudentProvider } from './screens/student/context/student-context';
 
 export const App = () => {
   return (
@@ -21,7 +22,9 @@ export const App = () => {
                     <TeacherProvider>
                         <ParentProvider>
                           <SubjectProvider>
-                            <AppRoutes/>
+                            <StudentProvider>
+                              <AppRoutes/>
+                            </StudentProvider>
                           </SubjectProvider>
                         </ParentProvider>
                     </TeacherProvider>

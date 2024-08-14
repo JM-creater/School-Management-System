@@ -3,6 +3,7 @@ package com.example.SCHMGMT_SVR.service.classroom;
 import com.example.SCHMGMT_SVR.models.Classroom;
 import com.example.SCHMGMT_SVR.models.Parent;
 import com.example.SCHMGMT_SVR.models.Teacher;
+import com.example.SCHMGMT_SVR.models.dto.ClassroomStudentCountDto;
 import com.example.SCHMGMT_SVR.repositories.ClassroomRepository;
 import com.example.SCHMGMT_SVR.repositories.TeacherRepository;
 import org.springframework.stereotype.Service;
@@ -44,6 +45,19 @@ public class ClassroomServiceImpl implements ClassroomService {
             return classroom.get();
         }
         return null;
+    }
+
+    @Override
+    public Long countClassrooms() {
+        return classroomRepository.count();
+    }
+
+    @Override
+    public List<ClassroomStudentCountDto> getClassroomStudentCounts() {
+        return classroomRepository.findAll().stream()
+                .map(classroom -> new ClassroomStudentCountDto(
+                        classroom.getName(), classroom.getStudents().size()))
+                .collect(Collectors.toList());
     }
 
     @Override

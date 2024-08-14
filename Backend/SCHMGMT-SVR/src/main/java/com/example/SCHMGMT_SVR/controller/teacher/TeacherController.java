@@ -30,6 +30,11 @@ public class TeacherController {
         return teacherService.fetchTeacherById(id);
     }
 
+    @GetMapping("/teacher/count")
+    public long countStudents() {
+        return teacherService.countTeachers();
+    }
+
     @PutMapping("/teacher/{id}")
     public Teacher updateTeacher(@PathVariable("id") Long id, @RequestBody Teacher teacher) {
         return teacherService.updateTeacherById(id, teacher);

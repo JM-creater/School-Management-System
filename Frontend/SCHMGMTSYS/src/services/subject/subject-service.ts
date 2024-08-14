@@ -1,4 +1,4 @@
-import { CREATE_SUBJECT_URL, DELETE_SUBJECT_URL, GET_SUBJECT_BY_ID_URL, GET_SUBJECT_URL, UPDATE_SUBJECT_URL } from "../../configs/url";
+import { CREATE_SUBJECT_URL, DELETE_SUBJECT_URL, GET_ALL_COUNT_SUBJECT, GET_SUBJECT_BY_ID_URL, GET_SUBJECT_URL, UPDATE_SUBJECT_URL } from "../../configs/url";
 import { SubjectData } from "../../screens/curriculum/subject/data/subject";
 import { axiosInstance } from "../api/axiosInstance";
 
@@ -15,6 +15,11 @@ export const getAllSubject = async (): Promise<SubjectData[]> => {
 export const getSubjectById = async (id: number): Promise<SubjectData> => {
     const response = await axiosInstance.get(`${GET_SUBJECT_BY_ID_URL}${id}`);
     return response.data
+};
+
+export const getAllCountSubject = async (): Promise<number> => {
+    const response = await axiosInstance.get(GET_ALL_COUNT_SUBJECT);
+    return response.data;
 };
 
 export const updateSubject = async (id: number, subj: Omit<SubjectData, 'id'>): Promise<SubjectData> => {

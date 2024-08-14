@@ -16,4 +16,5 @@ public interface SubjectService {
 
     String deleteSubjectById(Long id);
 
+    long countSubjects();
 }

@@ -30,6 +30,11 @@ public class ParentController {
         return parentService.fetchParentById(id);
     }
 
+    @GetMapping("/parent/count")
+    public long countParent() {
+        return parentService.countParents();
+    }
+
     @PutMapping("/parent/{id}")
     public Parent updateParent(@PathVariable("id") Long id, @RequestBody Parent parent) {
         return parentService.updateParentById(id, parent);
