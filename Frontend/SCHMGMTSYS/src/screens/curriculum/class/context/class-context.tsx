@@ -61,7 +61,10 @@ export const ClassProvider: React.FC<ClassProps> = ({ children }) => {
         setLoading(true);
         try {
             const response = await createClass(values);
-            setClasses([...filteredClasses, response]);
+            setClasses([...classes, response]);
+            const addedClasses = [...classes, response];
+            setClasses(addedClasses);
+            setFilteredClasses(addedClasses); 
             toast.success("Class added successfully");
         } catch (error) {
             console.log(error);
@@ -75,7 +78,9 @@ export const ClassProvider: React.FC<ClassProps> = ({ children }) => {
         setLoading(true);
         try {
             const response = await updateClass(id, updatedClasses);
-            setClasses(classes.map(c => c.id === id ? response : c));
+            const updatedClassList = classes.map(c => c.id === id ? response : c);
+            setClasses(updatedClassList);
+            setFilteredClasses(updatedClassList);
             toast.success("Class updated successfully");
         } catch (error) {
             console.log(error);
@@ -98,34 +103,16 @@ export const ClassProvider: React.FC<ClassProps> = ({ children }) => {
         }
     };
 
-    const searchClassQuery = async (searchQuery: string | null | undefined) => {
-        if (searchQuery === null || searchQuery === undefined) {
-            setFilteredClasses([]);
-            return;
-        }
-    
-        const trimmedQuery = searchQuery.trim();
-    
-        if (!trimmedQuery) {
-            setFilteredClasses(classes);
-            return;
-        }
-    
-        const controller = new AbortController();
-        const { signal } = controller;
-    
+    const searchClassQuery = async (query: string) => {
+        setLoading(true);
         try {
-            const response = await searchClass(searchQuery, signal);
-            if (Array.isArray(response)) {
-                setFilteredClasses(response);
-            } else {
-                setFilteredClasses([]);
-            }
-             
+            const results = await searchClass(query, classes);
+            setFilteredClasses(results);
         } catch (error) {
             console.log(error);
-            setError('Failed to search class');
-            setFilteredClasses([]); 
+            setError('Failed to search classes');
+        } finally {
+            setLoading(false);
         }
     };
     
