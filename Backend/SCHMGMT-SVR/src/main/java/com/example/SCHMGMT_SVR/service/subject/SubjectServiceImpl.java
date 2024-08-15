@@ -2,6 +2,7 @@ package com.example.SCHMGMT_SVR.service.subject;
 ;
 import com.example.SCHMGMT_SVR.models.Subject;
 import com.example.SCHMGMT_SVR.repositories.SubjectRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -14,6 +15,7 @@ import java.util.stream.Collectors;
 @Service
 public class SubjectServiceImpl implements SubjectService{
 
+    @Autowired
     private final SubjectRepository subjectRepository;
 
     public SubjectServiceImpl(SubjectRepository subjectRepository) {

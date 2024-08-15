@@ -1,4 +1,4 @@
-import { CREATE_CLASS_URL, DELETE_CLASS_URL, GET_ALL_COUNT_CLASS, GET_CLASS_BY_ID_URL, GET_CLASS_URL, UPDATE_CLASS_URL } from "../../configs/url";
+import { CREATE_CLASS_URL, DELETE_CLASS_URL, GET_ALL_COUNT_CLASS, GET_CLASS_BY_ID_URL, GET_CLASS_URL, SEARCH_CLASS, UPDATE_CLASS_URL } from "../../configs/url";
 import { ClassData } from "../../screens/curriculum/class/data/class";
 import { axiosInstance } from "../api/axiosInstance";
 
@@ -31,3 +31,8 @@ export const deleteClass = async (id: number): Promise<void> => {
     await axiosInstance.delete(`${DELETE_CLASS_URL}${id}`)
 };
 
+export const searchClass = async (searchQuery: string, signal: AbortSignal): Promise<void> => {
+    const response = await axiosInstance.get(`${SEARCH_CLASS}${encodeURIComponent(searchQuery)}`, { signal }) 
+    return response.data;
+};
+ 

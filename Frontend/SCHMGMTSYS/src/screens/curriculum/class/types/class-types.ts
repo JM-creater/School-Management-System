@@ -2,6 +2,7 @@ import { FormProps } from "antd";
 import { ClassData } from "../data/class";
 
 export interface ClassContextTypes {
+    searchClassQuery: (searchQuery: string | null | undefined) => Promise<void>;
     getClassNameById: (classId: number, classData: ClassData[]) => string;
     editClass: (id: number, updatedClasses: Omit<ClassData, 'id'>) => Promise<void>;
     removeClass: (id: number) => Promise<void>;
@@ -11,6 +12,7 @@ export interface ClassContextTypes {
     loading: boolean;
     error: string | null;
     classes: ClassData[];
+    filteredClasses: ClassData[];
     selectedClasses: ClassData | null;
     overAllClass: number;
 };
