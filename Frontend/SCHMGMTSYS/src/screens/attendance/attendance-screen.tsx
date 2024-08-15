@@ -1,5 +1,5 @@
-import { Card, Col, Row, Spin, Statistic, StatisticProps, Table } from 'antd'
-import React from 'react'
+import { Card, Col, Row, Spin, Statistic, StatisticProps, Table, Select } from 'antd'
+import React, { useState } from 'react'
 import CountUp from 'react-countup';
 import { marginBottomStyles } from '../dashboard/themes/dashboard-styles';
 import { UserAddOutlined } from '@ant-design/icons';
@@ -8,7 +8,10 @@ import { useAttendance } from '../../hooks/use-attendance';
 import { CenteredContainer, ErrorDiv } from '../parents/themes/parents-styles';
 import { useStudent } from '../../hooks/use-students';
 
+const { Option } = Select;
+
 export const AttendanceScreen: React.FC = () => {
+  const [filterStatus, setFilterStatus] = useState<string | undefined>(undefined);
 
   const formatter: StatisticProps['formatter'] = (value) => (
     <CountUp end={value as number} separator="," />
@@ -27,7 +30,17 @@ export const AttendanceScreen: React.FC = () => {
   } = useStudent();
   const columns = AttendanceTable();
 
-  const filteredStudents = students.filter(student => !student.isAttendance);
+  const handleFilterChange = (value: string) => {
+    setFilterStatus(value);
+  };
+
+  const filteredStudents = students.filter(student => {
+    if (!filterStatus) return !student.isAttendance;
+    return student.status === filterStatus;
+  });
+
+  const hasAttendanceData = students.some(student => student.isAttendance);
+  const isSelectDisabled = !hasAttendanceData;
 
   return (
    <React.Fragment>
@@ -68,6 +81,21 @@ export const AttendanceScreen: React.FC = () => {
           />
         </Card>
       </Col>
+      </Row>
+      <Row gutter={16} style={{ marginTop: 16 }}>
+        <Col span={24}>
+          <Select
+            style={{ width: 200 }}
+            placeholder="Filter by status"
+            onChange={handleFilterChange}
+            allowClear
+            disabled={isSelectDisabled}
+          >
+            <Option value="Present">Present</Option>
+            <Option value="Late">Late</Option>
+            <Option value="Absent">Absent</Option>
+          </Select>
+        </Col>
       </Row>
       <React.Fragment>
         {

@@ -22,7 +22,7 @@ export const UPDATE_CLASS_URL= '/classroom/';
 export const DELETE_CLASS_URL= '/classroom/';
 export const GET_ALL_COUNT_CLASS = '/classroom/count';
 // * Search
-export const SEARCH_CLASS = '/classroom/search/';
+export const SEARCH_CLASS = '/classroom/search?';
 
 // * Subject
 export const CREATE_SUBJECT_URL = '/subject';

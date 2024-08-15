@@ -61,7 +61,7 @@ export const ClassScreen: React.FC = () => {
         const value = (event.currentTarget as HTMLInputElement).value;
         searchClassQuery(value);
     } 
-};
+  };
 
   return (
     <React.Fragment>
