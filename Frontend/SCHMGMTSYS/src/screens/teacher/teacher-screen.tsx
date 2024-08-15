@@ -42,8 +42,8 @@ export const TeacherScreen: React.FC = () => {
         lastName: selectedTeacher.lastName,
         email: selectedTeacher.email,
         phoneNumber: selectedTeacher.phoneNumber,
-        dateOfBirth: moment(selectedTeacher.dateOfBirth),
-        employmentDate: moment(selectedTeacher.employmentDate),
+        dateOfBirth: moment(selectedTeacher.dateOfBirth, 'YYYY-MM-DD'),
+        employmentDate: moment(selectedTeacher.employmentDate, 'YYYY-MM-DD'),
         address: selectedTeacher.address,
         classroom_id: selectedTeacher.classroom.id
       });

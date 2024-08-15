@@ -16,4 +16,10 @@ public interface StudentService {
     String deleteStudentById(Long id);
 
     long countStudents();
+
+    long countPresentStudents();
+
+    long countLateStudents();
+
+    long countAbsentStudents();
 }

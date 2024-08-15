@@ -18,4 +18,6 @@ export interface StudentData {
     classroom: {
         id: number
     }
+    isAttendance: boolean;  
+    status?: string  
 }

@@ -22,7 +22,6 @@ export const UPDATE_CLASS_URL= '/classroom/';
 export const DELETE_CLASS_URL= '/classroom/';
 export const GET_ALL_COUNT_CLASS = '/classroom/count';
 
-
 // * Subject
 export const CREATE_SUBJECT_URL = '/subject';
 export const GET_SUBJECT_URL = '/subject';
@@ -38,3 +37,17 @@ export const GET_STUDENT_BY_ID_URL = '/student/';
 export const UPDATE_STUDENT_URL= '/student/';
 export const DELETE_STUDENT_URL= '/student/';
 export const GET_ALL_COUNT_STUDENT = '/student/count';
+
+// * Attendance
+export const MARK_ATTENDANCE_URL = '/attendance/';
+export const UPDATE_STATUS_ATTENDANCE_URL = '/attendance/status/';
+
+// * Attendance Status
+export const PRESENT_ATTENDANCE_URL = '/present';
+export const LATE_ATTENDANCE_URL = '/late';
+export const ABSENT_ATTENDANE_URL = '/absent';
+
+// * Count Attendance
+export const COUNT_PRESENT_URL = '/student/count/present';
+export const COUNT_LATE_URL = '/student/count/late';
+export const COUNT_ABSENT_URL = '/student/count/absent';

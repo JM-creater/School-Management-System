@@ -36,10 +36,10 @@ public class ClassroomController {
         return classroomService.countClassrooms();
     }
 
-    @GetMapping("/classroom/student-counts")
-    public List<ClassroomStudentCountDto> getClassroomStudentCounts() {
-        return classroomService.getClassroomStudentCounts();
-    }
+//    @GetMapping("/classroom/student-counts")
+//    public List<ClassroomStudentCountDto> getClassroomStudentCounts() {
+//        return classroomService.getClassroomStudentCounts();
+//    }
 
     @PutMapping("/classroom/{id}")
     public Classroom updateClassroomById(@PathVariable("id") Long id, @RequestBody Classroom classroom) {

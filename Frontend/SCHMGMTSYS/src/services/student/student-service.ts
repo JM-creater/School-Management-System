@@ -1,7 +1,7 @@
 import moment from "moment";
 import { StudentData } from "../../screens/student/data/student";
 import { axiosInstance } from "../api/axiosInstance";
-import { CREATE_STUDENT_URL, DELETE_STUDENT_URL, GET_ALL_COUNT_STUDENT, GET_STUDENT_BY_ID_URL, GET_STUDENT_URL, UPDATE_STUDENT_URL } from "../../configs/url";
+import { COUNT_ABSENT_URL, COUNT_LATE_URL, COUNT_PRESENT_URL, CREATE_STUDENT_URL, DELETE_STUDENT_URL, GET_ALL_COUNT_STUDENT, GET_STUDENT_BY_ID_URL, GET_STUDENT_URL, UPDATE_STUDENT_URL } from "../../configs/url";
 
 export const getAllStudent = async (): Promise<StudentData[]> => {
     const response = await axiosInstance.get(GET_STUDENT_URL);
@@ -15,6 +15,21 @@ export const getStudentById = async (id: number): Promise<StudentData> => {
 
 export const getAllCountStudent = async (): Promise<number> => {
     const response = await axiosInstance.get(GET_ALL_COUNT_STUDENT);
+    return response.data;
+};
+
+export const getCountPresent = async (): Promise<number> => {
+    const response = await axiosInstance.get(COUNT_PRESENT_URL);
+    return response.data;
+};
+
+export const getCountLate = async (): Promise<number> => {
+    const response = await axiosInstance.get(COUNT_LATE_URL);
+    return response.data;
+};
+
+export const getCountAbsent = async (): Promise<number> => {
+    const response = await axiosInstance.get(COUNT_ABSENT_URL);
     return response.data;
 };
 

@@ -27,6 +27,21 @@ public class StudentServiceImpl implements StudentService {
     }
 
     @Override
+    public long countPresentStudents() {
+        return studentRepository.countByStatus("Present");
+    }
+
+    @Override
+    public long countLateStudents() {
+        return studentRepository.countByStatus("Late");
+    }
+
+    @Override
+    public long countAbsentStudents() {
+        return studentRepository.countByStatus("Absent");
+    }
+
+    @Override
     public Student createStudent(Student student) {
         student.setCreatedAt(LocalDateTime.now());
         return studentRepository.save(student);

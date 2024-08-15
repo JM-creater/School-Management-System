@@ -40,6 +40,11 @@ export const ClassProvider: React.FC<ClassProps> = ({ children }) => {
         fetchClasses();
     }, []);
 
+    const getClassNameById = (classId: number, classData: ClassData[]): string => {
+        const classIndex = classData.find(t => t.id === classId);
+        return classIndex ? classIndex.name : 'No Class Found';
+    };
+
     const fetchClassById = useCallback(async (classId: number) => {
         try {
             const response = await getClassById(classId);
@@ -101,7 +106,8 @@ export const ClassProvider: React.FC<ClassProps> = ({ children }) => {
         createNewClass,
         fetchClassById,
         removeClass,
-        editClass
+        editClass,
+        getClassNameById
     };
 
     return (
