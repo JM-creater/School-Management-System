@@ -2,7 +2,7 @@ import { createContext, useCallback, useEffect, useState } from "react";
 import { ClassContextTypes } from "../types/class-types";
 import { ClassProps } from "./props/class-props";
 import { ClassData } from "../data/class";
-import { createClass, deleteClass, getAllClass, getAllCountClass, getClassById, updateClass } from "../../../../services/class/class-service";
+import { createClass, deleteClass, getAllClass, getAllCountClass, getClassById, searchClass, updateClass } from "../../../../services/class/class-service";
 import { toast } from "react-toastify";
 import { FormProps } from "antd";
 
@@ -15,6 +15,7 @@ export const ClassProvider: React.FC<ClassProps> = ({ children }) => {
     const [loading, setLoading] = useState<boolean>(false);
     const [error, setError] = useState<string | null>(null);
     const [selectedClasses, setSelectedClasses] = useState<ClassData | null>(null);
+    const [filteredClasses, setFilteredClasses] = useState<ClassData[]>([]);
 
     const onFinishFailed: FormProps<ClassData>['onFinishFailed'] = (errorInfo) => {
         console.log('Failed:', errorInfo);
@@ -26,6 +27,7 @@ export const ClassProvider: React.FC<ClassProps> = ({ children }) => {
             try {
                 const response = await getAllClass();
                 setClasses(response);
+                setFilteredClasses(response);
 
                 const overAllClassResponse = await getAllCountClass();
                 setOverAllClass(overAllClassResponse);
@@ -59,7 +61,7 @@ export const ClassProvider: React.FC<ClassProps> = ({ children }) => {
         setLoading(true);
         try {
             const response = await createClass(values);
-            setClasses([...classes, response]);
+            setClasses([...filteredClasses, response]);
             toast.success("Class added successfully");
         } catch (error) {
             console.log(error);
@@ -95,6 +97,37 @@ export const ClassProvider: React.FC<ClassProps> = ({ children }) => {
             setLoading(false);
         }
     };
+
+    const searchClassQuery = async (searchQuery: string | null | undefined) => {
+        if (searchQuery === null || searchQuery === undefined) {
+            setFilteredClasses([]);
+            return;
+        }
+    
+        const trimmedQuery = searchQuery.trim();
+    
+        if (!trimmedQuery) {
+            setFilteredClasses(classes);
+            return;
+        }
+    
+        const controller = new AbortController();
+        const { signal } = controller;
+    
+        try {
+            const response = await searchClass(searchQuery, signal);
+            if (Array.isArray(response)) {
+                setFilteredClasses(response);
+            } else {
+                setFilteredClasses([]);
+            }
+             
+        } catch (error) {
+            console.log(error);
+            setError('Failed to search class');
+            setFilteredClasses([]); 
+        }
+    };
     
     const handleValues = {
         overAllClass,
@@ -102,12 +135,14 @@ export const ClassProvider: React.FC<ClassProps> = ({ children }) => {
         loading,
         error,
         classes,
+        filteredClasses,
         onFinishFailed,
         createNewClass,
         fetchClassById,
         removeClass,
         editClass,
-        getClassNameById
+        getClassNameById,
+        searchClassQuery
     };
 
     return (

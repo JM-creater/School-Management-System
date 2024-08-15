@@ -2,6 +2,7 @@ package com.example.SCHMGMT_SVR.service.teacher;
 
 import com.example.SCHMGMT_SVR.models.Teacher;
 import com.example.SCHMGMT_SVR.repositories.TeacherRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -14,6 +15,7 @@ import java.util.stream.Collectors;
 @Service
 public class TeacherServiceImpl implements TeacherService {
 
+    @Autowired
     private final TeacherRepository teacherRepository;
 
     public TeacherServiceImpl(TeacherRepository teacherRepository) {

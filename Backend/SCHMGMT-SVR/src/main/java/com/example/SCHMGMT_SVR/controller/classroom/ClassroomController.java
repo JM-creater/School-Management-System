@@ -1,8 +1,8 @@
 package com.example.SCHMGMT_SVR.controller.classroom;
 
 import com.example.SCHMGMT_SVR.models.Classroom;
-import com.example.SCHMGMT_SVR.models.dto.ClassroomStudentCountDto;
 import com.example.SCHMGMT_SVR.service.classroom.ClassroomService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -10,6 +10,7 @@ import java.util.List;
 @RestController
 public class ClassroomController {
 
+    @Autowired
     private final ClassroomService classroomService;
 
     public ClassroomController(ClassroomService classroomService) {
@@ -19,6 +20,14 @@ public class ClassroomController {
     @PostMapping("/classroom")
     public Classroom createClassroom(@RequestBody Classroom classroom) {
         return classroomService.createClassroom(classroom);
+    }
+
+    @GetMapping("/classroom/search")
+    public List<Classroom> searchByNameAngGrade(
+            @RequestParam(required = false) String name,
+            @RequestParam(required = false) String grade
+    ) {
+        return classroomService.searchClassroomsByNameOrGrade(name, grade);
     }
 
     @GetMapping("/classroom")
@@ -35,11 +44,6 @@ public class ClassroomController {
     public long countClassroom() {
         return classroomService.countClassrooms();
     }
-
-//    @GetMapping("/classroom/student-counts")
-//    public List<ClassroomStudentCountDto> getClassroomStudentCounts() {
-//        return classroomService.getClassroomStudentCounts();
-//    }
 
     @PutMapping("/classroom/{id}")
     public Classroom updateClassroomById(@PathVariable("id") Long id, @RequestBody Classroom classroom) {

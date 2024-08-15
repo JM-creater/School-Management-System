@@ -3,24 +3,26 @@ import { Col, Form, Input, Row, Spin, Table } from 'antd';
 import { ColumnTable } from './components/column/column';
 import { useClass } from '../../../hooks/use-class';
 import { CenteredContainer, ErrorDiv } from '../../parents/themes/parents-styles';
-import { ButtonContainer, buttonWidthStyles, marginBottomStyles } from '../../dashboard/themes/dashboard-styles';
+import { buttonWidthStyles, marginBottomStyles } from '../../dashboard/themes/dashboard-styles';
 import { CustomButton } from '../../../components/button/button';
 import { useModal } from '../../../hooks/use-modal';
 import { CustomModal } from '../../../components/modal/modal';
 import { ClassData } from './data/class';
+import { ButtonClassContainer } from './styles/class-style';
 
 export const ClassScreen: React.FC = () => {
 
   const { 
     error, 
     loading, 
-    classes, 
+    filteredClasses,
     selectedClasses,
     createNewClass, 
     onFinishFailed, 
     removeClass,
     fetchClassById,
-    editClass
+    editClass,
+    searchClassQuery
   } = useClass();
   const { 
     form, 
@@ -54,9 +56,22 @@ export const ClassScreen: React.FC = () => {
     }
   }, [selectedClasses, form]); 
 
+  const handleKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
+    if (event.key === "Enter") {
+        const value = (event.currentTarget as HTMLInputElement).value;
+        searchClassQuery(value);
+    } 
+};
+
   return (
     <React.Fragment>
-      <ButtonContainer>
+      <ButtonClassContainer>
+        <Input.Search 
+          onSearch={(value: string) => searchClassQuery(value)}
+          onKeyDown={handleKeyDown}
+          placeholder="Search..." 
+          style={{ width: 300 }} 
+        />
         <CustomButton 
           type='primary' 
           onClick={() => {
@@ -69,7 +84,7 @@ export const ClassScreen: React.FC = () => {
           }} 
           label='Add Class' 
         />
-      </ButtonContainer>
+      </ButtonClassContainer>
 
       <React.Fragment>
         {
@@ -81,7 +96,7 @@ export const ClassScreen: React.FC = () => {
             <ErrorDiv>{error}</ErrorDiv>
           ) : (
             <React.Fragment>
-              <Table columns={columns} dataSource={classes} />
+              <Table columns={columns} dataSource={filteredClasses} />
             </React.Fragment>
           )
         }

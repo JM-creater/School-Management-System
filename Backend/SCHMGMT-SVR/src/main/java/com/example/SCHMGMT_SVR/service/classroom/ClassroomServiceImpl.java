@@ -1,11 +1,8 @@
 package com.example.SCHMGMT_SVR.service.classroom;
 
 import com.example.SCHMGMT_SVR.models.Classroom;
-import com.example.SCHMGMT_SVR.models.Parent;
-import com.example.SCHMGMT_SVR.models.Teacher;
-import com.example.SCHMGMT_SVR.models.dto.ClassroomStudentCountDto;
 import com.example.SCHMGMT_SVR.repositories.ClassroomRepository;
-import com.example.SCHMGMT_SVR.repositories.TeacherRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -18,10 +15,16 @@ import java.util.stream.Collectors;
 @Service
 public class ClassroomServiceImpl implements ClassroomService {
 
+    @Autowired
     private final ClassroomRepository classroomRepository;
 
     public ClassroomServiceImpl(ClassroomRepository classroomRepository) {
         this.classroomRepository = classroomRepository;
+    }
+
+    @Override
+    public List<Classroom> searchClassroomsByNameOrGrade(String name, String grade) {
+        return classroomRepository.findByNameOrGrade(name, grade);
     }
 
     @Override
@@ -51,14 +54,6 @@ public class ClassroomServiceImpl implements ClassroomService {
     public Long countClassrooms() {
         return classroomRepository.count();
     }
-
-//    @Override
-//    public List<ClassroomStudentCountDto> getClassroomStudentCounts() {
-//        return classroomRepository.findAll().stream()
-//                .map(classroom -> new ClassroomStudentCountDto(
-//                        classroom.getName(), classroom.getStudents().size()))
-//                .collect(Collectors.toList());
-//    }
 
     @Override
     public Classroom updateClassRoomById(Long id, Classroom classroom) {
