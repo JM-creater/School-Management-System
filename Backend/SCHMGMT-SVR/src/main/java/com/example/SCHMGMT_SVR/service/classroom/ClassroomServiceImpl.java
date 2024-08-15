@@ -52,13 +52,13 @@ public class ClassroomServiceImpl implements ClassroomService {
         return classroomRepository.count();
     }
 
-    @Override
-    public List<ClassroomStudentCountDto> getClassroomStudentCounts() {
-        return classroomRepository.findAll().stream()
-                .map(classroom -> new ClassroomStudentCountDto(
-                        classroom.getName(), classroom.getStudents().size()))
-                .collect(Collectors.toList());
-    }
+//    @Override
+//    public List<ClassroomStudentCountDto> getClassroomStudentCounts() {
+//        return classroomRepository.findAll().stream()
+//                .map(classroom -> new ClassroomStudentCountDto(
+//                        classroom.getName(), classroom.getStudents().size()))
+//                .collect(Collectors.toList());
+//    }
 
     @Override
     public Classroom updateClassRoomById(Long id, Classroom classroom) {

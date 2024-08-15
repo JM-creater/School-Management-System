@@ -93,6 +93,22 @@ public class Classroom {
         this.teachers = teachers;
     }
 
+    public Set<Student> getStudents() {
+        return students;
+    }
+
+    public void setStudents(Set<Student> students) {
+        this.students = students;
+    }
+
+    public Set<Subject> getSubjects() {
+        return subjects;
+    }
+
+    public void setSubjects(Set<Subject> subjects) {
+        this.subjects = subjects;
+    }
+
     public LocalDateTime getCreatedAt() {
         return createdAt;
     }

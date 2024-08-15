@@ -1,101 +1,33 @@
-import { Card, Col, Row, Statistic, StatisticProps, Tag, Space, Table } from 'antd'
+import { Card, Col, Row, Spin, Statistic, StatisticProps, Table } from 'antd'
 import React from 'react'
 import CountUp from 'react-countup';
-import { ButtonContainer, buttonWidthStyles, marginBottomStyles } from '../dashboard/themes/dashboard-styles';
-import { PrinterOutlined, UserAddOutlined } from '@ant-design/icons';
-import type { TableProps } from 'antd';
-import { AttendanceButton } from './components/button/button';
-
-interface DataType {
-  key: string;
-  name: string;
-  age: number;
-  address: string;
-  tags: string[];
-}
-
-const columns: TableProps<DataType>['columns'] = [
-  {
-    title: 'Name',
-    dataIndex: 'name',
-    key: 'name',
-    render: (text) => <a>{text}</a>,
-  },
-  {
-    title: 'Age',
-    dataIndex: 'age',
-    key: 'age',
-  },
-  {
-    title: 'Address',
-    dataIndex: 'address',
-    key: 'address',
-  },
-  {
-    title: 'Tags',
-    key: 'tags',
-    dataIndex: 'tags',
-    render: (_, { tags }) => (
-      <>
-        {tags.map((tag) => {
-          let color = tag.length > 5 ? 'geekblue' : 'green';
-          if (tag === 'loser') {
-            color = 'volcano';
-          }
-          return (
-            <Tag color={color} key={tag}>
-              {tag.toUpperCase()}
-            </Tag>
-          );
-        })}
-      </>
-    ),
-  },
-  {
-    title: 'Action',
-    key: 'action',
-    render: (_, record) => (
-      <Space size="middle">
-        <a>Invite {record.name}</a>
-        <a>Delete</a>
-      </Space>
-    ),
-  },
-];
-
-const data: DataType[] = [
-  {
-    key: '1',
-    name: 'John Brown',
-    age: 32,
-    address: 'New York No. 1 Lake Park',
-    tags: ['nice', 'developer'],
-  },
-  {
-    key: '2',
-    name: 'Jim Green',
-    age: 42,
-    address: 'London No. 1 Lake Park',
-    tags: ['loser'],
-  },
-  {
-    key: '3',
-    name: 'Joe Black',
-    age: 32,
-    address: 'Sydney No. 1 Lake Park',
-    tags: ['cool', 'teacher'],
-  },
-];
-
-const formatter: StatisticProps['formatter'] = (value) => (
-  <CountUp end={value as number} separator="," />
-);
+import { marginBottomStyles } from '../dashboard/themes/dashboard-styles';
+import { UserAddOutlined } from '@ant-design/icons';
+import { AttendanceTable } from './components/table/table';
+import { useAttendance } from '../../hooks/use-attendance';
+import { CenteredContainer, ErrorDiv } from '../parents/themes/parents-styles';
+import { useStudent } from '../../hooks/use-students';
 
 export const AttendanceScreen: React.FC = () => {
 
-  const handleButtonClick = () => {
-    console.log('Button clicked!');
-  };
+  const formatter: StatisticProps['formatter'] = (value) => (
+    <CountUp end={value as number} separator="," />
+  );
+  const {
+    students
+  } = useStudent();
+  const {
+    error,
+    loading
+  } = useAttendance();
+  const {
+    countAbsent,
+    countLate,
+    countPresent
+  } = useStudent();
+  const columns = AttendanceTable();
+
+  const filteredStudents = students.filter(student => !student.isAttendance);
 
   return (
    <React.Fragment>
@@ -103,8 +35,8 @@ export const AttendanceScreen: React.FC = () => {
       <Col span={8}>
         <Card bordered={true} style={marginBottomStyles}>
           <Statistic
-            title="Text Here"
-            value={328472837}
+            title="Present"
+            value={countPresent}
             precision={2}
             valueStyle={{ color: '#3f8600' }}
             prefix={<UserAddOutlined />}
@@ -115,8 +47,8 @@ export const AttendanceScreen: React.FC = () => {
       <Col span={8}>
         <Card bordered={true} style={marginBottomStyles}>
           <Statistic
-            title="Text Here"
-            value={328472837}
+            title="Late"
+            value={countLate}
             precision={2}
             valueStyle={{ color: '#3f8600' }}
             prefix={<UserAddOutlined />}
@@ -127,8 +59,8 @@ export const AttendanceScreen: React.FC = () => {
       <Col span={8}>
         <Card bordered={true} style={marginBottomStyles}>
           <Statistic
-            title="Text Here"
-            value={328472837}
+            title="Absent"
+            value={countAbsent}
             precision={2}
             valueStyle={{ color: '#3f8600' }}
             prefix={<UserAddOutlined />}
@@ -137,16 +69,24 @@ export const AttendanceScreen: React.FC = () => {
         </Card>
       </Col>
       </Row>
-      <ButtonContainer>
-        <AttendanceButton 
-          label="Print" 
-          onClick={handleButtonClick} 
-          type="primary" 
-          style={{ ...marginBottomStyles, ...buttonWidthStyles }}
-          prefix={<PrinterOutlined />}
-        />
-      </ButtonContainer>
-      <Table columns={columns} dataSource={data} />
+      <React.Fragment>
+        {
+          loading ? (
+            <CenteredContainer>
+                <Spin size="large" />
+            </CenteredContainer>
+          ) : error ? (
+            <ErrorDiv>{error}</ErrorDiv>
+          ) : (
+            <React.Fragment>
+              <Table 
+                columns={columns} 
+                dataSource={filteredStudents} 
+              />
+            </React.Fragment>
+          )
+        }
+      </React.Fragment>
    </React.Fragment>
   )
 }

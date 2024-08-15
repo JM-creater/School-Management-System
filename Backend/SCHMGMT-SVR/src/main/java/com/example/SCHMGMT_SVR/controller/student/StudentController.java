@@ -44,4 +44,19 @@ public class StudentController {
     public long countStudents() {
         return studentService.countStudents();
     }
+
+    @GetMapping("/student/count/present")
+    public long countPresentStudents() {
+        return studentService.countPresentStudents();
+    }
+
+    @GetMapping("/student/count/late")
+    public long countLateStudents() {
+        return studentService.countLateStudents();
+    }
+
+    @GetMapping("/student/count/absent")
+    public long countAbsentStudents() {
+        return studentService.countAbsentStudents();
+    }
 }

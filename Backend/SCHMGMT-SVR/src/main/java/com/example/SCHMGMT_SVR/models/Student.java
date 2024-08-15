@@ -1,7 +1,6 @@
 package com.example.SCHMGMT_SVR.models;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Table;
 import jakarta.persistence.Id;
@@ -41,6 +40,8 @@ public class Student {
     private String address;
     private String email;
     private String phoneNumber;
+    private String status;
+    private Boolean isAttendance = false;
     @JsonFormat(pattern = "yyyy-MM-dd")
     private LocalDate enrollmentDate;
 
@@ -117,6 +118,22 @@ public class Student {
 
     public void setPhoneNumber(String phoneNumber) {
         this.phoneNumber = phoneNumber;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
+    public Boolean getAttendance() {
+        return isAttendance;
+    }
+
+    public void setAttendance(Boolean attendance) {
+        isAttendance = attendance;
     }
 
     public LocalDate getEnrollmentDate() {

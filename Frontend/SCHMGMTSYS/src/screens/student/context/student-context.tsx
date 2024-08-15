@@ -3,7 +3,7 @@ import { StudentContextTypes } from "../types/student-types";
 import { StudentProps } from "./props/student-props";
 import { StudentData } from "../data/student";
 import { FormProps } from "antd";
-import { createStudent, deleteStudent, getAllCountStudent, getAllStudent, getStudentById, updateStudent } from "../../../services/student/student-service";
+import { createStudent, deleteStudent, getAllCountStudent, getAllStudent, getCountAbsent, getCountLate, getCountPresent, getStudentById, updateStudent } from "../../../services/student/student-service";
 import { toast } from "react-toastify";
 
 export const StudentContext = createContext<StudentContextTypes | null>(null);
@@ -12,6 +12,9 @@ export const StudentProvider: React.FC<StudentProps> = ({ children }) => {
 
     const [students, setStudents] = useState<StudentData[]>([]);
     const [overAllStudent, setOverAllStudents] = useState<number>(0);
+    const [countPresent, setCountPresent] = useState<number>(0);
+    const [countLate, setCountLate] = useState<number>(0);
+    const [countAbsent, setCountAbsent] = useState<number>(0);
     const [loading, setLoading] = useState<boolean>(false);
     const [error, setError] = useState<string | null>(null);
     const [selectedStudents, setSelectedStudents] = useState<StudentData | null>(null);
@@ -29,6 +32,15 @@ export const StudentProvider: React.FC<StudentProps> = ({ children }) => {
                
                 const overAllStudentResponse = await getAllCountStudent();
                 setOverAllStudents(overAllStudentResponse);
+
+                const presentResponse = await getCountPresent();
+                setCountPresent(presentResponse);
+
+                const lateResponse = await getCountLate();
+                setCountLate(lateResponse);
+
+                const absentResponse = await getCountAbsent();
+                setCountAbsent(absentResponse);
             } catch (error) {
                 console.log(error);
                 setError('Failed to catch students');
@@ -111,6 +123,9 @@ export const StudentProvider: React.FC<StudentProps> = ({ children }) => {
     };
 
     const handleValue = {
+        countPresent,
+        countLate,
+        countAbsent,
         overAllStudent,
         students,
         selectedStudents,

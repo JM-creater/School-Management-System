@@ -2,6 +2,9 @@ import { FormProps } from "antd";
 import { StudentData } from "../data/student";
 
 export interface StudentContextTypes {
+    countPresent: number;
+    countLate: number;
+    countAbsent: number
     overAllStudent: number;
     selectedStudents: StudentData | null;
     students: StudentData[];

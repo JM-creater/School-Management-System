@@ -37,6 +37,8 @@ public class Attendance {
 
     private String status;
 
+    private Boolean isAttendance = false;
+
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
 
@@ -71,6 +73,15 @@ public class Attendance {
     public void setStatus(String status) {
         this.status = status;
     }
+
+    public Boolean getAttendance() {
+        return isAttendance;
+    }
+
+    public void setAttendance(Boolean attendance) {
+        isAttendance = attendance;
+    }
+
 
     public LocalDateTime getCreatedAt() {
         return createdAt;
