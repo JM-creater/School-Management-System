@@ -1,7 +1,7 @@
 import './App.css'
 import React from 'react'
 import { ToastContainer } from 'react-toastify'
-import { toastConfig } from './configs/toastConfig'
+import { toastConfig } from './configs/toast-config'
 import 'react-toastify/dist/ReactToastify.css';
 import { AppRoutes } from './AppRoutes'
 import { MenuItemProvider } from './screens/main/context/menu-context';

@@ -1,5 +1,6 @@
 package com.example.SCHMGMT_SVR.service.subject;
 ;
+import com.example.SCHMGMT_SVR.models.Classroom;
 import com.example.SCHMGMT_SVR.models.Subject;
 import com.example.SCHMGMT_SVR.repositories.SubjectRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,6 +26,15 @@ public class SubjectServiceImpl implements SubjectService{
     @Override
     public long countSubjects() {
         return subjectRepository.count();
+    }
+
+    @Override
+    public List<Subject> searchSubjectsByName(String name) {
+        if (Objects.nonNull(name) && !name.isEmpty()) {
+            return subjectRepository.findByNameIgnoreCase(name);
+        } else {
+            return subjectRepository.findAll();
+        }
     }
 
     @Override

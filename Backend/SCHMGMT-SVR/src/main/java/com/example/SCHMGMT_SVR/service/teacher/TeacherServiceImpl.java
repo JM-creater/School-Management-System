@@ -29,6 +29,15 @@ public class TeacherServiceImpl implements TeacherService {
     }
 
     @Override
+    public List<Teacher> searchTeacherByName(String firstName) {
+        if (Objects.nonNull(firstName) && !firstName.isEmpty()) {
+            return teacherRepository.findByFirstNameContainingIgnoreCase(firstName);
+        } else {
+            return teacherRepository.findAll();
+        }
+    }
+
+    @Override
     public List<Teacher> fetchAllTeacher() {
         List<Teacher> allTeachers = teacherRepository.findAll();
         return allTeachers.stream()

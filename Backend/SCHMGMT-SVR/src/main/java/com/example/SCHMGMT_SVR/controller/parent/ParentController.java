@@ -2,6 +2,7 @@ package com.example.SCHMGMT_SVR.controller.parent;
 
 import com.example.SCHMGMT_SVR.models.Parent;
 import com.example.SCHMGMT_SVR.service.parent.ParentService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -9,6 +10,7 @@ import java.util.List;
 @RestController
 public class ParentController {
 
+    @Autowired
     private final ParentService parentService;
 
     public ParentController(ParentService parentService) {

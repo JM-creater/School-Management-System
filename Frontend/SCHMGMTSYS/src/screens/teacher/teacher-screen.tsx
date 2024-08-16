@@ -1,37 +1,48 @@
 import React, { useEffect } from 'react';
-import { ButtonContainer, buttonWidthStyles, marginBottomStyles } from '../dashboard/themes/dashboard-styles';
+import { buttonWidthStyles, marginBottomStyles } from '../dashboard/themes/dashboard-styles';
 import { CustomButton } from '../../components/button/button';
 import { TeacherTable } from './components/table/teacher-table';
 import { CustomModal } from '../../components/modal/modal';
-import { Col, DatePicker, Form, Input, Row, Select } from 'antd';
+import {  Input } from 'antd';
 import { TeacherData } from './data/teachers';
 import { useModal } from '../../hooks/use-modal';
 import { useTeacher } from '../../hooks/use-teacher';
 import moment from 'moment';
 import { useClass } from '../../hooks/use-class';
+import { ButtonTeacherContainer } from './styles/teacher-styles';
+import { TeacherAddForm, TeacherEditForm } from './components/modal/modal-teacher';
 
 export const TeacherScreen: React.FC = () => {
 
   const { 
-    form, 
+    form,
+    openModal, 
+    openEditModal,
     closeModal, 
-    showModal, 
-    openModal,
+    showModal,
     closeEditModal,
-    openEditModal
   } = useModal();
   const {
-    onFinishFailed,
-    createNewTeacher,
+    selectedTeacher,
     editTeacher,
-    selectedTeacher
+    searchTeacherQuery,
+    createNewTeacher
   } = useTeacher();
-  const { classes } = useClass();
+  const { 
+    classes 
+  } = useClass();
 
   const handleEdit = async (teacher: Omit<TeacherData, 'id'>) => {
     if (selectedTeacher) {
       await editTeacher(selectedTeacher.id as number, teacher);
       closeEditModal();
+    }
+  };
+
+  const handleKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
+    if (event.key === "Enter") {
+      const value = (event.currentTarget as HTMLInputElement).value;
+      searchTeacherQuery(value);
     }
   };
 
@@ -52,7 +63,13 @@ export const TeacherScreen: React.FC = () => {
 
   return (
     <React.Fragment>
-      <ButtonContainer>
+      <ButtonTeacherContainer>
+        <Input.Search 
+          onSearch={(value: string) => searchTeacherQuery(value)}
+          onKeyDown={handleKeyDown}
+          placeholder="Search by teacher name..." 
+          style={{ width: 300 }} 
+        />
         <CustomButton 
           type='primary' 
           onClick={() => {
@@ -65,8 +82,11 @@ export const TeacherScreen: React.FC = () => {
             }} 
             label='Add Teacher' 
         />
-      </ButtonContainer>
-      <TeacherTable/>
+      </ButtonTeacherContainer>
+
+      <React.Fragment>
+        <TeacherTable/>
+      </React.Fragment>
 
       <CustomModal
         open={openModal}
@@ -75,108 +95,11 @@ export const TeacherScreen: React.FC = () => {
         onCancel={closeModal}
         centered  
       >
-        <Form  
+        <TeacherAddForm
           form={form}
-          layout="vertical" 
-          onFinish={createNewTeacher}
-          onFinishFailed={onFinishFailed}
-        >
-          <Row gutter={16}>
-            <Col span={12}>
-              <Form.Item<TeacherData>
-                name="firstName"
-                label="First Name"
-                rules={[{ required: true, message: 'Please enter first name' }]}
-              >
-                <Input placeholder="Please enter first name" />
-              </Form.Item>
-            </Col>
-            <Col span={12}>
-              <Form.Item<TeacherData>
-                name="lastName"
-                label="Last Name"
-                rules={[{ required: true, message: 'Please enter last name' }]}
-              >
-                  <Input placeholder="Please enter last name" />
-              </Form.Item>
-            </Col>
-          </Row>
-          <Row gutter={16}>
-            <Col span={12}>
-              <Form.Item<TeacherData>
-                name="email"
-                label="Email"
-                rules={[{ required: true, message: 'Please enter email' }]}
-              >
-                  <Input placeholder="Please enter Phone Number" />
-              </Form.Item>
-            </Col>
-            <Col span={12}>
-              <Form.Item<TeacherData>
-                name="phoneNumber"
-                label="Phone Number"
-                rules={[{ required: true, message: 'Please enter phone number' }]}
-              >
-                  <Input maxLength={11} placeholder="Please enter phone number" />
-                </Form.Item>
-              </Col>
-            </Row>
-            <Row gutter={16}>
-              <Col span={12}>
-                <Form.Item<TeacherData>
-                  name="dateOfBirth"
-                  label="Date of Birth"
-                  rules={[{ required: true, message: 'Please enter date of birth' }]}
-                >
-                  <DatePicker placeholder='Birth Date' />
-                </Form.Item>
-              </Col>
-              <Col span={12}>
-                <Form.Item<TeacherData>
-                  name="employmentDate"
-                  label="Employment Date"
-                  rules={[{ required: true, message: 'Please enter employment date' }]}
-                >
-                  <DatePicker placeholder='Employment Date' />
-                </Form.Item>
-              </Col>
-            </Row>
-            <Row gutter={16}>
-              <Col span={12}>
-                <Form.Item<TeacherData>
-                  name="address"
-                  label="Address"
-                  rules={[{ required: true, message: 'Please enter address' }]}
-                >
-                  <Input placeholder="Please enter address" />
-                </Form.Item>
-              </Col>
-              <Col span={12}>
-                <Form.Item<TeacherData>
-                  name="classroom_id"
-                  label="Classroom"
-                  rules={[{ required: true, message: 'Please select a classroom' }]}
-                >
-                  <Select
-                    placeholder="Select a classroom to assign"
-                  >
-                    {
-                      classes.map(
-                        c => (
-                          <Select.Option
-                              key={c.id}
-                              value={c.id}
-                            >
-                              {c.name}
-                            </Select.Option>
-                          )
-                        )
-                      }
-                    </Select>
-                  </Form.Item>
-                </Col>
-              </Row>
-          </Form>
+          createNewTeacher={createNewTeacher}
+          classes={classes}
+        />
       </CustomModal>
 
       <CustomModal
@@ -189,108 +112,11 @@ export const TeacherScreen: React.FC = () => {
         }}
         centered  
       >
-        <Form  
+        <TeacherEditForm
           form={form}
-          layout="vertical" 
-          onFinish={handleEdit}
-          onFinishFailed={onFinishFailed}
-        >
-          <Row gutter={16}>
-            <Col span={12}>
-              <Form.Item<TeacherData>
-                name="firstName"
-                label="First Name"
-                rules={[{ required: true, message: 'Please enter first name' }]}
-              >
-                <Input placeholder="Please enter first name" />
-              </Form.Item>
-            </Col>
-            <Col span={12}>
-              <Form.Item<TeacherData>
-                name="lastName"
-                label="Last Name"
-                rules={[{ required: true, message: 'Please enter last name' }]}
-              >
-                  <Input placeholder="Please enter last name" />
-              </Form.Item>
-            </Col>
-          </Row>
-          <Row gutter={16}>
-            <Col span={12}>
-              <Form.Item<TeacherData>
-                name="email"
-                label="Email"
-                rules={[{ required: true, message: 'Please enter email' }]}
-              >
-                  <Input placeholder="Please enter Phone Number" />
-              </Form.Item>
-            </Col>
-            <Col span={12}>
-              <Form.Item<TeacherData>
-                name="phoneNumber"
-                label="Phone Number"
-                rules={[{ required: true, message: 'Please enter phone number' }]}
-              >
-                  <Input maxLength={11} placeholder="Please enter phone number" />
-                </Form.Item>
-              </Col>
-            </Row>
-            <Row gutter={16}>
-              <Col span={12}>
-                <Form.Item<TeacherData>
-                  name="dateOfBirth"
-                  label="Date of Birth"
-                  rules={[{ required: true, message: 'Please enter date of birth' }]}
-                >
-                  <DatePicker placeholder='Birth Date' />
-                </Form.Item>
-              </Col>
-              <Col span={12}>
-                <Form.Item<TeacherData>
-                  name="employmentDate"
-                  label="Employment Date"
-                  rules={[{ required: true, message: 'Please enter employment date' }]}
-                >
-                  <DatePicker placeholder='Employment Date' />
-                </Form.Item>
-              </Col>
-            </Row>
-            <Row gutter={16}>
-              <Col span={12}>
-                <Form.Item<TeacherData>
-                  name="address"
-                  label="Address"
-                  rules={[{ required: true, message: 'Please enter address' }]}
-                >
-                  <Input placeholder="Please enter address" />
-                </Form.Item>
-              </Col>
-              <Col span={12}>
-                <Form.Item<TeacherData>
-                  name="classroom_id"
-                  label="Classroom"
-                  rules={[{ required: true, message: 'Please select a classroom' }]}
-                >
-                  <Select
-                    placeholder="Select a classroom to assign"
-                  >
-                    {
-                      classes.map(
-                        c => (
-                          <Select.Option
-                              key={c.id}
-                              value={c.id}
-                            >
-                              {c.name}
-                            </Select.Option>
-                          )
-                        )
-                      }
-                    </Select>
-                  </Form.Item>
-                </Col>
-            </Row>
-          </Form>
+          handleEdit={handleEdit}
+          classes={classes}
+        />
       </CustomModal>
     </React.Fragment>
   )

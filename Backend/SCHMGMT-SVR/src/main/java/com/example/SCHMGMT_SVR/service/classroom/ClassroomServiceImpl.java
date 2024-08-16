@@ -23,8 +23,12 @@ public class ClassroomServiceImpl implements ClassroomService {
     }
 
     @Override
-    public List<Classroom> searchClassroomsByNameOrGrade(String name, String grade) {
-        return classroomRepository.findByNameOrGrade(name, grade);
+    public List<Classroom> searchClassroomsByName(String name) {
+        if (Objects.nonNull(name) && !name.isEmpty()) {
+            return classroomRepository.findByNameContainingIgnoreCase(name);
+        } else {
+            return classroomRepository.findAll();
+        }
     }
 
     @Override

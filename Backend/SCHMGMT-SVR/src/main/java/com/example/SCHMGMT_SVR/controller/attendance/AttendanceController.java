@@ -1,6 +1,7 @@
 package com.example.SCHMGMT_SVR.controller.attendance;
 
 import com.example.SCHMGMT_SVR.service.attendance.AttendanceService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -10,6 +11,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class AttendanceController {
 
+    @Autowired
     private final AttendanceService attendanceService;
 
     public AttendanceController(AttendanceService attendanceService) {

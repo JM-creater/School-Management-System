@@ -13,7 +13,7 @@ export const TeacherTable: React.FC = () => {
     const { 
         loading,
         error,
-        teachers, 
+        filteredTeachers,
         removeTeacher, 
         fetchTeacherById
     } = useTeacher();
@@ -38,7 +38,7 @@ export const TeacherTable: React.FC = () => {
                     <ErrorDiv>{error}</ErrorDiv>
                 ) : (
                     <React.Fragment>
-                        <Table dataSource={teachers}>
+                        <Table dataSource={filteredTeachers}>
                             <ColumnGroup title="Name">
                                 <Column title="First Name" dataIndex="firstName" key="firstName" />
                                 <Column title="Last Name" dataIndex="lastName" key="lastName" />
