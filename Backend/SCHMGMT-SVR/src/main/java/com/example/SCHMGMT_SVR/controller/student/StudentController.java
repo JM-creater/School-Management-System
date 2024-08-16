@@ -2,6 +2,7 @@ package com.example.SCHMGMT_SVR.controller.student;
 
 import com.example.SCHMGMT_SVR.models.Student;
 import com.example.SCHMGMT_SVR.service.student.StudentService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -9,6 +10,7 @@ import java.util.List;
 @RestController
 public class StudentController {
 
+    @Autowired
     private final StudentService studentService;
 
     public StudentController(StudentService studentService) {

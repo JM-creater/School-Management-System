@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { Col, Form, Input, Row, Spin, Table } from 'antd';
+import { Input, Spin, Table } from 'antd';
 import { ColumnTable } from './components/column/column';
 import { useClass } from '../../../hooks/use-class';
 import { CenteredContainer, ErrorDiv } from '../../parents/themes/parents-styles';
@@ -9,6 +9,7 @@ import { useModal } from '../../../hooks/use-modal';
 import { CustomModal } from '../../../components/modal/modal';
 import { ClassData } from './data/class';
 import { ButtonClassContainer } from './styles/class-style';
+import { ClassAddForm, ClassEditForm } from './components/modal/modal-class';
 
 export const ClassScreen: React.FC = () => {
 
@@ -18,7 +19,6 @@ export const ClassScreen: React.FC = () => {
     filteredClasses,
     selectedClasses,
     createNewClass, 
-    onFinishFailed, 
     removeClass,
     fetchClassById,
     editClass,
@@ -26,10 +26,10 @@ export const ClassScreen: React.FC = () => {
   } = useClass();
   const { 
     form, 
-    showModal, 
     openModal, 
-    closeModal,
     openEditModal,
+    showModal, 
+    closeModal,
     closeEditModal,
     showEditModal
   } = useModal();
@@ -47,6 +47,13 @@ export const ClassScreen: React.FC = () => {
     }
   };
 
+  const handleKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
+    if (event.key === "Enter") {
+      const value = (event.currentTarget as HTMLInputElement).value;
+      searchClassQuery(value);
+    }
+  };
+
   useEffect(() => {
     if (selectedClasses) {
       form.setFieldsValue({
@@ -56,20 +63,13 @@ export const ClassScreen: React.FC = () => {
     }
   }, [selectedClasses, form]); 
 
-  const handleKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
-    if (event.key === "Enter") {
-        const value = (event.currentTarget as HTMLInputElement).value;
-        searchClassQuery(value);
-    } 
-  };
-
   return (
     <React.Fragment>
       <ButtonClassContainer>
         <Input.Search 
           onSearch={(value: string) => searchClassQuery(value)}
           onKeyDown={handleKeyDown}
-          placeholder="Search..." 
+          placeholder="Search by class name..." 
           style={{ width: 300 }} 
         />
         <CustomButton 
@@ -109,33 +109,10 @@ export const ClassScreen: React.FC = () => {
         onCancel={closeModal}
         centered  
       >
-        <Form  
+        <ClassAddForm
           form={form}
-          layout="vertical" 
-          onFinish={createNewClass}
-          onFinishFailed={onFinishFailed}
-        >
-          <Row gutter={16}>
-            <Col span={12}>
-              <Form.Item<ClassData>
-                name="name"
-                label="Class Name"
-                rules={[{ required: true, message: 'Please enter class name' }]}
-              >
-                <Input placeholder="Please enter classroom name" />
-              </Form.Item>
-            </Col>
-            <Col span={12}>
-              <Form.Item<ClassData>
-                name="grade"
-                label="Grade Level"
-                rules={[{ required: true, message: 'Please enter grade level' }]}
-              >
-                  <Input placeholder="Please enter grade level" />
-              </Form.Item>
-            </Col>
-          </Row>
-          </Form>
+          createNewClass={createNewClass}
+        />
        </CustomModal>
 
        <CustomModal
@@ -148,35 +125,11 @@ export const ClassScreen: React.FC = () => {
           }}
           centered  
         >
-          <Form  
+          <ClassEditForm
             form={form}
-            layout="vertical" 
-            onFinish={handleEdit}
-            onFinishFailed={onFinishFailed}
-          >
-            <Row gutter={16}>
-              <Col span={12}>
-                <Form.Item<ClassData>
-                  name="name"
-                  label="Classroom Name"
-                  rules={[{ required: true, message: 'Please enter classroom name' }]}
-                >
-                  <Input placeholder="Please enter classroom name" />
-                </Form.Item>
-              </Col>
-              <Col span={12}>
-                <Form.Item<ClassData>
-                  name="grade"
-                  label="Grade Level"
-                  rules={[{ required: true, message: 'Please enter grade level' }]}
-                >
-                    <Input placeholder="Please enter grade level" />
-                </Form.Item>
-              </Col>
-            </Row>
-          </Form>
+            handleEdit={handleEdit}
+          />
        </CustomModal>
-    
     </React.Fragment>
   )
 };

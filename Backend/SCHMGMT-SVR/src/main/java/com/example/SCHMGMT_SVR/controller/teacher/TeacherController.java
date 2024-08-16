@@ -1,7 +1,9 @@
 package com.example.SCHMGMT_SVR.controller.teacher;
 
+import com.example.SCHMGMT_SVR.models.Classroom;
 import com.example.SCHMGMT_SVR.models.Teacher;
 import com.example.SCHMGMT_SVR.service.teacher.TeacherService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -9,6 +11,7 @@ import java.util.List;
 @RestController
 public class TeacherController {
 
+    @Autowired
     private final TeacherService teacherService;
 
     public TeacherController(TeacherService teacherService) {
@@ -23,6 +26,13 @@ public class TeacherController {
     @GetMapping("/teacher")
     public List<Teacher> fetchAllTeachers() {
         return teacherService.fetchAllTeacher();
+    }
+
+    @GetMapping("/teacher/search")
+    public List<Teacher> searchByNameOrGrade(
+            @RequestParam(required = false) String firstName
+    ) {
+        return teacherService.searchTeacherByName(firstName);
     }
 
     @GetMapping("/teacher/{id}")

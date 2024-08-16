@@ -11,5 +11,5 @@ public interface ClassroomService {
     Classroom updateClassRoomById(Long id, Classroom classroom);
     String deleteClassroomById(Long id);
     Long countClassrooms();
-    List<Classroom> searchClassroomsByNameOrGrade(String name, String grade);
+    List<Classroom> searchClassroomsByName(String name);
 }

@@ -23,11 +23,10 @@ public class ClassroomController {
     }
 
     @GetMapping("/classroom/search")
-    public List<Classroom> searchByNameAngGrade(
-            @RequestParam(required = false) String name,
-            @RequestParam(required = false) String grade
+    public List<Classroom> searchByNameOrGrade(
+            @RequestParam(required = false) String name
     ) {
-        return classroomService.searchClassroomsByNameOrGrade(name, grade);
+        return classroomService.searchClassroomsByName(name);
     }
 
     @GetMapping("/classroom")
@@ -54,5 +53,4 @@ public class ClassroomController {
     public String deleteClassroomById(@PathVariable("id") Long id) {
         return classroomService.deleteClassroomById(id);
     }
-
 }

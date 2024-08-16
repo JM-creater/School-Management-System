@@ -1,7 +1,7 @@
-import { Col, Form, Input, Row, Select, Spin, Table } from 'antd';
+import { Input, Spin, Table } from 'antd';
 import React, { useEffect } from 'react';
 import { ColumnTable } from './components/column';
-import { ButtonContainer, buttonWidthStyles, marginBottomStyles } from '../../dashboard/themes/dashboard-styles';
+import { buttonWidthStyles, marginBottomStyles } from '../../dashboard/themes/dashboard-styles';
 import { CustomButton } from '../../../components/button/button';
 import { useSubject } from '../../../hooks/use-subject';
 import { CenteredContainer, ErrorDiv } from '../../parents/themes/parents-styles';
@@ -9,6 +9,8 @@ import { useModal } from '../../../hooks/use-modal';
 import { CustomModal } from '../../../components/modal/modal';
 import { SubjectData } from './data/subject';
 import { useTeacher } from '../../../hooks/use-teacher';
+import { ButtonSubjectContainer } from './styles/subject-styles';
+import { SubjectAddForm, SubjectEditForm } from './components/modal/subject-modal';
 
 export const SubjectScreen: React.FC = () => {
 
@@ -20,12 +22,12 @@ export const SubjectScreen: React.FC = () => {
     error,
     loading,
     selectedSubjects,
-    subjects,
-    onFinishFailed,
+    filteredSubjects,
     createNewSubject,
     fetchSubjectById,
     editSubject,
-    removeSubject
+    removeSubject,
+    searchSubjectQuery
   } = useSubject(); 
   const {
     form,
@@ -44,10 +46,21 @@ export const SubjectScreen: React.FC = () => {
     removeSubject
   );
 
-  const handleEdit = async (record: Omit<SubjectData, 'id'>) => {
+  const handleEdit = async (
+    record: Omit<SubjectData, 'id'>
+  ) => {
     if (selectedSubjects) {
       await editSubject(selectedSubjects.id, record);
       closeEditModal();
+    }
+  };
+
+  const handleKeyDown = (
+    event: React.KeyboardEvent<HTMLInputElement>
+  ) => {
+    if (event.key === "Enter") {
+      const value = (event.currentTarget as HTMLInputElement).value;
+      searchSubjectQuery(value);
     }
   };
 
@@ -60,11 +73,17 @@ export const SubjectScreen: React.FC = () => {
         teacher_id: selectedSubjects.teacher.id
       });
     }
-  }, [selectedSubjects, form])
+  }, [selectedSubjects, form]);
 
   return (
     <React.Fragment>
-      <ButtonContainer>
+      <ButtonSubjectContainer>
+        <Input.Search 
+          onSearch={(value: string) => searchSubjectQuery(value)}
+          onKeyDown={handleKeyDown}
+          placeholder="Search by subject name..." 
+          style={{ width: 300 }} 
+        />
         <CustomButton 
           type='primary' 
           onClick={() => {
@@ -77,7 +96,7 @@ export const SubjectScreen: React.FC = () => {
           }} 
           label='Add Subject' 
         />
-      </ButtonContainer>
+      </ButtonSubjectContainer>
 
       <React.Fragment>
         {
@@ -89,7 +108,10 @@ export const SubjectScreen: React.FC = () => {
             <ErrorDiv>{error}</ErrorDiv>
           ) : (
             <React.Fragment>
-               <Table columns={columns} dataSource={subjects} />
+               <Table 
+                columns={columns} 
+                dataSource={filteredSubjects} 
+              />
             </React.Fragment>
           )
         }
@@ -102,71 +124,14 @@ export const SubjectScreen: React.FC = () => {
         onCancel={closeModal}
         centered  
       >
-        <Form  
+        <SubjectAddForm
           form={form}
-          layout="vertical" 
-          onFinish={createNewSubject}
-          onFinishFailed={onFinishFailed}
-        >
-          <Row gutter={16}>
-            <Col span={12}>
-              <Form.Item<SubjectData>
-                name="name"
-                label="Subject Name"
-                rules={[{ required: true, message: 'Please enter class name' }]}
-              >
-                <Input placeholder="Please enter classroom name" />
-              </Form.Item>
-            </Col>
-            <Col span={12}>
-              <Form.Item<SubjectData>
-                name="code"
-                label="Code"
-                rules={[{ required: true, message: 'Please enter subject code' }]}
-              >
-                  <Input placeholder="Please enter subject code" />
-              </Form.Item>
-            </Col>
-          </Row>
-          <Row gutter={16}>
-            <Col span={12}>
-              <Form.Item<SubjectData>
-                name="credits"
-                label="Credits"
-                rules={[{ required: true, message: 'Please enter credits' }]}
-              >
-                <Input placeholder="Please enter credits" />
-              </Form.Item>
-            </Col>
-            <Col span={12}>
-              <Form.Item<SubjectData>
-                name="teacher_id"
-                label="Teacher"
-                rules={[{ required: true, message: 'Please select a teacher' }]}
-              >
-                <Select
-                  placeholder="Select a teacher to assign"
-                >
-                  {
-                    teachers.map(
-                      t => (
-                          <Select.Option
-                            key={t.id}
-                            value={t.id}
-                          >
-                            {t.firstName}  {t.lastName}
-                          </Select.Option>
-                        )
-                      )
-                    }
-                  </Select>
-                </Form.Item>
-            </Col>
-          </Row>
-          </Form>
+          createNewSubject={createNewSubject}
+          teachers={teachers}
+        />
        </CustomModal>
 
-       <CustomModal
+      <CustomModal
         open={openEditModal}
         title='Edit Subject'
         onOk={form.submit}
@@ -176,69 +141,12 @@ export const SubjectScreen: React.FC = () => {
         }}
         centered  
       >
-        <Form  
+        <SubjectEditForm
           form={form}
-          layout="vertical" 
-          onFinish={handleEdit}
-          onFinishFailed={onFinishFailed}
-        >
-          <Row gutter={16}>
-            <Col span={12}>
-              <Form.Item<SubjectData>
-                name="name"
-                label="Subject Name"
-                rules={[{ required: true, message: 'Please enter class name' }]}
-              >
-                <Input placeholder="Please enter classroom name" />
-              </Form.Item>
-            </Col>
-            <Col span={12}>
-              <Form.Item<SubjectData>
-                name="code"
-                label="Code"
-                rules={[{ required: true, message: 'Please enter subject code' }]}
-              >
-                  <Input placeholder="Please enter subject code" />
-              </Form.Item>
-            </Col>
-          </Row>
-          <Row gutter={16}>
-            <Col span={12}>
-              <Form.Item<SubjectData>
-                name="credits"
-                label="Credits"
-                rules={[{ required: true, message: 'Please enter credits' }]}
-              >
-                <Input placeholder="Please enter credits" />
-              </Form.Item>
-            </Col>
-            <Col span={12}>
-              <Form.Item<SubjectData>
-                name="teacher_id"
-                label="Teacher"
-                rules={[{ required: true, message: 'Please select a teacher' }]}
-              >
-                <Select
-                  placeholder="Select a teacher to assign"
-                >
-                  {
-                    teachers.map(
-                      t => (
-                          <Select.Option
-                            key={t.id}
-                            value={t.id}
-                          >
-                            {t.firstName}  {t.lastName}
-                          </Select.Option>
-                        )
-                      )
-                    }
-                  </Select>
-                </Form.Item>
-            </Col>
-          </Row>
-          </Form>
-       </CustomModal>
+          handleEdit={handleEdit}
+          teachers={teachers}
+        />
+      </CustomModal>
 
     </React.Fragment>
   )

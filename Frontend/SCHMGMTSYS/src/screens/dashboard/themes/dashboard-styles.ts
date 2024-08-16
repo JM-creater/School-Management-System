@@ -19,7 +19,6 @@ export const buttonWidthStyles: React.CSSProperties = {
     padding: '18px'
 }
 
-
 // * styled components
 
 export const ButtonContainer = styled.div`

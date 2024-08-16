@@ -1,8 +1,9 @@
 package com.example.SCHMGMT_SVR.controller.subject;
 
-import com.example.SCHMGMT_SVR.models.Parent;
+import com.example.SCHMGMT_SVR.models.Classroom;
 import com.example.SCHMGMT_SVR.models.Subject;
 import com.example.SCHMGMT_SVR.service.subject.SubjectService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -10,6 +11,7 @@ import java.util.List;
 @RestController
 public class SubjectController {
 
+    @Autowired
     private final SubjectService subjectService;
 
     public SubjectController(SubjectService subjectService) {
@@ -19,6 +21,13 @@ public class SubjectController {
     @PostMapping("/subject")
     public Subject createSubject(@RequestBody Subject subject) {
         return subjectService.createSubject(subject);
+    }
+
+    @GetMapping("/subject/search")
+    public List<Subject> searchByNameOrGrade(
+            @RequestParam(required = false) String name
+    ) {
+        return subjectService.searchSubjectsByName(name);
     }
 
     @GetMapping("/subject")
