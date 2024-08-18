@@ -57,20 +57,20 @@ export const updateSubject = async (
         });
 };
 
-export const deleteSubject = async (
-    id: number
-): Promise<void> => {
-    return await axiosInstance.delete(`${DELETE_SUBJECT_URL}${id}`)
+export const deleteSubject = async <T extends number | undefined>(
+    id: T
+): Promise<T extends number ? void : void> => {
+    return await axiosInstance.delete<T extends number ? void : void>(`${DELETE_SUBJECT_URL}${id}`)
         .then((response) => response.data)
         .catch((error) => {
             throw error; 
         });
 };
 
-export const searchSubject = async (
-    name?: string
-): Promise<SubjectData[]> => {
-    return await axiosInstance.get(SEARCH_SUBJECT_URL, {
+export const searchSubject = async <T extends string | undefined>(
+    name?: T
+): Promise<T extends string ? SubjectData[] : SubjectData[]> => {
+    return await axiosInstance.get<T extends string ? SubjectData[] : SubjectData[]>(SEARCH_SUBJECT_URL, {
         params: { name },
     })
     .then((response) => response.data)

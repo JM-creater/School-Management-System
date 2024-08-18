@@ -13,7 +13,7 @@ import { SubjectProvider } from './screens/curriculum/subject/context/subject-co
 import { StudentProvider } from './screens/student/context/student-context';
 import { AttendanceProvider } from './screens/attendance/context/attendance-context';
 
-export const App = () => {
+export const  App = () => {
   return (
     <React.Fragment>
       <ToastContainer {...toastConfig} />

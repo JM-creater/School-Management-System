@@ -67,10 +67,10 @@ export const deleteClass = async (
         });
 };
     
-export const searchClass = async (
-    name?: string
-): Promise<ClassData[]> => {
-    return await axiosInstance.get(SEARCH_CLASS_URL, {
+export const searchClass = async <T extends string | undefined>(
+    name?: T
+): Promise<T extends string ? ClassData[] : ClassData[]> => {
+    return await axiosInstance.get<T extends string ? ClassData[] : ClassData[]>(SEARCH_CLASS_URL, {
         params: { name },
     }).then((response) => response.data)
     .catch((error) => {
