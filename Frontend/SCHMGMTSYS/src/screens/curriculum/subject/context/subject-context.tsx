@@ -106,6 +106,7 @@ export const SubjectProvider: React.FC<SubjectProps> = ({ children }) => {
         return await deleteSubject(id)
             .then(() => {
                 setSubjects((prevSubject) => prevSubject.filter(s => s.id !== id));
+                setFilteredSubjects((prevSubject) => prevSubject.filter(s => s.id !== id));
             }).catch((error) => {
                 const errorMessage = handleError(error);
                 setError(errorMessage);

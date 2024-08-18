@@ -2,7 +2,6 @@ package com.example.SCHMGMT_SVR.functions.student.controller;
 
 import com.example.SCHMGMT_SVR.models.Student;
 import com.example.SCHMGMT_SVR.functions.student.service.StudentService;
-import com.example.SCHMGMT_SVR.models.Subject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
