@@ -69,6 +69,7 @@ export const TeacherProvider: React.FC<TeacherProps> = ({ children }) => {
         return await createTeacher(formattedValues)
             .then((response) => {
                 setTeachers([...teachers, response]);
+                setFilteredTeachers([...teachers, response]);
                 toast.success(`Teacher ${teacher.firstName} ${teacher.lastName} added successfully`);
             }).catch((error) => {
                 const errorMessage = handleError(error);
@@ -93,6 +94,7 @@ export const TeacherProvider: React.FC<TeacherProps> = ({ children }) => {
         return await updateTeacher(id, formattedValues)
             .then((response) => {
                 setTeachers(teachers.map(t => t.id === id ? response : t));
+                setFilteredTeachers(teachers.map(t => t.id === id ? response : t));
                 toast.success(`Teacher ${updatedTeacher.firstName} ${updatedTeacher.lastName} edited successfully`);
             }).catch((error) => {
                 const errorMessage = handleError(error);

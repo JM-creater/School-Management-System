@@ -1,6 +1,5 @@
 import { Input, Spin, Table } from 'antd';
 import React, { useEffect } from 'react';
-import { ColumnTable } from './components/column';
 import { buttonWidthStyles, marginBottomStyles } from '../../dashboard/themes/dashboard-styles';
 import { CustomButton } from '../../../components/button/button';
 import { useSubject } from '../../../hooks/use-subject';
@@ -10,7 +9,8 @@ import { CustomModal } from '../../../components/modal/modal';
 import { SubjectData } from './data/subject';
 import { useTeacher } from '../../../hooks/use-teacher';
 import { ButtonSubjectContainer } from './styles/subject-styles';
-import { SubjectAddForm, SubjectEditForm } from './components/modal/subject-modal';
+import { SubjectAddForm, SubjectEditForm } from './components/form/form-subject';
+import { ColumnTable } from './components/column/column';
 
 export const SubjectScreen: React.FC = () => {
 

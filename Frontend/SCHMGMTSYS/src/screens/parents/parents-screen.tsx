@@ -1,37 +1,37 @@
 import React, { useEffect } from 'react';
-import { Col, Form, Input, Row, Spin, Table } from 'antd';
+import { Input, Spin, Table } from 'antd';
 import { useModal } from '../../hooks/use-modal';
 import { CustomModal } from '../../components/modal/modal';
-import { ButtonContainer, buttonWidthStyles, marginBottomStyles } from '../dashboard/themes/dashboard-styles';
+import { buttonWidthStyles, marginBottomStyles } from '../dashboard/themes/dashboard-styles';
 import { CustomButton } from '../../components/button/button';
 import { useParent } from '../../hooks/use-parent';
 import { ParentData } from './data/parents';
 import { ColumnTable } from './components/columns/columns';
-import { CenteredContainer, ErrorDiv } from './themes/parents-styles';
+import { ButtonParentContainer, CenteredContainer, ErrorDiv } from './themes/parents-styles';
+import { ParentAddForm, ParentEditForm } from './components/modal/modal-parent';
 
 export const ParentsScreen: React.FC = () => {
 
   const { 
     form, 
+    openModal,
+    openEditModal,
     closeModal, 
     showModal, 
-    openModal,
     closeEditModal,
-    openEditModal,
     showEditModal
   } = useModal();
   const { 
     selectedParent,
     error, 
     loading, 
-    parents, 
+    filteredParents,
     createNewParents, 
-    onFinishFailed,
     fetchParentById,
     removeParent,
-    editParent
+    editParent,
+    searchParentQuery
   } = useParent();
-
   const columns = ColumnTable(
     showEditModal, 
     fetchParentById, 
@@ -42,6 +42,13 @@ export const ParentsScreen: React.FC = () => {
     if (selectedParent) {
       await editParent(selectedParent.id, record);
       closeEditModal();
+    }
+  };
+
+  const handleKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
+    if (event.key === "Enter") {
+      const value = (event.currentTarget as HTMLInputElement).value;
+      searchParentQuery(value);
     }
   };
   
@@ -58,7 +65,13 @@ export const ParentsScreen: React.FC = () => {
 
   return (
     <React.Fragment>
-      <ButtonContainer>
+      <ButtonParentContainer>
+        <Input.Search 
+          onSearch={(value: string) => searchParentQuery(value)}
+          onKeyDown={handleKeyDown}
+          placeholder="Search by parent name..." 
+          style={{ width: 300 }} 
+        />
         <CustomButton 
           type='primary' 
           onClick={() => {
@@ -71,7 +84,7 @@ export const ParentsScreen: React.FC = () => {
           }} 
           label='Add Parent' 
         />
-      </ButtonContainer>
+      </ButtonParentContainer>
 
       <React.Fragment>
         {
@@ -83,7 +96,10 @@ export const ParentsScreen: React.FC = () => {
             <ErrorDiv>{error}</ErrorDiv>
           ) : (
             <React.Fragment>
-              <Table columns={columns} dataSource={parents} />
+              <Table 
+                columns={columns} 
+                dataSource={filteredParents} 
+              />
             </React.Fragment>
           )
         }
@@ -96,53 +112,10 @@ export const ParentsScreen: React.FC = () => {
         onCancel={closeModal}
         centered  
       >
-        <Form  
+        <ParentAddForm
           form={form}
-          layout="vertical" 
-          onFinish={createNewParents}
-          onFinishFailed={onFinishFailed}
-        >
-          <Row gutter={16}>
-            <Col span={12}>
-              <Form.Item<ParentData>
-                name="firstName"
-                label="First Name"
-                rules={[{ required: true, message: 'Please enter first name' }]}
-              >
-                <Input placeholder="Please enter first name" />
-              </Form.Item>
-            </Col>
-            <Col span={12}>
-              <Form.Item<ParentData>
-                name="lastName"
-                label="Last Name"
-                rules={[{ required: true, message: 'Please enter last name' }]}
-              >
-                  <Input placeholder="Please enter last name" />
-              </Form.Item>
-            </Col>
-          </Row>
-          <Row gutter={16}>
-            <Col span={12}>
-              <Form.Item<ParentData>
-                name="email"
-                label="Email"
-                rules={[{ required: true, message: 'Please enter email' }]}
-              >
-                  <Input placeholder="Please enter Phone Number" />
-              </Form.Item>
-            </Col>
-            <Col span={12}>
-              <Form.Item<ParentData>
-                name="phoneNumber"
-                label="Phone Number"
-                rules={[{ required: true, message: 'Please enter phone number' }]}
-              >
-                  <Input maxLength={11} placeholder="Please enter phone number" />
-                </Form.Item>
-              </Col>
-            </Row>
-          </Form>
+          createNewParents={createNewParents}
+        />
        </CustomModal>
 
        <CustomModal
@@ -155,53 +128,10 @@ export const ParentsScreen: React.FC = () => {
           }}
           centered
         >
-            <Form
+            <ParentEditForm
               form={form}
-              layout="vertical"
-              onFinish={handleEdit}
-              onFinishFailed={onFinishFailed}
-            >
-              <Row gutter={16}>
-                <Col span={12}>
-                  <Form.Item<ParentData>
-                    name="firstName"
-                    label="First Name"
-                    rules={[{ required: true, message: 'Please enter first name' }]}
-                  >
-                    <Input placeholder="Please enter first name" />
-                  </Form.Item>
-                </Col>
-                <Col span={12}>
-                  <Form.Item<ParentData>
-                    name="lastName"
-                    label="Last Name"
-                    rules={[{ required: true, message: 'Please enter last name' }]}
-                  >
-                    <Input placeholder="Please enter last name" />
-                  </Form.Item>
-                </Col>
-              </Row>
-              <Row gutter={16}>
-                <Col span={12}>
-                  <Form.Item<ParentData>
-                    name="email"
-                    label="Email"
-                    rules={[{ required: true, message: 'Please enter email' }]}
-                  >
-                      <Input placeholder="Please enter Phone Number" />
-                  </Form.Item>
-                </Col>
-                <Col span={12}>
-                  <Form.Item<ParentData>
-                    name="phoneNumber"
-                    label="Phone Number"
-                    rules={[{ required: true, message: 'Please enter phone number' }]}
-                  >
-                      <Input maxLength={11} placeholder="Please enter phone number" />
-                  </Form.Item>
-                </Col>
-              </Row>
-            </Form>
+              handleEdit={handleEdit}
+            />
         </CustomModal>
       
     </React.Fragment>

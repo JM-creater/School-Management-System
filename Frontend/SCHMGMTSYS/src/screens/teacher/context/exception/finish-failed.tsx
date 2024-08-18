@@ -15,5 +15,5 @@ export const onFinishFailed: FormProps<any>['onFinishFailed'] = (errorInfo) => {
         ),
         placement: 'topRight',
         duration: 3,
-    })
+    });
 };

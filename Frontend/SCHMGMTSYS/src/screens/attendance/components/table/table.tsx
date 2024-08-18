@@ -1,7 +1,7 @@
 import { Space, Button } from "antd";
 import { useAttendance } from "../../../../hooks/use-attendance";
 import { StudentData } from "../../../student/data/student";
-import { ABSENT, LATE, PRESENT } from "../../constant.ts/status";
+import { ABSENT, LATE, PRESENT } from "../../constant/status";
 
 export const AttendanceTable = () => {
     const {

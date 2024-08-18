@@ -1,7 +1,15 @@
 import { createContext, useState } from "react";
 import { AttendanceContextTypes } from "../types/attendance-types";
 import { AttendanceProps } from "./props/attendance-props";
-import { markAbsentAttendance, markLateAttendance, markPresentAttendance, updateStatusAbsent, updateStatusLate, updateStatusPresent } from "../../../services/attendance/attendance-service";
+import { 
+    markAbsentAttendance,
+    markLateAttendance, 
+    markPresentAttendance, 
+    updateStatusAbsent, 
+    updateStatusLate, 
+    updateStatusPresent 
+} from "../../../services/attendance/attendance-service";
+import { handleError } from "../../../configs/error-handling";
 
 export const AttendanceContext = createContext<AttendanceContextTypes | null>(null);
 
@@ -11,82 +19,112 @@ export const AttendanceProvider: React.FC<AttendanceProps> = ({ children }) => {
     const [error, setError] = useState<string | null>(null);
     const [markedStudents, setMarkedStudents] = useState<number[]>([]);
 
-    const markStudentPresentAttendance = async (studentId: number, status: string) => {
+    const markStudentPresentAttendance = async (
+        studentId: number, 
+        status: string
+    ) => {
         setLoading(true);
-        try {
-            const response = await markPresentAttendance(studentId, status);
-            setMarkedStudents([...markedStudents, response]);
-        } catch (error) {
-            console.log(error);
-            setError('Failed to marked attendance'); 
-        } finally {
-            setLoading(false);
-        }
+        setError(null);
+        return  await markPresentAttendance(studentId, status)
+            .then((response) => {
+                setMarkedStudents([...markedStudents, response]);
+                setMarkedStudents(prevMarked => [...prevMarked, studentId]);
+            }).catch((error) => {
+                const errorMessage = handleError(error);
+                setError(errorMessage);
+            }).finally(() => {
+                setLoading(false);
+            });
     };
 
-    const markStudentLateAttendance = async (studentId: number, status: string) => {
+    const markStudentLateAttendance = async (
+        studentId: number, 
+        status: string
+    ) => {
         setLoading(true);
-        try {
-            const response = await markLateAttendance(studentId, status);
-            setMarkedStudents([...markedStudents, response]);
-        } catch (error) {
-            console.log(error);
-            setError('Failed to marked attendance'); 
-        } finally {
-            setLoading(false);
-        }
+        setError(null);
+        return await markLateAttendance(studentId, status)
+            .then((response) => {
+                setMarkedStudents([...markedStudents, response]);
+                setMarkedStudents(prevMarked => [...prevMarked, studentId]);
+            }).catch((error) => {
+                const errorMessage = handleError(error);
+                setError(errorMessage);
+            }).finally(() => {
+                setLoading(false);
+            });
     };
 
-    const markStudentAbsentAttendance = async (studentId: number, status: string) => {
+    const markStudentAbsentAttendance = async (
+        studentId: number, 
+        status: string
+    ) => {
         setLoading(true);
-        try {
-            const response = await markAbsentAttendance(studentId, status);
-            setMarkedStudents([...markedStudents, response]);
-        } catch (error) {
-            console.log(error);
-            setError('Failed to marked attendance'); 
-        } finally {
-            setLoading(false);
-        }
+        setError(null);
+        return await markAbsentAttendance(studentId, status)
+            .then((response) => {
+                setMarkedStudents([...markedStudents, response]);
+                setMarkedStudents(prevMarked => [...prevMarked, studentId]);
+            }).catch((error) => {
+                const errorMessage = handleError(error);
+                setError(errorMessage);
+            }).finally(() => {
+                setLoading(false);
+            });
     };
 
-    const markStudentPresentStatus = async (studentId: number, status: string) => {
+    const markStudentPresentStatus = async (
+        studentId: number, 
+        status: string
+    ) => {
         setLoading(true);
-        try {
-            const response = await updateStatusPresent(studentId, status);
-            setMarkedStudents([...markedStudents, response]);
-        } catch (error) {
-            console.log(error);
-            setError('Failed to update attendance status'); 
-        } finally {
-            setLoading(false);
-        }
+        setError(null);
+        return await updateStatusPresent(studentId, status)
+            .then((response) => {
+                setMarkedStudents([...markedStudents, response]);
+                setMarkedStudents(prevMarked => [...prevMarked, studentId]);
+            }).catch((error) => {
+                const errorMessage = handleError(error);
+                setError(errorMessage);
+            }).finally(() => {
+                setLoading(false);
+            });
     };
 
-    const markStudentLateStatus = async (studentId: number, status: string) => {
+    const markStudentLateStatus = async (
+        studentId: number, 
+        status: string
+    ) => {
         setLoading(true);
-        try {
-            const response = await updateStatusLate(studentId, status);
-            setMarkedStudents([...markedStudents, response]);
-        } catch (error) {
-            console.log(error);
-            setError('Failed to update attendance status'); 
-        } finally {
-            setLoading(false);
-        }
+        setError(null);
+        return await updateStatusLate(studentId, status)
+            .then((response) => {
+                setMarkedStudents([...markedStudents, response]);
+                setMarkedStudents(prevMarked => [...prevMarked, studentId]);
+            }).catch((error) => {
+                const errorMessage = handleError(error);
+                setError(errorMessage);
+            }).finally(() => {
+                setLoading(false);
+            });
     };
 
-    const markStudentAbsentStatus = async (studentId: number, status: string) => {
+    const markStudentAbsentStatus = async (
+        studentId: number, 
+        status: string
+    ) => {
         setLoading(true);
-        try {
-            const response = await updateStatusAbsent(studentId, status);
-            setMarkedStudents([...markedStudents, response]);
-        } catch (error) {
-            console.log(error);
-            setError('Failed to update attendance status'); 
-        } finally {
-            setLoading(false);
-        }
+        setError(null);
+        return await updateStatusAbsent(studentId, status)
+            .then((response) => {
+                setMarkedStudents([...markedStudents, response]);
+                setMarkedStudents(prevMarked => [...prevMarked, studentId]);
+            }).catch((error) => {
+                const errorMessage = handleError(error);
+                setError(errorMessage);
+            }).finally(() => {
+                setLoading(false);
+            });
     };
 
     const handleValues = {
@@ -106,4 +144,4 @@ export const AttendanceProvider: React.FC<AttendanceProps> = ({ children }) => {
             {children}
         </AttendanceContext.Provider>
     )
-}
+};

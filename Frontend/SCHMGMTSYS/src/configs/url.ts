@@ -56,3 +56,5 @@ export const COUNT_ABSENT_URL = '/student/count/absent';
 export const SEARCH_SUBJECT_URL = '/subject/search?';
 export const SEARCH_CLASS_URL = '/classroom/search?';
 export const SEARCH_TEACHER_URL = '/teacher/search?';
+export const SEARCH_PARENT_URL = '/parent/search?';
+export const SEARCH_STUDENT_URL = '/student/search?';
