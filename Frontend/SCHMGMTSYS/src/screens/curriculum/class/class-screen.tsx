@@ -40,28 +40,44 @@ export const ClassScreen: React.FC = () => {
     removeClass
   );
 
-  const handleEdit = async (record: Omit<ClassData, 'id'>) => {
+  useEffect(() => {
+    if (selectedClasses) {
+      form.setFieldsValue({
+        name: selectedClasses.name,
+        grade: selectedClasses.grade
+      } as Pick<ClassData, 'name' | 'grade'>);
+    }
+  }, [selectedClasses, form]);
+
+  /**
+   * Handles editing of a class record.
+   *
+   * @param {Omit<ClassData, 'id'>} record - The updated class record data.
+   * @return {Promise<void>} A promise that resolves when the edit operation is complete.
+   */
+  const handleEdit = async <T extends Omit<ClassData, 'id'>>(
+    record: T
+  ): Promise<void> => {
     if (selectedClasses) {
       await editClass(selectedClasses.id, record);
       closeEditModal();
     }
   };
 
-  const handleKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
+  /**
+   * Handles the key down event for the input field.
+   *
+   * @param {React.KeyboardEvent<HTMLInputElement>} event - The keyboard event object.
+   * @return {void} No return value.
+  */
+  const handleKeyDown = async <T extends React.KeyboardEvent<HTMLInputElement>>(
+    event: T
+  ): Promise<void> => {
     if (event.key === "Enter") {
       const value = (event.currentTarget as HTMLInputElement).value;
       searchClassQuery(value);
     }
   };
-
-  useEffect(() => {
-    if (selectedClasses) {
-      form.setFieldsValue({
-        name: selectedClasses.name,
-        grade: selectedClasses.grade
-      })
-    }
-  }, [selectedClasses, form]); 
 
   return (
     <React.Fragment>
