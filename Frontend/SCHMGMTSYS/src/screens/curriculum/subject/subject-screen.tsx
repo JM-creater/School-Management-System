@@ -46,24 +46,6 @@ export const SubjectScreen: React.FC = () => {
     removeSubject
   );
 
-  const handleEdit = async (
-    record: Omit<SubjectData, 'id'>
-  ) => {
-    if (selectedSubjects) {
-      await editSubject(selectedSubjects.id, record);
-      closeEditModal();
-    }
-  };
-
-  const handleKeyDown = (
-    event: React.KeyboardEvent<HTMLInputElement>
-  ) => {
-    if (event.key === "Enter") {
-      const value = (event.currentTarget as HTMLInputElement).value;
-      searchSubjectQuery(value);
-    }
-  };
-
   useEffect(() => {
     if (selectedSubjects) {
       form.setFieldsValue({
@@ -74,6 +56,36 @@ export const SubjectScreen: React.FC = () => {
       });
     }
   }, [selectedSubjects, form]);
+
+  /**
+   * Handles editing of a subject record.
+   *
+   * @param {Omit<SubjectData, 'id'>} record - The updated subject record data.
+   * @return {Promise<void>} A promise that resolves when the edit operation is complete.
+   */
+  const handleEdit = async <T extends Omit<SubjectData, 'id'>>(
+    record: T
+  ): Promise<void> => {
+    if (selectedSubjects) {
+      await editSubject(selectedSubjects.id, record);
+      closeEditModal();
+    }
+  };
+
+  /**
+   * Handles the key down event for the input field.
+   *
+   * @param {React.KeyboardEvent<HTMLInputElement>} event - The keyboard event object.
+   * @return {Promise<void>} No return value.
+   */
+  const handleKeyDown = async <T extends React.KeyboardEvent<HTMLInputElement>>(
+    event: T
+  ): Promise<void> => {
+    if (event.key === "Enter") {
+      const value = (event.currentTarget as HTMLInputElement).value;
+      searchSubjectQuery(value);
+    }
+  };
 
   return (
     <React.Fragment>

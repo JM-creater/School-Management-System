@@ -2,7 +2,15 @@ import { createContext, useCallback, useEffect, useState } from "react";
 import { SubjectContextTypes } from "../types/subject-types";
 import { SubjectProps } from "./props/subject-props";
 import { SubjectData } from "../data/subject";
-import { createSubject, deleteSubject, getAllCountSubject, getAllSubject, getSubjectById, searchSubject, updateSubject } from "../../../../services/subject/subject-service";
+import { 
+    createSubject, 
+    deleteSubject, 
+    getAllCountSubject, 
+    getAllSubject, 
+    getSubjectById, 
+    searchSubject, 
+    updateSubject 
+} from "../../../../services/subject/subject-service";
 import { toast } from "react-toastify";
 import { handleError } from "../../../../configs/error-handling";
 
@@ -16,15 +24,23 @@ export const SubjectProvider: React.FC<SubjectProps> = ({ children }) => {
     const [overAllSubject, setOverAllSubject] = useState<number>(0);
     const [loading, setLoading] = useState<boolean>(false);
     const [error, setError] = useState<string | null>(null);
-
+    
+    /**
+     * Fetches all subjects from the server and updates the state when the component mounts.
+     * It also fetches the total count of subjects and updates the state.
+     * This function is called only once when the component mounts.
+     *
+     * @return {void} This function does not return anything.
+    */
     useEffect(() => {
         setLoading(true);
         setError(null);
+        getAllSubject<string>()
         getAllSubject()
             .then(async (response) => {
                 setSubjects(response);  
                 setFilteredSubjects(response);
-                return await getAllCountSubject();
+                return await getAllCountSubject<string>();
             }).then((overAllSubjectResponse) => {
                 setOverAllSubject(overAllSubjectResponse);
             }).catch((error) => {
@@ -35,47 +51,69 @@ export const SubjectProvider: React.FC<SubjectProps> = ({ children }) => {
             });
     }, []);
 
-    const fetchSubjectById = useCallback(async (
-        subjectId: number
-    ) => {
-        return await getSubjectById(subjectId)
-        .then((response) => {
-            setSelectedSubjects(response);
-        }).catch((error) => {
-            const errorMessage = handleError(error);
-            setError(errorMessage);
-        });
+    /**
+     * Fetches a subject by its ID from the server and updates the state.
+     *
+     * @param {T} subjectId - The ID of the subject to fetch.
+     * @return {Promise<void>} A promise that resolves when the subject is successfully fetched.
+     */
+    const fetchSubjectById = useCallback(async <TNumber extends number>(
+        subjectId: TNumber
+    ): Promise<void> => {
+        return await getSubjectById<TNumber>(subjectId)
+            .then((response) => {
+                setSelectedSubjects(response);
+            }).catch((error) => {
+                const errorMessage = handleError(error);
+                setError(errorMessage);
+            });
     }, []);
 
-    const createNewSubject = async (
-        values: Omit<SubjectData, 'id'>
-    ) => {
-        setLoading(true);
+    /**
+     * Creates a new subject with the provided values and updates the list of subjects.
+     *
+     * @param {Omit<SubjectData, 'id'>} values - The values to create the new subject with.
+     * @return {Promise<void>} A promise that resolves when the subject is successfully created.
+    */
+    const createNewSubject = async <TSubjectData extends Omit<SubjectData, 'id'>>(
+        values: TSubjectData
+    ): Promise<void> => {
         setError(null);
+    
         const formattedValues = {
             ...values,
             teacher: {
                 id: values.teacher_id
             }
-        };
-        return await createSubject(formattedValues)
+        } as TSubjectData;
+    
+        return await createSubject<TSubjectData>(formattedValues)
             .then((response) => {
                 const addedSubject = [...subjects, response];
                 setSubjects(addedSubject);
                 setFilteredSubjects(addedSubject);
                 toast.success(`Subject ${values.name} added successfully`);
-            }).catch((error) => {
+            })
+            .catch((error) => {
                 const errorMessage = handleError(error);
                 setError(errorMessage);
-            }).finally(() => {
+            })
+            .finally(() => {
                 setLoading(false);
             });
     };
-
-    const editSubject = async (
-        id: number, 
+    
+    /**
+     * Edits a subject by sending a PUT request to the subject update URL.
+     *
+     * @param {number} id - The ID of the subject to be updated.
+     * @param {Omit<SubjectData, 'id'>} updatedSubject - The updated subject data.
+     * @return {Promise<void>} A promise that resolves when the subject is successfully updated.
+    */
+    const editSubject = async <TNumber extends number>(
+        id: TNumber, 
         updatedSubject: Omit<SubjectData, 'id'>
-    ) => {
+    ): Promise<void> => {
         setLoading(true);
         setError(null);
         const formattedValues = {
@@ -83,8 +121,8 @@ export const SubjectProvider: React.FC<SubjectProps> = ({ children }) => {
             teacher: {
                 id: updatedSubject.teacher_id
             }
-        };
-        return await updateSubject(id, formattedValues)
+        } as number extends TNumber ? Omit<SubjectData, 'id'> : SubjectData;
+        return await updateSubject<TNumber>(id, formattedValues)
             .then((response) => {
                 const updatedSubjectList = subjects.map(s => s.id === id ? response : s)
                 setSubjects(updatedSubjectList);
@@ -98,35 +136,54 @@ export const SubjectProvider: React.FC<SubjectProps> = ({ children }) => {
             });
     };
     
-    const removeSubject = async (
-        id: number
-    ) => {
+    /**
+    * Removes a subject by sending a DELETE request to the subject delete URL.
+    *
+    * @param {number} id - The ID of the subject to be removed.
+    * @return {Promise<void>} A promise that resolves when the subject is successfully removed.
+    */
+   const removeSubject = async <TNumber extends number>(
+        id: TNumber
+    ): Promise<void> => {
         setLoading(true);
         setError(null);
-        return await deleteSubject(id)
+
+        return await deleteSubject<TNumber>(id)
             .then(() => {
-                setSubjects((prevSubject) => prevSubject.filter(s => s.id !== id));
-                setFilteredSubjects((prevSubject) => prevSubject.filter(s => s.id !== id));
-            }).catch((error) => {
+                setSubjects((prevSubjects) => prevSubjects.filter(s => s.id !== id));
+                setFilteredSubjects((prevSubjects) => prevSubjects.filter(s => s.id !== id));
+                toast.success(`Subject with ID ${id} removed successfully`);
+            })
+            .catch((error) => {
                 const errorMessage = handleError(error);
                 setError(errorMessage);
-            }).finally(() => {
+            })
+            .finally(() => {
                 setLoading(false);
             });
     };
 
-    const searchSubjectQuery = async (
-        name?: string
-    ) => {
+    /**
+     * Searches for a subject by name and updates the filtered subjects list.
+     *
+     * @param {string | undefined} name - The name of the subject to search for.
+     * @return {Promise<void>} A promise that resolves when the search is complete.
+     */
+    const searchSubjectQuery = async <TString extends string | undefined>(
+        name?: TString
+    ): Promise<void> => {
         setLoading(true);
         setError(null);
-        return await searchSubject(name)
+
+        return await searchSubject<TString>(name)
             .then((response) => {
                 setFilteredSubjects(response);
-            }).catch((error) => {
+            })
+            .catch((error) => {
                 const errorMessage = handleError(error);
                 setError(errorMessage);
-            }).finally(() => {
+            })
+            .finally(() => {
                 setLoading(false);
             });
     };
