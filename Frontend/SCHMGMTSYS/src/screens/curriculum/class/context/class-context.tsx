@@ -2,7 +2,15 @@ import { createContext, useCallback, useEffect, useState } from "react";
 import { ClassContextTypes } from "../types/class-types";
 import { ClassProps } from "./props/class-props";
 import { ClassData } from "../data/class";
-import { createClass, deleteClass, getAllClass, getAllCountClass, getClassById, searchClass, updateClass } from "../../../../services/class/class-service";
+import { 
+    createClass, 
+    deleteClass, 
+    getAllClass, 
+    getAllCountClass, 
+    getClassById, 
+    searchClass, 
+    updateClass 
+} from "../../../../services/class/class-service";
 import { toast } from "react-toastify";
 import { handleError } from "../../../../configs/error-handling";
 
@@ -11,8 +19,8 @@ export const ClassContext = createContext<ClassContextTypes | null>(null);
 export const ClassProvider: React.FC<ClassProps> = ({ children }) => {
     
     const [classes, setClasses] = useState<ClassData[]>([]);
-    const [selectedClasses, setSelectedClasses] = useState<ClassData | null>(null);
     const [filteredClasses, setFilteredClasses] = useState<ClassData[]>([]);
+    const [selectedClasses, setSelectedClasses] = useState<ClassData | null>(null);
     const [overAllClass, setOverAllClass] = useState<number>(0);
     const [loading, setLoading] = useState<boolean>(false);
     const [error, setError] = useState<string | null>(null);
@@ -41,7 +49,9 @@ export const ClassProvider: React.FC<ClassProps> = ({ children }) => {
         return classIndex ? classIndex.name : 'No Class Found';
     };
 
-    const fetchClassById = useCallback(async (classId: number) => {
+    const fetchClassById = useCallback(async (
+        classId: number
+    ) => {
         return await getClassById(classId)
             .then((response) => {
                 setSelectedClasses(response);
@@ -98,6 +108,7 @@ export const ClassProvider: React.FC<ClassProps> = ({ children }) => {
         return await deleteClass(id)
             .then(() => {
                 setClasses((prevClass) => prevClass.filter(t => t.id !== id));
+                setFilteredClasses((prevClass) => prevClass.filter(t => t.id !== id));
             }).catch((error) => {
                 const errorMessage = handleError(error);
                 setError(errorMessage);

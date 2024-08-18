@@ -12,7 +12,7 @@ import { useModal } from "../../../../hooks/use-modal";
 export const StudentTable: React.FC = () => {
 
     const {
-        students,
+        filteredStudents,
         loading,
         error,
         fetchStudentById,
@@ -49,7 +49,7 @@ export const StudentTable: React.FC = () => {
                     <ErrorDiv>{error}</ErrorDiv>
                 ) : (
                     <React.Fragment>
-                        <Table dataSource={students} >
+                        <Table dataSource={filteredStudents} >
                             <ColumnGroup title="Name">
                                 <Column title="First Name" dataIndex="firstName" key="firstName" />
                                 <Column title="Last Name" dataIndex="lastName" key="lastName" />

@@ -2,104 +2,139 @@ import React, { createContext, useCallback, useEffect, useState } from "react";
 import { ParentContextType } from "../types/parent-types";
 import { ParentProps } from "./props/parent-props";
 import { ParentData } from "../data/parents";
-import { createParent, deleteParent, getAllCountParent, getAllParent, getParentById, updateParent } from "../../../services/parent/parent-service";
-import { FormProps } from "antd";
+import { 
+    createParent, 
+    deleteParent, 
+    getAllCountParent, 
+    getAllParent, 
+    getParentById, 
+    searchParent, 
+    updateParent 
+} from "../../../services/parent/parent-service";
 import { toast } from "react-toastify";
+import { handleError } from "../../../configs/error-handling";
 
 export const ParentContext = createContext<ParentContextType | null>(null);
 
 export const ParentProvider: React.FC<ParentProps> = ({ children }) => {
     
     const [parents, setParents] = useState<ParentData[]>([]);
+    const [filteredParents, setFilteredParents] = useState<ParentData[]>([]);
+    const [selectedParent, setSelectedParent] = useState<ParentData | null>(null);
     const [overAllParent, setOverAllParent] = useState<number>(0);
     const [loading, setLoading] = useState<boolean>(false);
     const [error, setError] = useState<string | null>(null);
-    const [selectedParent, setSelectedParent] = useState<ParentData | null>(null);
-
-    const onFinishFailed: FormProps<ParentData>['onFinishFailed'] = (errorInfo) => {
-        console.log('Failed:', errorInfo);
-    };
 
     useEffect(() => {
-        const fetchParents = async () => {
-            setLoading(true);
-            try {
-                const response = await getAllParent();
-                setParents(response);
-
-                const overAllParentResponse = await getAllCountParent();
-                setOverAllParent(overAllParentResponse);
-            } catch (error) {
-                console.log(error);
-                setError('Failed to catch parents');
-            } finally {
-                setLoading(false);
-            }
-        }
-
-        fetchParents();
+        setLoading(true);
+        getAllParent().then(async (response) => {
+            setParents(response);
+            setFilteredParents(response);
+            return await getAllCountParent();
+        }).then((overAllParentResponse) => {
+            setOverAllParent(overAllParentResponse);
+        }).catch((error) => {
+            const errorMessage = handleError(error);
+            setError(errorMessage);
+        }).finally(() => {
+            setLoading(false);
+        });
     }, []);
 
-    const fetchParentById = useCallback(async (parentId: number) => {
-        try {
-            const response = await getParentById(parentId);
-            setSelectedParent(response);
-        } catch (error) {
-            console.log(error);
-            setError('Failed to fetch parent by ID');
-        }
+    const fetchParentById = useCallback(async (
+        parentId: number
+    ) => {
+        return await getParentById(parentId)
+            .then((response) => {
+                setSelectedParent(response);
+            }).catch((error) => {
+                const errorMessage = handleError(error);
+                setError(errorMessage);
+            });
     }, []);
     
-    const createNewParents = async (parent: Omit<ParentData, 'id'>) => {
+    const createNewParents = async (
+        parent: Omit<ParentData, 'id'>
+    ) => {
         setLoading(true);
-        try {
-            const response = await createParent(parent);
-            setParents([...parents, response]);
-            toast.success("Parent added successfully");
-        } catch (error) {
-            console.log(error);
-            setError('Failed to add parents'); 
-        } finally {
-            setLoading(false);
-        }
+        setError(null);
+        return await createParent(parent)
+            .then((response) => {
+                const addedParents = [...parents, response];
+                setParents(addedParents);
+                setFilteredParents(addedParents);
+                toast.success(`Parent ${parent.firstName} ${parent.lastName} added successfully`);
+            }).catch((error) => {
+                const errorMessage = handleError(error);
+                setError(errorMessage);
+            }).finally(() => {
+                setLoading(false);
+            });
     };
 
-    const editParent = async (id: number, updatedParent: Omit<ParentData, 'id'>) => {
+    const editParent = async (
+        id: number, 
+        updatedParent: Omit<ParentData, 'id'>
+    ) => {
         setLoading(true);
-        try {
-            const response = await updateParent(id, updatedParent);
-            setParents(parents.map(parent => parent.id === id ? response : parent));
-            toast.success("Parent updated successfully");
-        } catch (error) {
-            console.log(error);
-            setError('Failed to update parent'); 
-        } finally {
-            setLoading(false);
-        }
+        setError(null);
+        return await updateParent(id, updatedParent)
+            .then((response) => {
+                const editedParents = parents.map(parent => parent.id === id ? response : parent);
+                setParents(editedParents);
+                setFilteredParents(editedParents)
+                toast.success(`Parent ${updatedParent.firstName} ${updatedParent.lastName} updated successfully`);
+            }).catch((error) => {
+                const errorMessage = handleError(error);
+                setError(errorMessage);
+            }).finally(() => {
+                setLoading(false);
+            });
     };
 
-    const removeParent = async (id: number) => {
+    const removeParent = async (
+        id: number
+    ) => {
         setLoading(true);
-        try {
-            await deleteParent(id);
-            setParents((prevParent) => prevParent.filter(p => p.id !== id));
-        } catch (error) {
-            console.log(error);
-            setError('Failed to delete parent');
-        } finally {
-            setLoading(false);
-        }
+        setError(null);
+        return await deleteParent(id)
+            .then(() => {
+                setParents((prevParent) => prevParent.filter(p => p.id !== id));
+                setFilteredParents((prevParent) => prevParent.filter(p => p.id !== id));
+            }).catch((error) => {
+                const errorMessage = handleError(error);
+                setError(errorMessage);
+            }).finally(() => {
+                setLoading(false);
+            });
+    };
+
+    const searchParentQuery = async (
+        name?: string
+    ) => {
+        setLoading(true);
+        setError(null);
+        return await searchParent(name)
+            .then((response) => {
+                setFilteredParents(response);
+            }).catch((error) => {
+                const errorMessage = handleError(error);
+                setError(errorMessage);
+            }).finally(() => {
+                setLoading(false);
+            });
     };
 
     const handleValues = {
+        searchParentQuery,
         editParent,
         removeParent,
         fetchParentById,
-        onFinishFailed,
         createNewParents,
         loading,
         error,
         parents,
+        filteredParents,
         selectedParent,
         overAllParent
     };
@@ -109,4 +144,4 @@ export const ParentProvider: React.FC<ParentProps> = ({ children }) => {
             {children}
         </ParentContext.Provider>
     )
-}
+};

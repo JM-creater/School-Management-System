@@ -9,7 +9,7 @@ import { useModal } from '../../../hooks/use-modal';
 import { CustomModal } from '../../../components/modal/modal';
 import { ClassData } from './data/class';
 import { ButtonClassContainer } from './styles/class-style';
-import { ClassAddForm, ClassEditForm } from './components/modal/modal-class';
+import { ClassAddForm, ClassEditForm } from './components/form/form-class';
 
 export const ClassScreen: React.FC = () => {
 

@@ -21,7 +21,8 @@ export const AttendanceScreen: React.FC = () => {
   } = useStudent();
   const {
     error,
-    loading
+    loading,
+    markedStudents
   } = useAttendance();
   const {
     countAbsent,
@@ -35,6 +36,7 @@ export const AttendanceScreen: React.FC = () => {
   };
 
   const filteredStudents = students.filter(student => {
+    if (markedStudents.includes(student.id)) return false; 
     if (!filterStatus) return !student.isAttendance;
     return student.status === filterStatus;
   });
@@ -117,4 +119,4 @@ export const AttendanceScreen: React.FC = () => {
       </React.Fragment>
    </React.Fragment>
   )
-}
+};

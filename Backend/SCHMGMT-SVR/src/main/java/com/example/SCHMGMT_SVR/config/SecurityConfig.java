@@ -20,7 +20,6 @@ public class SecurityConfig {
                         .requestMatchers("/attendance/**").permitAll()
                         .anyRequest().authenticated()
                 );
-
         return http.build();
     }
 }

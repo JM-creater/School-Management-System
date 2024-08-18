@@ -20,4 +20,4 @@ export interface StudentData {
     }
     isAttendance: boolean;  
     status?: string  
-}
+};

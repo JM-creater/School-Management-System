@@ -10,7 +10,7 @@ import { useTeacher } from '../../hooks/use-teacher';
 import moment from 'moment';
 import { useClass } from '../../hooks/use-class';
 import { ButtonTeacherContainer } from './styles/teacher-styles';
-import { TeacherAddForm, TeacherEditForm } from './components/modal/modal-teacher';
+import { TeacherAddForm, TeacherEditForm } from './components/form/form-teacher';
 
 export const TeacherScreen: React.FC = () => {
 
