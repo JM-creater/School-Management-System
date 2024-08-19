@@ -36,20 +36,6 @@ export const StudentScreen: React.FC = () => {
     searchStudentQuery
   } = useStudent();
 
-  const handleEdit = async (teacher: Omit<StudentData, 'id'>) => {
-    if (selectedStudents) {
-      await editStudent(selectedStudents.id as number, teacher);
-      closeEditModal();
-    }
-  };
-
-  const handleKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
-    if (event.key === "Enter") {
-      const value = (event.currentTarget as HTMLInputElement).value;
-      searchStudentQuery(value);
-    }
-  };
-
   useEffect(() => {
     if (selectedStudents) {
       form.setFieldsValue({
@@ -66,6 +52,36 @@ export const StudentScreen: React.FC = () => {
       });
     }
   }, [selectedStudents, form]);
+
+  /**
+   * Handles the editing of a student by updating their information with the provided data.
+   *
+   * @param {Omit<StudentData, 'id'>} student - The student data to update, excluding the 'id' field.
+   * @return {Promise<void>} A promise that resolves when the update operation completes.
+  */
+  const handleEdit = async <T extends Omit<StudentData, 'id'>>(
+    teacher: T
+  ): Promise<void> => {
+    if (selectedStudents) {
+      await editStudent(selectedStudents.id as number, teacher);
+      closeEditModal();
+    }
+  };
+
+  /**
+   * Handles the key down event for an input field. Triggers a search query when the Enter key is pressed.
+   *
+   * @param {React.KeyboardEvent<HTMLInputElement>} event - The keyboard event triggered by the user.
+   * @return {void}
+  */
+  const handleKeyDown = async <T extends React.KeyboardEvent<HTMLInputElement>>(
+    event: T
+  ): Promise<void> => {
+    if (event.key === "Enter") {
+      const value = (event.currentTarget as HTMLInputElement).value;
+      searchStudentQuery(value);
+    }
+  };
 
   return (
     <React.Fragment>

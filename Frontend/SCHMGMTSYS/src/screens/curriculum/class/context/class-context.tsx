@@ -128,7 +128,7 @@ export const ClassProvider: React.FC<ClassProps> = ({ children }) => {
                 const updatedClassList = classes.map(c => c.id === id ? response : c);
                 setClasses(updatedClassList);
                 setFilteredClasses(updatedClassList);
-                toast.success("Class updated successfully");
+                toast.success(`Class ${updatedClasses.name} updated successfully`);
             }).catch((error) => {
                 const errorMessage = handleError(error);
                 setError(errorMessage);

@@ -61,7 +61,7 @@ export const ParentEditForm: React.FC<ParentEditModalProps> = ({ form, handleEdi
             form={form}
             layout="vertical"
             onFinish={handleEdit}
-            onFinishFailed={onFinishFailed}
+            // onFinishFailed={onFinishFailed}
         >
             <Row gutter={16}>
                 <Col span={12}>

@@ -32,20 +32,6 @@ export const TeacherScreen: React.FC = () => {
     classes 
   } = useClass();
 
-  const handleEdit = async (teacher: Omit<TeacherData, 'id'>) => {
-    if (selectedTeacher) {
-      await editTeacher(selectedTeacher.id as number, teacher);
-      closeEditModal();
-    }
-  };
-
-  const handleKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
-    if (event.key === "Enter") {
-      const value = (event.currentTarget as HTMLInputElement).value;
-      searchTeacherQuery(value);
-    }
-  };
-
   useEffect(() => {
     if (selectedTeacher) {
       form.setFieldsValue({
@@ -60,6 +46,37 @@ export const TeacherScreen: React.FC = () => {
       });
     }
   }, [selectedTeacher, form]);
+
+  /**
+   * Handles the editing of a teacher's data by calling the `editTeacher` function with the selected teacher's ID and updated data.
+   *
+   * @param {Omit<TeacherData, 'id'>} teacher - The updated teacher data excluding the 'id' field.
+   * @return {Promise<void>} Resolves when the teacher has been successfully updated.
+   * @throws {Error} If there is an error during the update process.
+  */
+  const handleEdit = async <T extends Omit<TeacherData, 'id'>>(
+    teacher: T
+  ): Promise<void> => {
+    if (selectedTeacher) {
+      await editTeacher(selectedTeacher.id as number, teacher);
+      closeEditModal();
+    }
+  };
+  
+  /**
+   * Handles the keydown event for an input element by triggering a search when the "Enter" key is pressed.
+   *
+   * @param {React.KeyboardEvent<HTMLInputElement>} event - The keydown event from the input element.
+   * @return {Promise<void>} Resolves when the search query has been processed.
+  */
+  const handleKeyDown = async <T extends React.KeyboardEvent<HTMLInputElement>>(
+    event: T
+  ): Promise<void> => {
+    if (event.key === "Enter") {
+      const value = (event.currentTarget as HTMLInputElement).value;
+      searchTeacherQuery(value);
+    }
+  };
 
   return (
     <React.Fragment>

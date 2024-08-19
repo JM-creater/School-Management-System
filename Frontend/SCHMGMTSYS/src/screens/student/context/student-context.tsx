@@ -33,19 +33,20 @@ export const StudentProvider: React.FC<StudentProps> = ({ children }) => {
 
     useEffect(() => {
         setLoading(true);
-        getAllStudent().then(async (response) => {
+        getAllStudent<string>()
+        .then(async (response) => {
             setStudents(response);
             setFilteredStudents(response);
-            return await getAllCountStudent()
+            return await getAllCountStudent<string>()
         }).then(async (overAllStudentResponse) => {
             setOverAllStudents(overAllStudentResponse);
-            return await getCountPresent();
+            return await getCountPresent<string>();
         }).then(async (presentResponse) => {
             setCountPresent(presentResponse);
-            return await getCountLate();
+            return await getCountLate<string>();
         }).then(async (lateResponse) => {
             setCountLate(lateResponse);
-            return await getCountAbsent();
+            return await getCountAbsent<string>();
         }).then((absentResponse) => {
             setCountAbsent(absentResponse);
         }).catch((error) => {
@@ -56,10 +57,10 @@ export const StudentProvider: React.FC<StudentProps> = ({ children }) => {
         }); 
     }, []);
 
-    const fetchStudentById = useCallback(async (
-        studentId: number
-    ) => {
-        return await getStudentById(studentId)
+    const fetchStudentById = useCallback(async <TNumber extends number | undefined>(
+        studentId: TNumber
+    ): Promise<void> => {
+        return await getStudentById<TNumber>(studentId)
             .then((response) => {
                 setSelectedStudents(response);
             }).catch((error) => {
@@ -68,9 +69,15 @@ export const StudentProvider: React.FC<StudentProps> = ({ children }) => {
             });
     }, []);
 
-    const createNewStudent = async (
-        values: Omit<StudentData, 'id'>
-    ) => {
+    /**
+     * Fetches a student by their ID and updates the selected student state.
+     *
+     * @param {number | undefined} studentId - The ID of the student to fetch. This parameter is optional.
+     * @return {Promise<void>} A promise that resolves when the student data is fetched and the state is updated.
+     */
+    const createNewStudent = async <TValues extends Omit<StudentData, 'id'>>(
+        values: TValues
+    ): Promise<void> => {
         setLoading(true);
         setError(null);
         const formattedValues = {
@@ -96,8 +103,15 @@ export const StudentProvider: React.FC<StudentProps> = ({ children }) => {
             });
     };
 
-    const editStudent = async (
-        id: number, 
+    /**
+     * Edits an existing student's information by their ID.
+     *
+     * @param {number | undefined} id - The ID of the student to edit. This parameter is optional.
+     * @param {Omit<StudentData, 'id'>} updatedStudent - The updated student data excluding the ID.
+     * @return {Promise<void>} A promise that resolves when the student's data has been successfully updated.
+     */
+    const editStudent = async <TNumber extends number | undefined>(
+        id: TNumber, 
         updatedStudent: Omit<StudentData, 'id'>
     ) => {
         setLoading(true);
@@ -110,8 +124,8 @@ export const StudentProvider: React.FC<StudentProps> = ({ children }) => {
             classroom: {
                 id: updatedStudent.classroom_id
             }
-        };
-        return await updateStudent(id, formattedValues)
+        } as number extends TNumber ? Omit<StudentData, 'id'> : StudentData;
+        return await updateStudent<TNumber>(id, formattedValues)
             .then((response) => {
                 const editedStudent = students.map(s => s.id === id ? response : s)
                 setStudents(editedStudent);
@@ -125,12 +139,18 @@ export const StudentProvider: React.FC<StudentProps> = ({ children }) => {
             });
     };
 
-    const removeStudent = async (
-        id: number
+    /**
+     * Removes a student from the system by their ID.
+     *
+     * @param {number | undefined} id - The ID of the student to be removed. This parameter is optional.
+     * @return {Promise<void>} A promise that resolves when the student has been successfully removed.
+     */
+    const removeStudent = async <TNumber extends number | undefined>(
+        id: TNumber
     ) => {
         setLoading(true);
         setError(null);
-        return await deleteStudent(id)
+        return await deleteStudent<TNumber>(id)
             .then(() => {
                 setStudents((prevStudents) => prevStudents.filter(t => t.id !== id));
                 setFilteredStudents((prevStudents) => prevStudents.filter(t => t.id !== id));
@@ -142,12 +162,18 @@ export const StudentProvider: React.FC<StudentProps> = ({ children }) => {
             });
     };
 
-    const searchStudentQuery = async (
-        name?: string
+    /**
+     * Searches for students based on the provided name and updates the filtered student list.
+     *
+     * @param {string | undefined} name - The name to search for. This parameter is optional.
+     * @return {Promise<void>} A promise that resolves when the search operation completes.
+     */
+    const searchStudentQuery = async <TString extends string | undefined>(
+        name?: TString
     ) => {
         setLoading(true);
         setError(null);
-        return await searchStudent(name)
+        return await searchStudent<TString>(name)
             .then((response) => {
                 setFilteredStudents(response);
             }).catch((error) => {

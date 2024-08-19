@@ -116,7 +116,7 @@ export const TeacherEditForm: React.FC<ModalEditTeacherProps> = ({ form, handleE
           form={form}
           layout="vertical" 
           onFinish={handleEdit}
-          onFinishFailed={onFinishFailed}
+          // onFinishFailed={onFinishFailed}
         >
           <Row gutter={16}>
             <Col span={12}>
