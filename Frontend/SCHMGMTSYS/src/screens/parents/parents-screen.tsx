@@ -8,7 +8,7 @@ import { useParent } from '../../hooks/use-parent';
 import { ParentData } from './data/parents';
 import { ColumnTable } from './components/columns/columns';
 import { ButtonParentContainer, CenteredContainer, ErrorDiv } from './themes/parents-styles';
-import { ParentAddForm, ParentEditForm } from './components/modal/modal-parent';
+import { ParentAddForm, ParentEditForm } from './components/form/form-parent';
 
 export const ParentsScreen: React.FC = () => {
 

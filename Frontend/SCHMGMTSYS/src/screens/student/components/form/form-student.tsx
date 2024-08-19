@@ -161,7 +161,7 @@ export const StudentEditForm: React.FC<StudentEditFormProps> = ({
             form={form}
             layout="vertical" 
             onFinish={handleEdit}
-            onFinishFailed={onFinishFailed}
+            // onFinishFailed={onFinishFailed}
         >
           <Row gutter={16}>
             <Col span={12}>

@@ -21,10 +21,11 @@ export const TeacherProvider: React.FC<TeacherProps> = ({ children }) => {
     useEffect(() => {
         setLoading(true);
         setError(null);
-        getAllTeacher().then((response) => {
+        getAllTeacher<string>()
+        .then((response) => {
             setTeachers(response);
             setFilteredTeachers(response);
-            return getAllCountStudent();
+            return getAllCountStudent<string>();
         }).then((overAllTeacherResponse) => {
             setOverAllTeachers(overAllTeacherResponse);
         }).catch((error) => {
@@ -35,18 +36,31 @@ export const TeacherProvider: React.FC<TeacherProps> = ({ children }) => {
         });
     }, []);
 
-    const getTeacherFullNameById = (
-        teacherId: number, 
+    /**
+     * Retrieves the full name of a teacher by their ID.
+     *
+     * @param {number | undefined} teacherId - The ID of the teacher whose full name is to be retrieved.
+     * @param {TeacherData[]} teachers - The list of teachers to search through.
+     * @return {string} The full name of the teacher in the format "FirstName LastName", or 'No Teacher Assigned' if the teacher is not found.
+    */
+    const getTeacherFullNameById = <TNumber extends number | undefined>(
+        teacherId: TNumber, 
         teachers: TeacherData[]
     ): string => {
         const teacher = teachers.find(t => t.id === teacherId);
         return teacher ? `${teacher.firstName} ${teacher.lastName}` : 'No Teacher Assigned';
     };
 
-    const fetchTeacherById = useCallback(async (
-        teacherId: number
-    ) => {
-        getTeacherById(teacherId)
+    /**
+     * Fetches a teacher's data by their ID and updates the selected teacher state.
+     *
+     * @param {number | undefined} teacherId - The ID of the teacher to fetch.
+     * @return {Promise<void>} A promise that resolves when the teacher data is fetched and the state is updated.
+    */
+    const fetchTeacherById = useCallback(async <TNumber extends number | undefined>(
+        teacherId: TNumber
+    ): Promise<void> => {
+        getTeacherById<TNumber>(teacherId)
             .then((response) => {
                 setSelectedTeacher(response);
             }).catch((error) => {
@@ -55,9 +69,15 @@ export const TeacherProvider: React.FC<TeacherProps> = ({ children }) => {
             })
     }, []);
 
-    const createNewTeacher = async (
-        teacher: Omit<TeacherData, 'id'>
-    ) => {
+    /**
+     * Creates a new teacher and updates the teachers list in the state.
+     *
+     * @param {Omit<TeacherData, 'id'>} teacher - The data of the teacher to be created.
+     * @return {Promise<void>} A promise that resolves when the teacher is created and the state is updated.
+    */
+    const createNewTeacher = async <TTeacherData extends Omit<TeacherData, 'id'>>(
+        teacher: TTeacherData
+    ): Promise<void> => {
         setLoading(true);
         setError(null);
         const formattedValues = {
@@ -65,8 +85,8 @@ export const TeacherProvider: React.FC<TeacherProps> = ({ children }) => {
             classroom: {
                 id: teacher.classroom_id
             }
-        };
-        return await createTeacher(formattedValues)
+        } as TTeacherData;
+        return await createTeacher<TTeacherData>(formattedValues)
             .then((response) => {
                 setTeachers([...teachers, response]);
                 setFilteredTeachers([...teachers, response]);
@@ -79,8 +99,15 @@ export const TeacherProvider: React.FC<TeacherProps> = ({ children }) => {
             });
     };
     
-    const editTeacher = async (
-        id: number, 
+    /**
+     * Edits an existing teacher's information and updates the teachers list in the state.
+     *
+     * @param {number | undefined} id - The ID of the teacher to be edited.
+     * @param {Omit<TeacherData, 'id'>} updatedTeacher - The updated data of the teacher.
+     * @return {Promise<void>} A promise that resolves when the teacher is updated and the state is updated.
+    */
+    const editTeacher = async <TNumber extends number | undefined>(
+        id: TNumber, 
         updatedTeacher: Omit<TeacherData, 'id'>
     ) => {
         setLoading(true);
@@ -90,8 +117,8 @@ export const TeacherProvider: React.FC<TeacherProps> = ({ children }) => {
             classroom: {
                 id: updatedTeacher.classroom_id
             }
-        };
-        return await updateTeacher(id, formattedValues)
+        } as number extends TNumber ? Omit<TeacherData, 'id'> : TeacherData;
+        return await updateTeacher<TNumber>(id, formattedValues)
             .then((response) => {
                 setTeachers(teachers.map(t => t.id === id ? response : t));
                 setFilteredTeachers(teachers.map(t => t.id === id ? response : t));
@@ -104,12 +131,18 @@ export const TeacherProvider: React.FC<TeacherProps> = ({ children }) => {
             })
     };
 
-    const removeTeacher = async (
-        id: number
+    /**
+     * Removes a teacher from the list based on their ID.
+     *
+     * @param {number | undefined} id - The ID of the teacher to be removed.
+     * @return {Promise<void>} A promise that resolves when the teacher is removed and the state is updated.
+     */
+    const removeTeacher = async <TNumber extends number | undefined>(
+        id: TNumber
     ) => {
         setLoading(true);
         setError(null);
-        return await deleteTeacher(id)
+        return await deleteTeacher<TNumber>(id)
             .then(() => {
                 setFilteredTeachers((prevTeacher) => prevTeacher.filter(t => t.id !== id));
             }).catch((error) => {
@@ -120,12 +153,18 @@ export const TeacherProvider: React.FC<TeacherProps> = ({ children }) => {
             });
     };
 
-    const searchTeacherQuery = async (
-        firstName?: string
+    /**
+     * Searches for teachers by their first name and updates the filtered teachers list.
+     *
+     * @param {string | undefined} firstName - The first name of the teacher(s) to search for. This parameter is optional.
+     * @return {Promise<void>} A promise that resolves when the search operation is complete and the state is updated.
+     */
+    const searchTeacherQuery = async <TString extends string | undefined>(
+        firstName?: TString
     ): Promise<void> => {
         setLoading(true);
         setError(null);
-        return await searchTeacher(firstName)
+        return await searchTeacher<TString>(firstName)
             .then((response) => {
                 setFilteredTeachers(response);
             }).catch((error) => {
