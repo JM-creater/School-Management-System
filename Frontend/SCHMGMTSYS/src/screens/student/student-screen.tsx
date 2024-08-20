@@ -25,9 +25,11 @@ export const StudentScreen: React.FC = () => {
     form,
     openModal,
     openEditModal,
+    // openDetailModal,
     showModal, 
     closeModal,
-    closeEditModal,
+    closeEditModal, 
+    // closeDetailModal
   } = useModal();
   const {
     selectedStudents,
@@ -142,6 +144,25 @@ export const StudentScreen: React.FC = () => {
           classes={classes}
         />
       </CustomModal>
+{/* 
+        <CustomModal
+          open={openDetailModal} 
+          title='Student Details'
+          onOk={closeDetailModal}
+          onCancel={closeDetailModal}
+          centered
+        >
+          {selectedStudents && (
+            <div>
+              <p><strong>First Name:</strong> {selectedStudents.firstName}</p>
+              <p><strong>Last Name:</strong> {selectedStudents.lastName}</p>
+              <p><strong>Address:</strong> {selectedStudents.address}</p>
+              <p><strong>Email:</strong> {selectedStudents.email}</p>
+              <p><strong>Phone Number:</strong> {selectedStudents.phoneNumber}</p>
+              <p><strong>Attendance Status:</strong> {selectedStudents.status}</p>
+            </div>
+          )}
+        </CustomModal> */}
     </React.Fragment>
   )
 };

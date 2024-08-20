@@ -13,4 +13,4 @@ export interface TeacherData {
     classroom: {
         id: number;
     };
-}
+};

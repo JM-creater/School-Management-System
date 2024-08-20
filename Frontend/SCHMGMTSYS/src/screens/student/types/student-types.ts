@@ -1,6 +1,7 @@
 import { StudentData } from "../data/student";
 
 export interface StudentContextTypes {
+    handleRowClick: (record: StudentData) => void;
     searchStudentQuery: (
         name?: string
     ) => Promise<void>;
