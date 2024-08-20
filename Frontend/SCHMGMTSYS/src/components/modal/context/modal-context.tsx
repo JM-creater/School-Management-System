@@ -9,6 +9,7 @@ export const ModalProvider: React.FC<ModalContextProps> = ({ children }) => {
     
     const [openModal, setOpenModal] = useState<boolean>(false);
     const [openEditModal, setOpenEditModal] = useState<boolean>(false);
+    const [openDetailModal, setOpenDetailModal] = useState(false);
     const [form] = Form.useForm(); 
 
     const showModal = () => {
@@ -27,14 +28,25 @@ export const ModalProvider: React.FC<ModalContextProps> = ({ children }) => {
         setOpenEditModal(false);
     };
 
+    const showDetailModal = () => { 
+        setOpenDetailModal(true); 
+    };
+
+    const closeDetailModal = () => { 
+        setOpenDetailModal(false);
+    };
+
     const handleValue = {
+        showDetailModal,
+        closeDetailModal,
         showEditModal,
         closeEditModal,
         showModal,
         closeModal,
         openModal,
         form,
-        openEditModal
+        openEditModal,
+        openDetailModal
     };
     
     return (

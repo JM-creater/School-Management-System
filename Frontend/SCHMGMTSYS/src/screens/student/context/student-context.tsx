@@ -57,6 +57,19 @@ export const StudentProvider: React.FC<StudentProps> = ({ children }) => {
         }); 
     }, []);
 
+    const handleRowClick = <TStudentData extends StudentData>(
+        record: TStudentData
+    ) => {
+        setSelectedStudents(record);
+        fetchStudentById(record.id as number);
+    };
+
+    /**
+     * Fetches a student by their ID and updates the selected student state.
+     *
+     * @param {TNumber} studentId - The ID of the student to fetch.
+     * @return {Promise<void>} - A promise that resolves when the student data is fetched and state is updated.
+    */
     const fetchStudentById = useCallback(async <TNumber extends number | undefined>(
         studentId: TNumber
     ): Promise<void> => {
@@ -89,7 +102,7 @@ export const StudentProvider: React.FC<StudentProps> = ({ children }) => {
                 id: values.classroom_id
             }
         };
-        return await createStudent(formattedValues)
+        return await createStudent<TValues>(formattedValues)
             .then((response) => {
                 const addStudents = [...students, response];
                 setStudents(addStudents);
@@ -113,7 +126,7 @@ export const StudentProvider: React.FC<StudentProps> = ({ children }) => {
     const editStudent = async <TNumber extends number | undefined>(
         id: TNumber, 
         updatedStudent: Omit<StudentData, 'id'>
-    ) => {
+    ): Promise<void> => {
         setLoading(true);
         setError(null);
         const formattedValues = {
@@ -147,7 +160,7 @@ export const StudentProvider: React.FC<StudentProps> = ({ children }) => {
      */
     const removeStudent = async <TNumber extends number | undefined>(
         id: TNumber
-    ) => {
+    ): Promise<void> => {
         setLoading(true);
         setError(null);
         return await deleteStudent<TNumber>(id)
@@ -170,7 +183,7 @@ export const StudentProvider: React.FC<StudentProps> = ({ children }) => {
      */
     const searchStudentQuery = async <TString extends string | undefined>(
         name?: TString
-    ) => {
+    ): Promise<void> => {
         setLoading(true);
         setError(null);
         return await searchStudent<TString>(name)
@@ -198,7 +211,8 @@ export const StudentProvider: React.FC<StudentProps> = ({ children }) => {
         createNewStudent,
         editStudent,
         removeStudent,
-        searchStudentQuery
+        searchStudentQuery,
+        handleRowClick
     };
 
     return (

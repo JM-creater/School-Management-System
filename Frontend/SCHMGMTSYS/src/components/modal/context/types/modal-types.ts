@@ -1,6 +1,8 @@
 import { FormInstance } from "antd";
 
 export interface ModalContextTypes {
+    showDetailModal: () => void;
+    closeDetailModal: () => void;
     showEditModal: () => void;
     closeEditModal: () => void;
     showModal: () => void;
@@ -8,4 +10,5 @@ export interface ModalContextTypes {
     openModal: boolean;
     form: FormInstance;
     openEditModal: boolean;
-}
+    openDetailModal: boolean;
+};

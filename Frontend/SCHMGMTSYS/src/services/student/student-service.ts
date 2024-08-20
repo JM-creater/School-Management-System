@@ -56,7 +56,7 @@ export const getStudentById = async <T extends number | undefined>(
 export const getAllCountStudent = async <T extends string | undefined>(): Promise<
     T extends string ? number : number
 > => {
-    return await axiosInstance.get(GET_ALL_COUNT_STUDENT)
+    return await axiosInstance.get<T extends string ? number : number>(GET_ALL_COUNT_STUDENT)
         .then((response) => response.data)
         .catch((error) => {
             throw error;
@@ -147,8 +147,8 @@ export const updateStudent = async <T extends number | undefined>(
 ): Promise<T extends Omit<StudentData, 'id'> ? StudentData : StudentData> => {
     const formattedValues = {
         ...students,
-        dateOfBirth: moment(students.dateOfBirth).format('YYYY-MM-DD'),
-        enrollmentDate: moment(students.enrollmentDate).format('YYYY-MM-DD'),
+        dateOfBirth: students.dateOfBirth.format('YYYY-MM-DD'),
+        enrollmentDate: students.enrollmentDate.format('YYYY-MM-DD'),
     };
     return await axiosInstance.put<T extends Omit<StudentData, 'id'> ? StudentData : StudentData>(`${UPDATE_STUDENT_URL}${id}`, formattedValues)
         .then((response) => response.data)

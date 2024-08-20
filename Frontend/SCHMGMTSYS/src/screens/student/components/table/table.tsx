@@ -67,6 +67,7 @@ export const StudentTable: React.FC = () => {
                                 key="parent"
                                 render={(record: StudentData) => getParentName(record.parent.id as number)}
                             />
+                            <Column title="Attendance Status" dataIndex="status" key="status" />
                             <Column
                                 title="Action"
                                 key="action"

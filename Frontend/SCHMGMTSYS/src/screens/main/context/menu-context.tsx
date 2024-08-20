@@ -14,15 +14,21 @@ export const MenuItemContext = createContext<MenuItemContextType | null>(null);
 
 export const MenuItemProvider: React.FC<MenuItemProps> = ({ children }) => {
 
-    const [selectedKeyMenu, setSelectedKeyMenu] = useState<string>('1');
-    const [changeHeader, setChangeHeader] = useState<number>(1);
+    const [selectedKeyMenu, setSelectedKeyMenu] = useState<string>(() => {
+        return localStorage.getItem('selectedKeyMenu') || '1'; 
+    });
+    const [changeHeader, setChangeHeader] = useState<number>(() => {
+        return parseInt(localStorage.getItem('selectedKeyMenu') || '1');  
+    });
 
     const handleChangeHeader = (item: number) => {
         setChangeHeader(item);
+        localStorage.setItem('selectedKeyMenu', item.toString());  
     };
 
     const handleChangeKey = (e: { key: string }) => {
         setSelectedKeyMenu(e.key);
+        localStorage.setItem('selectedKeyMenu', e.key); 
     };
 
     const handleClickBreadCrumb = (item: string) => {

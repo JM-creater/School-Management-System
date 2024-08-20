@@ -3,6 +3,8 @@ import { Card, Col, Row, Select, Statistic, StatisticProps } from "antd";
 import { marginBottomStyles } from "../../../dashboard/themes/dashboard-styles";
 import CountUp from "react-countup";
 import { AttendanceCardProps } from "./props/attendance-card-props";
+import { SelectContainer } from "../../styles/select-container";
+import React from "react";
 
 const { Option } = Select;
 
@@ -13,13 +15,11 @@ export const AttendanceCard: React.FC<AttendanceCardProps> = ({
     isSelectDisabled,
     handleFilterChange
 }) => {
-
     const formatter: StatisticProps['formatter'] = (value) => (
         <CountUp end={value as number} separator="," />
     );
-
     return (
-        <>
+        <React.Fragment>
             <Row gutter={16}>
                 <Col span={8}>
                     <Card bordered={true} style={marginBottomStyles}>
@@ -57,9 +57,10 @@ export const AttendanceCard: React.FC<AttendanceCardProps> = ({
                         />
                     </Card>
                 </Col>
-                </Row>
-                <Row gutter={16} style={{ marginTop: 16 }}>
-                    <Col span={24}>
+            </Row>
+            <Row gutter={16} style={{ marginTop: 16 }}>
+                <Col span={24}>
+                    <SelectContainer>
                         <Select
                             style={{ width: 200 }}
                             placeholder="Filter by status"
@@ -71,8 +72,9 @@ export const AttendanceCard: React.FC<AttendanceCardProps> = ({
                             <Option value="Late">Late</Option>
                             <Option value="Absent">Absent</Option>
                         </Select>
-                    </Col>
-                </Row>
-        </>
+                    </SelectContainer>
+                </Col>
+            </Row>
+        </React.Fragment>
     )
 };
