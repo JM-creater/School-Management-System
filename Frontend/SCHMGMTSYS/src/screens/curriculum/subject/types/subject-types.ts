@@ -22,6 +22,10 @@ export interface SubjectContextTypes {
         values: Omit<SubjectData, 'id'>
     ) => Promise<void>;
 
+    rowClick: (
+        record: SubjectData
+    ) =>  Promise<void>;
+
     selectedSubjects: SubjectData| null;
     subjects: SubjectData[];
     filteredSubjects: SubjectData[];

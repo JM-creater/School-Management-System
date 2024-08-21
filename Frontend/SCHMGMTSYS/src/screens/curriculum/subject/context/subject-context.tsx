@@ -51,6 +51,14 @@ export const SubjectProvider: React.FC<SubjectProps> = ({ children }) => {
             });
     }, []);
 
+
+    const rowClick = async (
+        record: SubjectData
+    ): Promise<void> => {
+        setSelectedSubjects(record);
+        await fetchSubjectById(record.id as number);
+    };
+
     /**
      * Fetches a subject by its ID from the server and updates the state.
      *
@@ -194,6 +202,7 @@ export const SubjectProvider: React.FC<SubjectProps> = ({ children }) => {
         editSubject,
         fetchSubjectById,
         createNewSubject,
+        rowClick,
         selectedSubjects,
         subjects,
         loading,

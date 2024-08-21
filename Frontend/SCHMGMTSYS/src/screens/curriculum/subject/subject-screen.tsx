@@ -1,6 +1,6 @@
-import { Input, Spin, Table } from 'antd';
+import { Col, Input, Row, Spin, Table } from 'antd';
 import React, { useEffect } from 'react';
-import { buttonWidthStyles, marginBottomStyles } from '../../dashboard/themes/dashboard-styles';
+import { buttonWidthStyles, fontWeightText, marginBottomStyles } from '../../dashboard/themes/dashboard-styles';
 import { CustomButton } from '../../../components/button/button';
 import { useSubject } from '../../../hooks/use-subject';
 import { CenteredContainer, ErrorDiv } from '../../parents/themes/parents-styles';
@@ -11,6 +11,18 @@ import { useTeacher } from '../../../hooks/use-teacher';
 import { ButtonSubjectContainer } from './styles/subject-styles';
 import { SubjectAddForm, SubjectEditForm } from './components/form/form-subject';
 import { ColumnTable } from './components/column/column';
+
+interface DescriptionItemProps {
+  title: string;
+  content: React.ReactNode;
+}
+
+const DescriptionItem = ({ title, content }: DescriptionItemProps) => (
+  <div className="site-description-item-profile-wrapper" style={marginBottomStyles}>
+    <p className="site-description-item-profile-p-label" style={fontWeightText}>{title}:</p>
+    {content}
+  </div>
+);
 
 export const SubjectScreen: React.FC = () => {
 
@@ -27,23 +39,29 @@ export const SubjectScreen: React.FC = () => {
     fetchSubjectById,
     editSubject,
     removeSubject,
-    searchSubjectQuery
+    searchSubjectQuery,
+    rowClick
   } = useSubject(); 
   const {
     form,
     openModal,
     openEditModal,
+    openDetailModal,
     closeModal,
     showModal,
     showEditModal,
-    closeEditModal
+    closeEditModal,
+    closeDetailModal,
+    showDetailModal
   } = useModal();
   const columns = ColumnTable(
     showEditModal,
     teachers, 
     getTeacherFullNameById,
     fetchSubjectById,
-    removeSubject
+    removeSubject,
+    showDetailModal,
+    rowClick
   );
 
   useEffect(() => {
@@ -53,7 +71,11 @@ export const SubjectScreen: React.FC = () => {
         code: selectedSubjects.code,
         credits: selectedSubjects.credits,
         teacher_id: selectedSubjects.teacher.id
-      });
+      } as Pick<SubjectData, 
+      | 'name' 
+      | 'code' 
+      | 'credits' 
+      | 'teacher_id'>);
     }
   }, [selectedSubjects, form]);
 
@@ -158,6 +180,42 @@ export const SubjectScreen: React.FC = () => {
           handleEdit={handleEdit}
           teachers={teachers}
         />
+      </CustomModal>
+
+      <CustomModal
+        open={openDetailModal}
+        title='Class Details'
+        onOk={closeDetailModal}
+        onCancel={closeDetailModal}
+        centered  
+      >
+        {
+          selectedSubjects && (
+            <React.Fragment>
+              <Row>
+                <Col span={12}>
+                  <DescriptionItem title="Class Name" content={selectedSubjects.name} />
+                </Col>
+                <Col span={12}>
+                  <DescriptionItem title="Code" content={selectedSubjects.code} />
+                </Col>
+                <Col span={12}>
+                  <DescriptionItem title="Code" content={selectedSubjects.credits} />
+                </Col>
+                <Col span={12}>
+                  <DescriptionItem 
+                    title="Teacher" 
+                    content={
+                      selectedSubjects.teacher && selectedSubjects.teacher.id 
+                      ? getTeacherFullNameById(selectedSubjects.teacher.id as number, teachers)
+                      : 'No Teacher Assigned'
+                    } 
+                  />
+                </Col>
+              </Row>
+            </React.Fragment>
+          )
+        }
       </CustomModal>
 
     </React.Fragment>

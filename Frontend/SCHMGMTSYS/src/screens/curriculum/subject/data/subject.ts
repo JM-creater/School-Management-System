@@ -7,4 +7,4 @@ export interface SubjectData {
     teacher: {
         id: number
     }
-}
+};

@@ -36,6 +36,13 @@ export const TeacherProvider: React.FC<TeacherProps> = ({ children }) => {
         });
     }, []);
 
+    const rowClick = async (
+        record: TeacherData
+    ): Promise<void> => {
+        setSelectedTeacher(record);
+        await fetchTeacherById(record.id as number);
+    };
+
     /**
      * Retrieves the full name of a teacher by their ID.
      *
@@ -109,7 +116,7 @@ export const TeacherProvider: React.FC<TeacherProps> = ({ children }) => {
     const editTeacher = async <TNumber extends number | undefined>(
         id: TNumber, 
         updatedTeacher: Omit<TeacherData, 'id'>
-    ) => {
+    ): Promise<void> => {
         setLoading(true);
         setError(null);
         const formattedValues = {
@@ -139,7 +146,7 @@ export const TeacherProvider: React.FC<TeacherProps> = ({ children }) => {
      */
     const removeTeacher = async <TNumber extends number | undefined>(
         id: TNumber
-    ) => {
+    ): Promise<void> => {
         setLoading(true);
         setError(null);
         return await deleteTeacher<TNumber>(id)
@@ -176,6 +183,7 @@ export const TeacherProvider: React.FC<TeacherProps> = ({ children }) => {
     };
 
     const handleValues = {
+        rowClick,
         searchTeacherQuery,
         getTeacherFullNameById,
         fetchTeacherById,
