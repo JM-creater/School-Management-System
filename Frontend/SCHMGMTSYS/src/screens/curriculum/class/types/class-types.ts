@@ -27,6 +27,10 @@ export interface ClassContextTypes {
         values: Omit<ClassData, 'id'>
     ) => Promise<void>;
 
+    rowClick: (
+        record: ClassData
+    ) => Promise<void>;
+
     loading: boolean;
     error: string | null;
     classes: ClassData[];

@@ -27,7 +27,7 @@ export const CustomModal: React.FC<CustomModalProps> = ({ open, title, onOk, onC
             </Button>,
         ]}
         centered={centered}
-        maskClosable={false}  
+        maskClosable={false} 
     >   
         {children}
     </Modal>

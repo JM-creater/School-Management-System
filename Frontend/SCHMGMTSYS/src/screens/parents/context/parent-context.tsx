@@ -41,6 +41,13 @@ export const ParentProvider: React.FC<ParentProps> = ({ children }) => {
         });
     }, []);
 
+    const rowClick = async (
+        record: ParentData
+    ): Promise<void> => {
+        setSelectedParent(record);
+        await fetchParentById(record.id as number);
+    };
+
     /**
      * Fetches a parent by their ID and updates the selected parent state.
      *
@@ -157,6 +164,7 @@ export const ParentProvider: React.FC<ParentProps> = ({ children }) => {
     };
 
     const handleValues = {
+        rowClick,
         searchParentQuery,
         editParent,
         removeParent,

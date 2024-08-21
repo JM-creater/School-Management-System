@@ -1,6 +1,10 @@
 import { ParentData } from "../data/parents";
 
 export interface ParentContextType {
+    rowClick: (
+        record: ParentData
+    ) => Promise<void>;
+
     searchParentQuery: (
         name?: string
     ) => Promise<void>;

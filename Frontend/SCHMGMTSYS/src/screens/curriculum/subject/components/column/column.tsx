@@ -1,13 +1,16 @@
 import { Space } from "antd";
-import { SubjectData } from "../data/subject";
-import { TeacherData } from "../../../teacher/data/teachers";
+import { TeacherData } from "../../../../teacher/data/teachers";
+import { SubjectData } from "../../data/subject";
+import { EyeOutlined } from "@ant-design/icons";
 
 export const ColumnTable = (
     showEditModal: any, 
     teachers: TeacherData[],
     getTeacherFullNameById: (teacherId: number, teachers: TeacherData[]) => string,
     fetchSubjectById: (subjectId: number) => void,
-    removeSubject: (id: number) => void
+    removeSubject: (id: number) => void,
+    showDetailModal: any,
+    rowClick: (record: SubjectData) => void
 ) => {
     return  [
         {
@@ -49,6 +52,14 @@ export const ColumnTable = (
                         onClick={() => removeSubject(record.id as number)}
                     >
                         Delete
+                    </a>
+                    <a 
+                        onClick={() => {
+                            showDetailModal();
+                            rowClick(record);
+                        }}
+                    >
+                        <EyeOutlined/>
                     </a>
                 </Space>
             ),

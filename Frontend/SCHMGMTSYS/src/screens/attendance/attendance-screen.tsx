@@ -14,7 +14,7 @@ export const AttendanceScreen: React.FC = () => {
   const {
     error,
     loading,
-    markedStudents
+    markedStudents,
   } = useAttendance();
   const {
     countAbsent,
@@ -23,7 +23,9 @@ export const AttendanceScreen: React.FC = () => {
   } = useStudent();
   const columns = AttendanceTable();
 
-  const handleFilterChange = (value: string) => {
+  const handleFilterChange = (
+    value: string
+  ) => {
     setFilterStatus(value);
   };
 

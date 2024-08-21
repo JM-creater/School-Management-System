@@ -4,6 +4,10 @@ export const marginBottomStyles: React.CSSProperties = {
     marginBottom: 12
 }
 
+export const fontWeightText: React.CSSProperties = {
+    fontWeight: 600
+}
+
 export const spaceBetweenStyles: React.CSSProperties = {
     justifyContent: 'space-around'
 }

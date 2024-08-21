@@ -51,6 +51,23 @@ export const ClassProvider: React.FC<ClassProps> = ({ children }) => {
     }, []);
 
     /**
+     * Handles the row click event in a table and fetches detailed information for the selected class.
+     *
+     * @param {T} record - The class data record that was clicked. The record should match the `ClassData` interface.
+     * @return {Promise<void>} - A promise that resolves when the detailed class information has been fetched.
+     * 
+     * @template T - The type extending `ClassData`, representing the clicked class record.
+     * 
+     * @throws Will throw an error if fetching class details by ID fails. The error will be managed within `fetchClassById`.
+    */
+    const rowClick = async <T extends ClassData>(
+        record: T
+    ): Promise<void> => {
+        setSelectedClasses(record);
+        await fetchClassById(record.id as number);
+    };
+
+    /**
      * Retrieves the name of a class by its ID from a list of classes.
      *
      * @param {number} classId - The ID of the class to find.
@@ -194,7 +211,8 @@ export const ClassProvider: React.FC<ClassProps> = ({ children }) => {
         removeClass,
         editClass,
         getClassNameById,
-        searchClassQuery
+        searchClassQuery,
+        rowClick
     };
 
     return (

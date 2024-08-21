@@ -19,13 +19,13 @@ export const AttendanceProvider: React.FC<AttendanceProps> = ({ children }) => {
     const [error, setError] = useState<string | null>(null);
     const [markedStudents, setMarkedStudents] = useState<number[]>([]);
 
-    const markStudentPresentAttendance = async (
-        studentId: number, 
+    const markStudentPresentAttendance = async <TNumber extends number>(
+        studentId: TNumber, 
         status: string
-    ) => {
+    ): Promise<void> => {
         setLoading(true);
         setError(null);
-        return  await markPresentAttendance(studentId, status)
+        return await markPresentAttendance<TNumber>(studentId, status)
             .then((response) => {
                 setMarkedStudents([...markedStudents, response]);
                 setMarkedStudents(prevMarked => [...prevMarked, studentId]);
@@ -37,13 +37,13 @@ export const AttendanceProvider: React.FC<AttendanceProps> = ({ children }) => {
             });
     };
 
-    const markStudentLateAttendance = async (
-        studentId: number, 
+    const markStudentLateAttendance = async <TNumber extends number>(
+        studentId: TNumber, 
         status: string
-    ) => {
+    ): Promise<void> => {
         setLoading(true);
         setError(null);
-        return await markLateAttendance(studentId, status)
+        return await markLateAttendance<TNumber>(studentId, status)
             .then((response) => {
                 setMarkedStudents([...markedStudents, response]);
                 setMarkedStudents(prevMarked => [...prevMarked, studentId]);
@@ -55,13 +55,13 @@ export const AttendanceProvider: React.FC<AttendanceProps> = ({ children }) => {
             });
     };
 
-    const markStudentAbsentAttendance = async (
-        studentId: number, 
+    const markStudentAbsentAttendance = async <TNumber extends number>(
+        studentId: TNumber, 
         status: string
-    ) => {
+    ): Promise<void> => {
         setLoading(true);
         setError(null);
-        return await markAbsentAttendance(studentId, status)
+        return await markAbsentAttendance<TNumber>(studentId, status)
             .then((response) => {
                 setMarkedStudents([...markedStudents, response]);
                 setMarkedStudents(prevMarked => [...prevMarked, studentId]);
@@ -73,13 +73,13 @@ export const AttendanceProvider: React.FC<AttendanceProps> = ({ children }) => {
             });
     };
 
-    const markStudentPresentStatus = async (
-        studentId: number, 
+    const markStudentPresentStatus = async <TNumber extends number>(
+        studentId: TNumber, 
         status: string
-    ) => {
+    ): Promise<void> => {
         setLoading(true);
         setError(null);
-        return await updateStatusPresent(studentId, status)
+        return await updateStatusPresent<TNumber>(studentId, status)
             .then((response) => {
                 setMarkedStudents([...markedStudents, response]);
                 setMarkedStudents(prevMarked => [...prevMarked, studentId]);
@@ -91,13 +91,13 @@ export const AttendanceProvider: React.FC<AttendanceProps> = ({ children }) => {
             });
     };
 
-    const markStudentLateStatus = async (
-        studentId: number, 
+    const markStudentLateStatus = async <TNumber extends number>(
+        studentId: TNumber, 
         status: string
-    ) => {
+    ): Promise<void> => {
         setLoading(true);
         setError(null);
-        return await updateStatusLate(studentId, status)
+        return await updateStatusLate<TNumber>(studentId, status)
             .then((response) => {
                 setMarkedStudents([...markedStudents, response]);
                 setMarkedStudents(prevMarked => [...prevMarked, studentId]);
@@ -109,13 +109,13 @@ export const AttendanceProvider: React.FC<AttendanceProps> = ({ children }) => {
             });
     };
 
-    const markStudentAbsentStatus = async (
-        studentId: number, 
+    const markStudentAbsentStatus = async <TNumber extends number>(
+        studentId: TNumber, 
         status: string
-    ) => {
+    ): Promise<void> => {
         setLoading(true);
         setError(null);
-        return await updateStatusAbsent(studentId, status)
+        return await updateStatusAbsent<TNumber>(studentId, status)
             .then((response) => {
                 setMarkedStudents([...markedStudents, response]);
                 setMarkedStudents(prevMarked => [...prevMarked, studentId]);

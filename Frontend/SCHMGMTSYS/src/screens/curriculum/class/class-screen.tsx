@@ -1,9 +1,9 @@
 import React, { useEffect } from 'react';
-import { Input, Spin, Table } from 'antd';
+import { Col, Input, Row, Spin, Table } from 'antd';
 import { ColumnTable } from './components/column/column';
 import { useClass } from '../../../hooks/use-class';
 import { CenteredContainer, ErrorDiv } from '../../parents/themes/parents-styles';
-import { buttonWidthStyles, marginBottomStyles } from '../../dashboard/themes/dashboard-styles';
+import { buttonWidthStyles, fontWeightText, marginBottomStyles } from '../../dashboard/themes/dashboard-styles';
 import { CustomButton } from '../../../components/button/button';
 import { useModal } from '../../../hooks/use-modal';
 import { CustomModal } from '../../../components/modal/modal';
@@ -11,8 +11,19 @@ import { ClassData } from './data/class';
 import { ButtonClassContainer } from './styles/class-style';
 import { ClassAddForm, ClassEditForm } from './components/form/form-class';
 
-export const ClassScreen: React.FC = () => {
+interface DescriptionItemProps {
+  title: string;
+  content: React.ReactNode;
+}
 
+const DescriptionItem = ({ title, content }: DescriptionItemProps) => (
+  <div className="site-description-item-profile-wrapper" style={marginBottomStyles}>
+    <p className="site-description-item-profile-p-label" style={fontWeightText}>{title}:</p>
+    {content}
+  </div>
+);
+
+export const ClassScreen: React.FC = () => {
   const { 
     error, 
     loading, 
@@ -22,22 +33,29 @@ export const ClassScreen: React.FC = () => {
     removeClass,
     fetchClassById,
     editClass,
-    searchClassQuery
+    searchClassQuery,
+    rowClick
   } = useClass();
+  
   const { 
     form, 
     openModal, 
     openEditModal,
+    openDetailModal,
     showModal, 
     closeModal,
     closeEditModal,
-    showEditModal
+    showEditModal,
+    closeDetailModal,
+    showDetailModal,
   } = useModal();
 
   const columns = ColumnTable(
     showEditModal,
     fetchClassById,
-    removeClass
+    removeClass,
+    showDetailModal,
+    rowClick
   );
 
   useEffect(() => {
@@ -49,12 +67,6 @@ export const ClassScreen: React.FC = () => {
     }
   }, [selectedClasses, form]);
 
-  /**
-   * Handles editing of a class record.
-   *
-   * @param {Omit<ClassData, 'id'>} record - The updated class record data.
-   * @return {Promise<void>} A promise that resolves when the edit operation is complete.
-   */
   const handleEdit = async <T extends Omit<ClassData, 'id'>>(
     record: T
   ): Promise<void> => {
@@ -64,12 +76,6 @@ export const ClassScreen: React.FC = () => {
     }
   };
 
-  /**
-   * Handles the key down event for the input field.
-   *
-   * @param {React.KeyboardEvent<HTMLInputElement>} event - The keyboard event object.
-   * @return {void} No return value.
-  */
   const handleKeyDown = async <T extends React.KeyboardEvent<HTMLInputElement>>(
     event: T
   ): Promise<void> => {
@@ -111,9 +117,10 @@ export const ClassScreen: React.FC = () => {
           ) : error ? (
             <ErrorDiv>{error}</ErrorDiv>
           ) : (
-            <React.Fragment>
-              <Table columns={columns} dataSource={filteredClasses} />
-            </React.Fragment>
+            <Table 
+              columns={columns}
+              dataSource={filteredClasses} 
+            />
           )
         }
       </React.Fragment>
@@ -146,7 +153,29 @@ export const ClassScreen: React.FC = () => {
             handleEdit={handleEdit}
           />
        </CustomModal>
-    </React.Fragment>
-  )
-};
 
+      <CustomModal
+        open={openDetailModal}
+        title='Class Details'
+        onOk={closeDetailModal}
+        onCancel={closeDetailModal}
+        centered  
+      >
+        {
+          selectedClasses && (
+            <React.Fragment>
+              <Row>
+                <Col span={12}>
+                  <DescriptionItem title="Class Name" content={selectedClasses.name} />
+                </Col>
+                <Col span={12}>
+                  <DescriptionItem title="Grade" content={selectedClasses.grade} />
+                </Col>
+              </Row>
+            </React.Fragment>
+          )
+        }
+      </CustomModal>
+    </React.Fragment>
+  );
+};

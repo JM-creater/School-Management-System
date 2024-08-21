@@ -1,10 +1,13 @@
 import { Space } from "antd";
 import { ParentData } from "../../data/parents";
+import { EyeOutlined } from "@ant-design/icons";
 
 export const ColumnTable = (
   showEditModal: any, 
   fetchParentById: (id: number) => void, 
-  removeParent: (id: number) => void
+  removeParent: (id: number) => void,
+  showDetailModal: any,
+  rowClick: (record: ParentData) => void
 ) => [
   {
     title: 'First Name',
@@ -43,6 +46,14 @@ export const ColumnTable = (
           onClick={() => removeParent(record.id as number)}
         >
           Delete
+        </a>
+        <a 
+          onClick={() => {
+              showDetailModal();
+              rowClick(record);
+          }}
+        >
+          <EyeOutlined/>
         </a>
       </Space>
     ),

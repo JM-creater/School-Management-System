@@ -1,6 +1,9 @@
 import { TeacherData } from "../data/teachers";
 
 export interface TeacherContextTypes {
+    rowClick: (
+        record: TeacherData
+    ) => Promise<void>;
 
     searchTeacherQuery: (
         firstName?: string

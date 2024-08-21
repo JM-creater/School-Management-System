@@ -1,10 +1,13 @@
 import { Space } from "antd";
 import { ClassData } from "../../data/class";
+import { EyeOutlined } from "@ant-design/icons";
 
 export const ColumnTable = (
     showEditModal: any, 
     fetchClassById: (id: number) => void, 
-    removeClass: (id: number) => void
+    removeClass: (id: number) => void,
+    showDetailModal: any,
+    rowClick: (record: ClassData) => void
 ) => [
     {
         title: 'Name',
@@ -30,6 +33,14 @@ export const ColumnTable = (
                     Edit
                 </a>
                 <a onClick={() => removeClass(record.id as number)}>Delete</a>
+                <a 
+                    onClick={() => {
+                        showDetailModal();
+                        rowClick(record);
+                    }}
+                >
+                    <EyeOutlined/>
+                </a>
             </Space>
         ),
     },

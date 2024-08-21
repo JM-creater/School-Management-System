@@ -1,4 +1,3 @@
-import moment from "moment";
 import { StudentData } from "../../screens/student/data/student";
 import { axiosInstance } from "../api/axiosInstance";
 import { 
@@ -123,8 +122,8 @@ export const createStudent = async <T extends Omit<StudentData, 'id'>>(
 ): Promise<T extends Omit<StudentData, 'id'> ? StudentData : StudentData> => {
     const formattedValues = {
         ...students,
-        dateOfBirth: moment(students.dateOfBirth).format('YYYY-MM-DD'),
-        enrollmentDate: moment(students.enrollmentDate).format('YYYY-MM-DD')
+        dateOfBirth: students.dateOfBirth.format('YYYY-MM-DD'),
+        enrollmentDate: students.enrollmentDate.format('YYYY-MM-DD')
     };
     return await axiosInstance.post<T extends Omit<StudentData, 'id'> ? StudentData : StudentData>(CREATE_STUDENT_URL, formattedValues)
         .then((response) => response.data)

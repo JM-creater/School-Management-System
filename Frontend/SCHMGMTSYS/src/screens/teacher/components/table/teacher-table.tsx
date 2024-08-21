@@ -5,6 +5,7 @@ import { TeacherData } from '../../data/teachers';
 import { useModal } from '../../../../hooks/use-modal';
 import { CenteredContainer, ErrorDiv } from '../../../parents/themes/parents-styles';
 import { useClass } from '../../../../hooks/use-class';
+import { EyeOutlined } from '@ant-design/icons';
 
 const { Column, ColumnGroup } = Table;
 
@@ -15,10 +16,12 @@ export const TeacherTable: React.FC = () => {
         error,
         filteredTeachers,
         removeTeacher, 
-        fetchTeacherById
+        fetchTeacherById,
+        rowClick
     } = useTeacher();
     const {
-        showEditModal
+        showEditModal,
+        showDetailModal
     } = useModal();
     const { classes } = useClass();
 
@@ -67,6 +70,14 @@ export const TeacherTable: React.FC = () => {
                                             onClick={() => removeTeacher(record.id as number)}
                                         >
                                             Delete
+                                        </a>
+                                        <a 
+                                            onClick={() => {
+                                                showDetailModal();
+                                                rowClick(record);
+                                            }}
+                                        >
+                                            <EyeOutlined/>
                                         </a>
                                     </Space>
                                 )}
