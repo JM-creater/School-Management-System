@@ -1,6 +1,6 @@
 package com.example.SCHMGMT_SVR.models;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Table;
 import jakarta.persistence.JoinColumn;
@@ -8,11 +8,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.ManyToOne;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-import lombok.Builder;
+import lombok.*;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -20,6 +16,7 @@ import java.time.LocalDateTime;
 @Entity
 @Getter
 @Setter
+@Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
@@ -37,7 +34,8 @@ public class Attendance {
 
     private String status;
 
-    private Boolean isAttendance = false;
+    @JsonProperty(value = "isAttendance")
+    private boolean isAttendance;
 
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;

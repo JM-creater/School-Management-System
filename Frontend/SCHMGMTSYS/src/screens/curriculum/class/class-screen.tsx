@@ -10,6 +10,7 @@ import { CustomModal } from '../../../components/modal/modal';
 import { ClassData } from './data/class';
 import { ButtonClassContainer } from './styles/class-style';
 import { ClassAddForm, ClassEditForm } from './components/form/form-class';
+import { ENTER } from '../../../configs/constants';
 
 interface DescriptionItemProps {
   title: string;
@@ -79,8 +80,10 @@ export const ClassScreen: React.FC = () => {
   const handleKeyDown = async <T extends React.KeyboardEvent<HTMLInputElement>>(
     event: T
   ): Promise<void> => {
-    if (event.key === "Enter") {
-      const value = (event.currentTarget as HTMLInputElement).value;
+    if (event.key === ENTER) {
+      const value = (
+        event.currentTarget as HTMLInputElement
+      ).value;
       searchClassQuery(value);
     }
   };

@@ -2,6 +2,7 @@ package com.example.SCHMGMT_SVR.models;
 
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -49,7 +50,8 @@ public class Teacher {
             name = "teacher_subjects",
             joinColumns = @JoinColumn(name = "teacher_id"),
             inverseJoinColumns = @JoinColumn(name = "subject_id"))
-    private Set<Subject> subjects = new HashSet<>();
+    @JsonManagedReference
+    private Set<Subject> subjects;
 
     public Long getId() {
         return id;

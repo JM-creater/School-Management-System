@@ -11,6 +11,7 @@ import { useTeacher } from '../../../hooks/use-teacher';
 import { ButtonSubjectContainer } from './styles/subject-styles';
 import { SubjectAddForm, SubjectEditForm } from './components/form/form-subject';
 import { ColumnTable } from './components/column/column';
+import { ENTER } from '../../../configs/constants';
 
 interface DescriptionItemProps {
   title: string;
@@ -103,8 +104,10 @@ export const SubjectScreen: React.FC = () => {
   const handleKeyDown = async <T extends React.KeyboardEvent<HTMLInputElement>>(
     event: T
   ): Promise<void> => {
-    if (event.key === "Enter") {
-      const value = (event.currentTarget as HTMLInputElement).value;
+    if (event.key === ENTER) {
+      const value = (
+        event.currentTarget as HTMLInputElement
+      ).value;
       searchSubjectQuery(value);
     }
   };

@@ -12,6 +12,7 @@ import { StudentTable } from './components/table/table';
 import moment from 'moment';
 import { ButtonStudentContainer } from './styles/student-styles';
 import { StudentAddForm, StudentEditForm } from './components/form/form-student';
+import { UKNOWN_CLASSROOM, UNKOWN_PARENT } from '../../configs/constants';
 
 interface DescriptionItemProps {
   title: string;
@@ -71,14 +72,14 @@ export const StudentScreen: React.FC = () => {
     classroomId: T
   ) => {
     const classroom = classes.find(c => c.id === classroomId);
-    return classroom ? classroom.name : 'Unknown Classroom';
+    return classroom ? classroom.name : UKNOWN_CLASSROOM;
   };
 
   const getParentName = (
     parentId: number
   ) => {
       const parent = parents.find(c => c.id === parentId);
-      return parent ? `${parent.firstName} ${parent.lastName}` : 'Unknown Parent';
+      return parent ? `${parent.firstName} ${parent.lastName}` : UNKOWN_PARENT;
   };
 
   /**
