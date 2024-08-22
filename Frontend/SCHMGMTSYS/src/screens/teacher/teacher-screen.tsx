@@ -167,7 +167,7 @@ export const TeacherScreen: React.FC = () => {
 
       <CustomModal
         open={openDetailModal}
-        title='Class Details'
+        title='Teacher Details'
         onOk={closeDetailModal}
         onCancel={closeDetailModal}
         centered  
@@ -212,21 +212,18 @@ export const TeacherScreen: React.FC = () => {
                     content={selectedTeacher.phoneNumber} 
                   />
                 </Col>
-                
-                {/* Need fix dates field */}
-
-                {/* <Col span={12}>
+                <Col span={12}>
                   <DescriptionItem 
                     title="Date of Birth" 
-                    content={selectedTeacher.dateOfBirth} 
+                    content={moment(selectedTeacher.dateOfBirth).format('YYYY-MM-DD')} 
                   />
                 </Col>
                 <Col span={12}>
                   <DescriptionItem 
                     title="Employment Date" 
-                    content={selectedTeacher.dateOfBirth.format("YYYY-MM-DD")} 
+                    content={moment(selectedTeacher.employmentDate).format('YYYY-MM-DD')} 
                   />
-                </Col> */}
+                </Col>
                 <Col span={12}>
                   <DescriptionItem 
                     title="Address" 

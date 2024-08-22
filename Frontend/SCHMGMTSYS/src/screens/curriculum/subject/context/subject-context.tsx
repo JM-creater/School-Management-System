@@ -52,8 +52,8 @@ export const SubjectProvider: React.FC<SubjectProps> = ({ children }) => {
     }, []);
 
 
-    const rowClick = async (
-        record: SubjectData
+    const rowClick = async <T extends SubjectData>(
+        record: T
     ): Promise<void> => {
         setSelectedSubjects(record);
         await fetchSubjectById(record.id as number);

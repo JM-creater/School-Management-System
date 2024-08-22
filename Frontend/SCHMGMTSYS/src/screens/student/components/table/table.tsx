@@ -8,6 +8,7 @@ import { useClass } from "../../../../hooks/use-class";
 import { StudentData } from "../../data/student";
 import { useParent } from "../../../../hooks/use-parent";
 import { useModal } from "../../../../hooks/use-modal";
+import { EyeOutlined } from "@ant-design/icons";
 
 export const StudentTable: React.FC = () => {
 
@@ -16,7 +17,8 @@ export const StudentTable: React.FC = () => {
         loading,
         error,
         fetchStudentById,
-        removeStudent
+        removeStudent,
+        rowClick
     } = useStudent();
     const {
         classes
@@ -25,17 +27,22 @@ export const StudentTable: React.FC = () => {
         parents
     } = useParent();
     const {
-        showEditModal
+        showEditModal,
+        showDetailModal
     } = useModal();
 
-    const getClassName = (classroomId: number) => {
+    const getClassName = (
+        classroomId: number
+    ) => {
         const classroom = classes.find(c => c.id === classroomId);
         return classroom ? classroom.name : 'Unknown Student';
     };
 
-    const getParentName = (parentId: number) => {
+    const getParentName = (
+        parentId: number
+    ) => {
         const parent = parents.find(c => c.id === parentId);
-        return parent ? `${parent.firstName} ${parent.lastName}` : 'Unknown Classroom';
+        return parent ? `${parent.firstName} ${parent.lastName}` : 'Unknown Parent';
     };
 
     return (
@@ -84,6 +91,14 @@ export const StudentTable: React.FC = () => {
                                             onClick={() => removeStudent(record.id as number)}
                                         >
                                             Delete
+                                        </a>
+                                        <a 
+                                            onClick={() => {
+                                                showDetailModal();
+                                                rowClick(record);
+                                            }}
+                                        >
+                                            <EyeOutlined/>
                                         </a>
                                     </Space>
                                 )}
