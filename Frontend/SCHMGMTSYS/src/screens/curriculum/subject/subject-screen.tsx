@@ -184,7 +184,7 @@ export const SubjectScreen: React.FC = () => {
 
       <CustomModal
         open={openDetailModal}
-        title='Class Details'
+        title='Subject Details'
         onOk={closeDetailModal}
         onCancel={closeDetailModal}
         centered  

@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
-import { Input } from 'antd';
+import { Col, Input, Row } from 'antd';
 import { CustomButton } from '../../components/button/button';
-import { buttonWidthStyles, marginBottomStyles } from '../dashboard/themes/dashboard-styles';
+import { buttonWidthStyles, fontWeightText, marginBottomStyles } from '../dashboard/themes/dashboard-styles';
 import { useModal } from '../../hooks/use-modal';
 import { CustomModal } from '../../components/modal/modal';
 import { StudentData } from './data/student';
@@ -12,6 +12,18 @@ import { StudentTable } from './components/table/table';
 import moment from 'moment';
 import { ButtonStudentContainer } from './styles/student-styles';
 import { StudentAddForm, StudentEditForm } from './components/form/form-student';
+
+interface DescriptionItemProps {
+  title: string;
+  content: React.ReactNode;
+}
+
+const DescriptionItem = ({ title, content }: DescriptionItemProps) => (
+  <div className="site-description-item-profile-wrapper" style={marginBottomStyles}>
+    <p className="site-description-item-profile-p-label" style={fontWeightText}>{title}:</p>
+    {content}
+  </div>
+);
 
 export const StudentScreen: React.FC = () => {
 
@@ -25,11 +37,11 @@ export const StudentScreen: React.FC = () => {
     form,
     openModal,
     openEditModal,
-    // openDetailModal,
+    openDetailModal,
     showModal, 
     closeModal,
     closeEditModal, 
-    // closeDetailModal
+    closeDetailModal
   } = useModal();
   const {
     selectedStudents,
@@ -54,6 +66,20 @@ export const StudentScreen: React.FC = () => {
       });
     }
   }, [selectedStudents, form]);
+
+  const getClassName = <T extends number>(
+    classroomId: T
+  ) => {
+    const classroom = classes.find(c => c.id === classroomId);
+    return classroom ? classroom.name : 'Unknown Classroom';
+  };
+
+  const getParentName = (
+    parentId: number
+  ) => {
+      const parent = parents.find(c => c.id === parentId);
+      return parent ? `${parent.firstName} ${parent.lastName}` : 'Unknown Parent';
+  };
 
   /**
    * Handles the editing of a student by updating their information with the provided data.
@@ -144,7 +170,7 @@ export const StudentScreen: React.FC = () => {
           classes={classes}
         />
       </CustomModal>
-{/* 
+      
         <CustomModal
           open={openDetailModal} 
           title='Student Details'
@@ -153,16 +179,78 @@ export const StudentScreen: React.FC = () => {
           centered
         >
           {selectedStudents && (
-            <div>
-              <p><strong>First Name:</strong> {selectedStudents.firstName}</p>
-              <p><strong>Last Name:</strong> {selectedStudents.lastName}</p>
-              <p><strong>Address:</strong> {selectedStudents.address}</p>
-              <p><strong>Email:</strong> {selectedStudents.email}</p>
-              <p><strong>Phone Number:</strong> {selectedStudents.phoneNumber}</p>
-              <p><strong>Attendance Status:</strong> {selectedStudents.status}</p>
-            </div>
+            <React.Fragment>
+              <Row>
+                <Col span={12}>
+                  <DescriptionItem 
+                    title="First Name" 
+                    content={selectedStudents.firstName} 
+                  />
+                </Col>
+                <Col span={12}>
+                  <DescriptionItem 
+                    title="Last Name" 
+                    content={selectedStudents.lastName} 
+                  />
+                </Col>
+                <Col span={12}>
+                  <DescriptionItem 
+                    title="Email" 
+                    content={selectedStudents.email} 
+                  />
+                </Col>
+                <Col span={12}>
+                  <DescriptionItem 
+                    title="Phone Number" 
+                    content={selectedStudents.phoneNumber} 
+                  />
+                </Col>
+                <Col span={12}>
+                  <DescriptionItem 
+                    title="Date of Birth" 
+                    content={moment(selectedStudents.dateOfBirth).format('YYYY-MM-DD')} 
+                  />
+                </Col>
+                <Col span={12}>
+                  <DescriptionItem 
+                    title="Parent" 
+                    content={getParentName(selectedStudents.parent.id as number)} 
+                  />
+                </Col>
+                <Col span={12}>
+                  <DescriptionItem 
+                    title="Enrollment Date" 
+                    content={moment(selectedStudents.enrollmentDate).format('YYYY-MM-DD')} 
+                  />
+                </Col>
+                <Col span={12}>
+                  <DescriptionItem 
+                    title="Address" 
+                    content={selectedStudents.address} 
+                  />
+                </Col>
+                <Col span={12}>
+                  <DescriptionItem 
+                    title="Gender" 
+                    content={selectedStudents.gender} 
+                  />
+                </Col>
+                <Col span={12}>
+                  <DescriptionItem 
+                    title="Class" 
+                    content={getClassName(selectedStudents.classroom.id as number)} 
+                  />
+                </Col>
+                <Col span={12}>
+                  <DescriptionItem 
+                    title="Attendance Status" 
+                    content={selectedStudents?.status} 
+                  />
+                </Col>
+              </Row>
+            </React.Fragment>
           )}
-        </CustomModal> */}
+        </CustomModal>
     </React.Fragment>
   )
 };

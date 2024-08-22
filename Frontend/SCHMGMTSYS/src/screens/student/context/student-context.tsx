@@ -57,11 +57,11 @@ export const StudentProvider: React.FC<StudentProps> = ({ children }) => {
         }); 
     }, []);
 
-    const handleRowClick = <TStudentData extends StudentData>(
-        record: TStudentData
-    ) => {
+    const rowClick = async <T extends StudentData>(
+        record: T
+    ): Promise<void> => {
         setSelectedStudents(record);
-        fetchStudentById(record.id as number);
+        await fetchStudentById(record.id as number);
     };
 
     /**
@@ -212,7 +212,7 @@ export const StudentProvider: React.FC<StudentProps> = ({ children }) => {
         editStudent,
         removeStudent,
         searchStudentQuery,
-        handleRowClick
+        rowClick
     };
 
     return (
