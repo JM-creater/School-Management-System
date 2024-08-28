@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+@RequestMapping("/teacher")
 @RestController
 public class TeacherController {
 
@@ -17,39 +18,39 @@ public class TeacherController {
         this.teacherService = teacherService;
     }
 
-    @PostMapping("/teacher")
+    @PostMapping
     public Teacher createTeacher(@RequestBody Teacher teacher) {
         return teacherService.createTeacher(teacher);
     }
 
-    @GetMapping("/teacher")
+    @GetMapping
     public List<Teacher> fetchAllTeachers() {
         return teacherService.fetchAllTeacher();
     }
 
-    @GetMapping("/teacher/search")
+    @GetMapping("/search")
     public List<Teacher> searchByNameOrGrade(
             @RequestParam(required = false) String firstName
     ) {
         return teacherService.searchTeacherByName(firstName);
     }
 
-    @GetMapping("/teacher/{id}")
+    @GetMapping("/{id}")
     public Teacher fetchTeacherById(@PathVariable Long id) {
         return teacherService.fetchTeacherById(id);
     }
 
-    @GetMapping("/teacher/count")
+    @GetMapping("/count")
     public long countStudents() {
         return teacherService.countTeachers();
     }
 
-    @PutMapping("/teacher/{id}")
+    @PutMapping("/{id}")
     public Teacher updateTeacher(@PathVariable("id") Long id, @RequestBody Teacher teacher) {
         return teacherService.updateTeacherById(id, teacher);
     }
 
-    @DeleteMapping("/teacher/{id}")
+    @DeleteMapping("/{id}")
     public String deleteTeacherById(@PathVariable("id") Long id) {
         return teacherService.deleteTeacherById(id);
     }

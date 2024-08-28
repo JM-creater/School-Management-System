@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+@RequestMapping("/classroom")
 @RestController
 public class ClassroomController {
 
@@ -17,29 +18,29 @@ public class ClassroomController {
         this.classroomService = classroomService;
     }
 
-    @PostMapping("/classroom")
+    @PostMapping
     public Classroom createClassroom(@RequestBody Classroom classroom) {
         return classroomService.createClassroom(classroom);
     }
 
-    @GetMapping("/classroom/search")
+    @GetMapping("/search")
     public List<Classroom> searchByNameOrGrade(
             @RequestParam(required = false) String name
     ) {
         return classroomService.searchClassroomsByName(name);
     }
 
-    @GetMapping("/classroom")
+    @GetMapping
     public List<Classroom> fetchAllClassrooms() {
         return classroomService.fetchAllClassroom();
     }
 
-    @GetMapping("/classroom/{id}")
+    @GetMapping("/{id}")
     public Classroom fetchClassroomById(@PathVariable Long id) {
         return classroomService.fetchClassroomById(id);
     }
 
-    @GetMapping("/classroom/count")
+    @GetMapping("/count")
     public long countClassroom() {
         return classroomService.countClassrooms();
     }

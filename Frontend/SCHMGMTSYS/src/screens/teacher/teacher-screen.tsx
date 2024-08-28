@@ -11,6 +11,7 @@ import moment from 'moment';
 import { useClass } from '../../hooks/use-class';
 import { ButtonTeacherContainer } from './styles/teacher-styles';
 import { TeacherAddForm, TeacherEditForm } from './components/form/form-teacher';
+import { ENTER, UKNOWN_CLASSROOM } from '../../configs/constants';
 
 interface DescriptionItemProps {
   title: string;
@@ -73,7 +74,7 @@ export const TeacherScreen: React.FC = () => {
     classroomId: number
   ) => {
     const classroom = classes.find(c => c.id === classroomId);
-    return classroom ? classroom.name : 'Unknown Classroom';
+    return classroom ? classroom.name : UKNOWN_CLASSROOM;
   };
 
   /**
@@ -101,8 +102,10 @@ export const TeacherScreen: React.FC = () => {
   const handleKeyDown = async <T extends React.KeyboardEvent<HTMLInputElement>>(
     event: T
   ): Promise<void> => {
-    if (event.key === "Enter") {
-      const value = (event.currentTarget as HTMLInputElement).value;
+    if (event.key === ENTER) {
+      const value = (
+        event.currentTarget as HTMLInputElement
+      ).value;
       searchTeacherQuery(value);
     }
   };
