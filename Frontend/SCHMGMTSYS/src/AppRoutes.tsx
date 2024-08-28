@@ -1,11 +1,11 @@
 import { BrowserRouter, Route, Routes } from "react-router-dom"
-import MainScreen from "./screens/main/main-screen"
+import { LoginScreen } from "./screens/auth/login/login";
 
-export const    AppRoutes = () => {
+export const AppRoutes = () => {
     return  (
         <BrowserRouter>
             <Routes>
-                <Route index element={ <MainScreen/> } />
+                <Route index element={ <LoginScreen/> } />
             </Routes>
         </BrowserRouter>
     )
