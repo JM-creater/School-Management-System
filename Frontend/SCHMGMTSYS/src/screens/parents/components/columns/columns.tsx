@@ -3,10 +3,10 @@ import { ParentData } from "../../data/parents";
 import { EyeOutlined } from "@ant-design/icons";
 
 export const ColumnTable = (
-  showEditModal: any, 
+  showEditModal: () => void, 
   fetchParentById: (id: number) => void, 
   removeParent: (id: number) => void,
-  showDetailModal: any,
+  showDetailModal: () => void,
   rowClick: (record: ParentData) => void
 ) => [
   {

@@ -7,12 +7,21 @@ import java.util.List;
 import java.util.Set;
 
 public interface SubjectService {
+
     Subject createSubject(Subject subject);
+
     List<Subject> fetchAllSubject();
+
     Set<SubjectResponseListDto> fetchAllSubjects();
+
     Subject fetchSubjectById(Long id);
+
     Subject updateSubjectById(Long id, Subject subject);
+
     String deleteSubjectById(Long id);
+
     long countSubjects();
+
     List<Subject> searchSubjectsByName(String name);
+
 }
