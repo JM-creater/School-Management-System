@@ -3,10 +3,10 @@ import { ClassData } from "../../data/class";
 import { EyeOutlined } from "@ant-design/icons";
 
 export const ColumnTable = (
-    showEditModal: any, 
+    showEditModal: () => void, 
     fetchClassById: (id: number) => void, 
     removeClass: (id: number) => void,
-    showDetailModal: any,
+    showDetailModal: () => void,
     rowClick: (record: ClassData) => void
 ) => [
     {

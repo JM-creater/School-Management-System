@@ -1,5 +1,5 @@
 package com.example.SCHMGMT_SVR.functions.subject.service;
-;
+
 import com.example.SCHMGMT_SVR.functions.subject.dto.SubjectResponseListDto;
 import com.example.SCHMGMT_SVR.functions.teacher.dto.TeacherResponseDto;
 import com.example.SCHMGMT_SVR.models.Subject;
@@ -9,7 +9,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
-import java.util.*;
+
+import java.util.List;
+import java.util.Objects;
+import java.util.Comparator;
+import java.util.Set;
+import java.util.HashSet;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -69,19 +75,12 @@ public class SubjectServiceImpl implements SubjectService{
         }
 
         return subjectResponseListDto;
-
-//        return allSubjects.stream()
-//                .sorted(Comparator.comparing(Subject::getCreatedAt).reversed())
-//                .collect(Collectors.toList());
     }
 
     @Override
     public Subject fetchSubjectById(Long id) {
         Optional<Subject> subject = subjectRepository.findById(id);
-        if(subject.isPresent()) {
-            return subject.get();
-        }
-        return null;
+        return subject.orElse(null);
     }
 
     @Override

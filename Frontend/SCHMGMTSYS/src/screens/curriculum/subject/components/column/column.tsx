@@ -4,12 +4,12 @@ import { SubjectData } from "../../data/subject";
 import { EyeOutlined } from "@ant-design/icons";
 
 export const ColumnTable = (
-    showEditModal: any, 
+    showEditModal: () => void,
     teachers: TeacherData[],
     getTeacherFullNameById: (teacherId: number, teachers: TeacherData[]) => string,
     fetchSubjectById: (subjectId: number) => void,
     removeSubject: (id: number) => void,
-    showDetailModal: any,
+    showDetailModal: () => void,
     rowClick: (record: SubjectData) => void
 ) => {
     return  [
