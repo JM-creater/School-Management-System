@@ -24,7 +24,6 @@ export const SubjectProvider: React.FC<SubjectProps> = ({ children }) => {
     const [overAllSubject, setOverAllSubject] = useState<number>(0);
     const [loading, setLoading] = useState<boolean>(false);
     const [error, setError] = useState<string | null>(null);
-    
     /**
      * Fetches all subjects from the server and updates the state when the component mounts.
      * It also fetches the total count of subjects and updates the state.

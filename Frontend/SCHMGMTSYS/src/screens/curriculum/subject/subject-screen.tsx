@@ -1,5 +1,5 @@
-import { Col, Input, Row, Spin, Table } from 'antd';
-import React, { useEffect } from 'react';
+import { Button, Col, Input, Row, Spin, Table } from 'antd';
+import React, { useEffect, useState } from 'react';
 import { buttonWidthStyles, fontWeightText, marginBottomStyles } from '../../dashboard/themes/dashboard-styles';
 import { CustomButton } from '../../../components/button/button';
 import { useSubject } from '../../../hooks/use-subject';
@@ -203,7 +203,7 @@ export const SubjectScreen: React.FC = () => {
                   <DescriptionItem title="Code" content={selectedSubjects.code} />
                 </Col>
                 <Col span={12}>
-                  <DescriptionItem title="Code" content={selectedSubjects.credits} />
+                  <DescriptionItem title="Credits" content={selectedSubjects.credits} />
                 </Col>
                 <Col span={12}>
                   <DescriptionItem 

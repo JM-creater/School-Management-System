@@ -1,14 +1,15 @@
-import React, { useEffect } from 'react';
+import React, { useContext, useEffect } from 'react';
 import { Col, Input, Row, Spin, Table } from 'antd';
 import { useModal } from '../../hooks/use-modal';
 import { CustomModal } from '../../components/modal/modal';
 import { buttonWidthStyles, fontWeightText, marginBottomStyles } from '../dashboard/themes/dashboard-styles';
 import { CustomButton } from '../../components/button/button';
-import { useParent } from '../../hooks/use-parent';
 import { ParentData } from './data/parents';
 import { ColumnTable } from './components/columns/columns';
 import { ButtonParentContainer, CenteredContainer, ErrorDiv } from './themes/parents-styles';
 import { ParentAddForm, ParentEditForm } from './components/form/form-parent';
+import { observer } from 'mobx-react-lite';
+import { ParentContext } from './context/parent-context';
 
 interface DescriptionItemProps {
   title: string;
@@ -23,8 +24,10 @@ const DescriptionItem = ({ title, content }: DescriptionItemProps) => (
 );
 
 
-export const ParentsScreen: React.FC = () => {
-
+export const ParentsScreen: React.FC = observer(() => {
+  
+  const store = useContext(ParentContext)
+  
   const { 
     form, 
     openModal,
@@ -37,64 +40,49 @@ export const ParentsScreen: React.FC = () => {
     closeDetailModal,
     showDetailModal
   } = useModal();
-  const { 
-    selectedParent,
-    error, 
-    loading, 
-    filteredParents,
-    createNewParents, 
-    fetchParentById,
-    removeParent,
-    editParent,
-    searchParentQuery,
-    rowClick
-  } = useParent();
+
   const columns = ColumnTable(
     showEditModal, 
-    fetchParentById, 
-    removeParent,
+    store!.fetchParentById.bind(store), 
+    store!.removeParent.bind(store),
     showDetailModal,
-    rowClick
+    store!.setSelectedParent.bind(store)
   );
 
   useEffect(() => {
-    if (selectedParent) {
-      form.setFieldsValue({
-        firstName: selectedParent.firstName,
-        lastName: selectedParent.lastName,
-        email: selectedParent.email,
-        phoneNumber: selectedParent.phoneNumber,
-      } as Pick<ParentData, 
-      | 'firstName' 
-      | 'lastName' 
-      | 'email' 
-      | 'phoneNumber'>);
-    }
-  }, [selectedParent, form]);
+    store!.fetchAllParents();
+  }, [store]);
 
-  const handleEdit = async <T extends Omit<ParentData, 'id'>>(
-    record: T
-  ) => {
-    if (selectedParent) {
-      await editParent(selectedParent.id, record);
+  useEffect(() => {
+    if (store!.selectedParent) {
+      form.setFieldsValue({
+        firstName: store!.selectedParent.firstName,
+        lastName: store!.selectedParent.lastName,
+        email: store!.selectedParent.email,
+        phoneNumber: store!.selectedParent.phoneNumber
+      });
+    }
+  }, [form, store]);
+
+  const handleEdit = async (record: Omit<ParentData, 'id'>) => {
+    if (store!.selectedParent) {
+      await store!.editParent(store!.selectedParent.id, record);
       closeEditModal();
     }
   };
 
-  const handleKeyDown = <T extends React.KeyboardEvent<HTMLInputElement>>(
-    event: T
-  ) => {
+  const handleKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
     if (event.key === "Enter") {
       const value = (event.currentTarget as HTMLInputElement).value;
-      searchParentQuery(value);
+      store!.searchParents(value);
     }
   };
 
-  return (
+return (
     <React.Fragment>
       <ButtonParentContainer>
         <Input.Search 
-          onSearch={(value: string) => searchParentQuery(value)}
+          onSearch={(value: string) => store!.searchParents(value)}
           onKeyDown={handleKeyDown}
           placeholder="Search by parent name..." 
           style={{ width: 300 }} 
@@ -115,23 +103,23 @@ export const ParentsScreen: React.FC = () => {
 
       <React.Fragment>
         {
-          loading ? (
+          store!.loading ? (
             <CenteredContainer>
-              <Spin size="large" />
+                <Spin size="large" />
             </CenteredContainer>
-          ) : error ? (
-            <ErrorDiv>{error}</ErrorDiv>
+          ) : store!.error ? (
+            <ErrorDiv>{store!.error}</ErrorDiv>
           ) : (
             <React.Fragment>
               <Table 
                 columns={columns} 
-                dataSource={filteredParents} 
+                dataSource={store!.filteredParents} 
               />
             </React.Fragment>
           )
         }
       </React.Fragment>
-       
+        
       <CustomModal
         open={openModal}
         title='Add Parent'
@@ -141,55 +129,62 @@ export const ParentsScreen: React.FC = () => {
       >
         <ParentAddForm
           form={form}
-          createNewParents={createNewParents}
+          createNewParents={store!.createNewParent.bind(store)}
         />
-       </CustomModal>
+      </CustomModal>
 
-       <CustomModal
-          open={openEditModal}
-          title="Edit Parent"
-          onOk={form.submit}
-          onCancel={() => {
+      <CustomModal
+        open={openEditModal}
+        title="Edit Parent"
+        onOk={form.submit}
+        onCancel={() => {
             closeEditModal();
             form.resetFields();
-          }}
-          centered
-        >
-            <ParentEditForm
-              form={form}
-              handleEdit={handleEdit}
-            />
-        </CustomModal>
+        }}
+        centered
+      >
+        <ParentEditForm
+          form={form}
+          handleEdit={handleEdit}
+        />
+      </CustomModal>
 
       <CustomModal
         open={openDetailModal}
         title='Parent Details'
         onOk={closeDetailModal}
         onCancel={closeDetailModal}
-        centered  
+        centered
       >
-        {
-          selectedParent && (
-            <React.Fragment>
-              <Row>
-                <Col span={12}>
-                  <DescriptionItem title="First Name" content={selectedParent.firstName} />
-                </Col>
-                <Col span={12}>
-                  <DescriptionItem title="Last Name" content={selectedParent.lastName} />
-                </Col>
-                <Col span={12}>
-                  <DescriptionItem title="Email" content={selectedParent.email} />
-                </Col>
-                <Col span={12}>
-                  <DescriptionItem title="Phone Number" content={selectedParent.phoneNumber} />
-                </Col>
-              </Row>
-            </React.Fragment>
-          )
-        }
+        <Row>
+          <Col span={12}>
+            <DescriptionItem 
+              title="First Name" 
+              content={store!.selectedParent?.firstName} 
+            />
+          </Col>
+          <Col span={12}>
+            <DescriptionItem 
+              title="Last Name" 
+              content={store!.selectedParent?.lastName} 
+            />
+          </Col>
+        </Row>
+        <Row>
+          <Col span={12}>
+            <DescriptionItem 
+              title="Email" 
+              content={store!.selectedParent?.email} 
+            />
+          </Col>
+          <Col span={12}>
+            <DescriptionItem 
+              title="Phone Number" 
+              content={store!.selectedParent?.phoneNumber} 
+            />
+          </Col>
+        </Row>
       </CustomModal>
-      
     </React.Fragment>
-  )
-}
+  );
+});

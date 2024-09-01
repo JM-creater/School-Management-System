@@ -47,10 +47,10 @@ export const getAllParent = async <T extends string | undefined>(): Promise<
  * @param {T} id - The ID of the parent to fetch. Can be a number or undefined.
  * @return {Promise<ParentData>} - A promise that resolves to the parent data.
 */
-export const getParentById = async <T extends number | undefined>(
-    id: T
-): Promise<T extends number ? ParentData : ParentData> => {
-    return await axiosInstance.get<T extends number ? ParentData : ParentData>(`${GET_PARENT_BY_ID_URL}${id}`)
+export const getParentById = async <TIDType extends number>(
+    id: TIDType
+): Promise<TIDType extends number ? ParentData : ParentData> => {
+    return await axiosInstance.get<TIDType extends number ? ParentData : ParentData>(`${GET_PARENT_BY_ID_URL}${id}`)
         .then((response) => response.data)
         .catch((error) => {
             throw error;
@@ -79,16 +79,23 @@ export const getAllCountParent = async <T extends string | undefined>(): Promise
  * @param {Omit<ParentData, 'id'>} updatedParent - The updated parent data excluding the ID.
  * @return {Promise<ParentData>} - A promise that resolves to the updated parent data.
 */
-export const updateParent = async <T extends number | undefined>(
-    id: T, 
-    updatedParent: Omit<ParentData, 'id'>
-): Promise<T extends Omit<ParentData, 'id'> ? ParentData : ParentData> => {
-   return await axiosInstance.put<T extends Omit<ParentData, 'id'> ? ParentData : ParentData>(`${UPDATE_PARENT_URL}${id}`, updatedParent)
+export const updateParent = async <
+    TIDType extends number, 
+    TParentData extends Omit<ParentData, 'id'>
+>(
+    id: TIDType, 
+    updatedParent: TParentData
+): Promise<ParentData> => {
+    return await axiosInstance.put<ParentData>(
+        `${UPDATE_PARENT_URL}${id}`, 
+        updatedParent
+    )
     .then((response) => response.data)
     .catch((error) => {
         throw error;
     });
 };
+
 
 /**
  * Deletes a parent from the server.
@@ -98,13 +105,14 @@ export const updateParent = async <T extends number | undefined>(
 */
 export const deleteParent = async <T extends number | undefined>(
     id: T
-): Promise<T extends number ? ParentData : ParentData> => {
-    return await axiosInstance.delete<T extends number ? ParentData : ParentData>(`${DELETE_PARENT_URL}${id}`)
-        .then((response) => response.data)
-        .catch((error) => {
-            throw error;
-        });
+): Promise<void> => {
+    return await axiosInstance.delete<void>(`${DELETE_PARENT_URL}${id}`)
+    .then((response) => response.data)
+    .catch((error) => {
+        throw error;
+    });
 };
+
 
 /**
  * Searches for parents by name from the server.
@@ -114,11 +122,11 @@ export const deleteParent = async <T extends number | undefined>(
 */
 export const searchParent = async <T extends string | undefined>(
     name?: T
-): Promise<T extends string ? ParentData[] : ParentData[]> => {
-    return await axiosInstance.get<T extends string ? ParentData[] : ParentData[]>(SEARCH_PARENT_URL, {
-        params: { name },
-    }).then((response) => response.data)
+): Promise<ParentData[]> => {
+    return await axiosInstance.get<ParentData[]>(`${SEARCH_PARENT_URL}?name=${name || ''}`)
+    .then((response) => response.data)
     .catch((error) => {
         throw error;
     });
 };
+
