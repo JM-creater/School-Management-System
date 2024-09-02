@@ -1,5 +1,6 @@
-package com.example.SCHMGMT_SVR.functions.student.service;
+package com.example.SCHMGMT_SVR.functions.student.service.impl;
 
+import com.example.SCHMGMT_SVR.functions.student.service.StudentService;
 import com.example.SCHMGMT_SVR.models.Student;
 import com.example.SCHMGMT_SVR.functions.student.repository.StudentRepository;
 import org.springframework.beans.factory.annotation.Autowired;
