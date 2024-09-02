@@ -29,7 +29,6 @@ export const ParentProvider: React.FC<ParentProps> = ({ children }) => {
             setParents(response);
             setFilteredParents(response);
             return await getAllCountParent<string>();
-            
         }).then((overAllParentResponse) => {
             setOverAllParent(overAllParentResponse);
         }).catch((error) => {
