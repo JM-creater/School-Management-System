@@ -1,14 +1,15 @@
 import { EyeInvisibleOutlined, EyeTwoTone, LockOutlined, UserOutlined } from '@ant-design/icons';
-import { Button, Checkbox, Form, FormInstance, Input } from 'antd';
+import { Button, Checkbox, Form, Input } from 'antd';
 import { Link } from 'react-router-dom';
 import { LoginFormContainer, LoginMainContainer } from '../../themes/login-themes';
 import { onFinishFailed } from '../../../../teacher/context/exception/finish-failed';
+import { FormProps } from './props/form-props';
 
-export const LoginForm = (
-    form: FormInstance,
-    handleLogin: () => void,
-    loading: boolean
-) => {
+export const LoginForm: React.FC<FormProps> = ({ 
+    form, 
+    loading, 
+    handleLogin 
+}) => {
     return (
         <LoginMainContainer>
             <Form

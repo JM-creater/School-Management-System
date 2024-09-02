@@ -1,6 +1,7 @@
-package com.example.SCHMGMT_SVR.functions.subject.service;
+package com.example.SCHMGMT_SVR.functions.subject.service.impl;
 ;
 import com.example.SCHMGMT_SVR.functions.subject.dto.SubjectResponseListDto;
+import com.example.SCHMGMT_SVR.functions.subject.service.SubjectService;
 import com.example.SCHMGMT_SVR.functions.teacher.dto.TeacherResponseDto;
 import com.example.SCHMGMT_SVR.models.Subject;
 import com.example.SCHMGMT_SVR.functions.subject.repository.SubjectRepository;
@@ -13,7 +14,7 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
-public class SubjectServiceImpl implements SubjectService{
+public class SubjectServiceImpl implements SubjectService {
 
     @Autowired
     private final SubjectRepository subjectRepository;

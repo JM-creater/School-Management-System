@@ -5,23 +5,20 @@ import { CustomModal } from '../../components/modal/modal';
 import { buttonWidthStyles, fontWeightText, marginBottomStyles } from '../dashboard/themes/dashboard-styles';
 import { CustomButton } from '../../components/button/button';
 import { useParent } from '../../hooks/use-parent';
-import { ParentData } from './data/parents';
+import { DescriptionItemProps, ParentData } from './data/parents';
 import { ColumnTable } from './components/columns/columns';
 import { ButtonParentContainer, CenteredContainer, ErrorDiv } from './themes/parents-styles';
 import { ParentAddForm, ParentEditForm } from './components/form/form-parent';
-
-interface DescriptionItemProps {
-  title: string;
-  content: React.ReactNode;
-}
-
-const DescriptionItem = ({ title, content }: DescriptionItemProps) => (
-  <div className="site-description-item-profile-wrapper" style={marginBottomStyles}>
-    <p className="site-description-item-profile-p-label" style={fontWeightText}>{title}:</p>
-    {content}
-  </div>
-);
-
+import { 
+  ADD_PARENT, 
+  EMAIL, 
+  ENTER, 
+  FIRST_NAME, 
+  LAST_NAME, 
+  PARENT_DETAILS, 
+  PHONE_NUMBER, 
+  SEARCH_PARENT 
+} from '../../configs/constants';
 
 export const ParentsScreen: React.FC = () => {
 
@@ -52,7 +49,7 @@ export const ParentsScreen: React.FC = () => {
   const columns = ColumnTable(
     showEditModal, 
     fetchParentById, 
-    removeParent,
+    (id: number) => removeParent({ id }),
     showDetailModal,
     rowClick
   );
@@ -72,7 +69,9 @@ export const ParentsScreen: React.FC = () => {
     }
   }, [selectedParent, form]);
 
-  const handleEdit = async <T extends Omit<ParentData, 'id'>>(
+  const handleEdit = async <
+    T extends Omit<ParentData, 'id'>
+  >(
     record: T
   ) => {
     if (selectedParent) {
@@ -81,22 +80,31 @@ export const ParentsScreen: React.FC = () => {
     }
   };
 
-  const handleKeyDown = <T extends React.KeyboardEvent<HTMLInputElement>>(
+  const handleKeyDown = <
+    T extends React.KeyboardEvent<HTMLInputElement>
+  >(
     event: T
   ) => {
-    if (event.key === "Enter") {
+    if (event.key === ENTER) {
       const value = (event.currentTarget as HTMLInputElement).value;
       searchParentQuery(value);
     }
   };
 
+  const DescriptionItem = ({ title, content }: DescriptionItemProps) => (
+    <div className="site-description-item-profile-wrapper" style={marginBottomStyles}>
+      <p className="site-description-item-profile-p-label" style={fontWeightText}>{title}:</p>
+      {content}
+    </div>
+  );
+  
   return (
     <React.Fragment>
       <ButtonParentContainer>
         <Input.Search 
           onSearch={(value: string) => searchParentQuery(value)}
           onKeyDown={handleKeyDown}
-          placeholder="Search by parent name..." 
+          placeholder={SEARCH_PARENT}
           style={{ width: 300 }} 
         />
         <CustomButton 
@@ -109,7 +117,7 @@ export const ParentsScreen: React.FC = () => {
             ...marginBottomStyles, 
             ...buttonWidthStyles 
           }} 
-          label='Add Parent' 
+          label={ADD_PARENT}
         />
       </ButtonParentContainer>
 
@@ -134,7 +142,7 @@ export const ParentsScreen: React.FC = () => {
        
       <CustomModal
         open={openModal}
-        title='Add Parent'
+        title={ADD_PARENT}
         onOk={closeModal}
         onCancel={closeModal}
         centered  
@@ -163,7 +171,7 @@ export const ParentsScreen: React.FC = () => {
 
       <CustomModal
         open={openDetailModal}
-        title='Parent Details'
+        title={PARENT_DETAILS}
         onOk={closeDetailModal}
         onCancel={closeDetailModal}
         centered  
@@ -173,16 +181,28 @@ export const ParentsScreen: React.FC = () => {
             <React.Fragment>
               <Row>
                 <Col span={12}>
-                  <DescriptionItem title="First Name" content={selectedParent.firstName} />
+                  <DescriptionItem 
+                    title={FIRST_NAME} 
+                    content={selectedParent.firstName} 
+                  />
                 </Col>
                 <Col span={12}>
-                  <DescriptionItem title="Last Name" content={selectedParent.lastName} />
+                  <DescriptionItem 
+                    title={LAST_NAME} 
+                    content={selectedParent.lastName} 
+                  />
                 </Col>
                 <Col span={12}>
-                  <DescriptionItem title="Email" content={selectedParent.email} />
+                  <DescriptionItem 
+                    title={EMAIL} 
+                    content={selectedParent.email} 
+                  />
                 </Col>
                 <Col span={12}>
-                  <DescriptionItem title="Phone Number" content={selectedParent.phoneNumber} />
+                  <DescriptionItem 
+                    title={PHONE_NUMBER} 
+                    content={selectedParent.phoneNumber} 
+                  />
                 </Col>
               </Row>
             </React.Fragment>

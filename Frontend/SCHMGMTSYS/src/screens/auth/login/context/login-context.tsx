@@ -8,13 +8,14 @@ export const LoginContext = createContext<LoginContextType | null>(null);
 export const LoginProvider: React.FC<LoginProps> = ({ children }) => {
     
     const [loading, setLoading] = useState<boolean>(false);
-    const [form] = useForm()
+    const [form] = useForm();
 
     const handleLogin = async () => {
         setLoading(true);
     };
 
     const handleValue = {
+        form,
         loading,
         handleLogin
     };

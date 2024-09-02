@@ -12,28 +12,33 @@ import { ParentProvider } from './screens/parents/context/parent-context';
 import { SubjectProvider } from './screens/curriculum/subject/context/subject-context';
 import { StudentProvider } from './screens/student/context/student-context';
 import { AttendanceProvider } from './screens/attendance/context/attendance-context';
+import { LoginProvider } from './screens/auth/login/context/login-context';
 
-export const  App = () => {
+export const App = () => {
   return (
     <React.Fragment>
-      <ToastContainer {...toastConfig} />
+      <ToastContainer 
+        {...toastConfig} 
+      />
         <MenuItemProvider>
-            <ModalProvider>
-                <ClassProvider>
-                    <TeacherProvider>
-                        <ParentProvider>
-                          <SubjectProvider>
-                            <StudentProvider>
-                              <AttendanceProvider>
-                                <AppRoutes/>
-                              </AttendanceProvider>
-                            </StudentProvider>
-                          </SubjectProvider>
-                        </ParentProvider>
-                    </TeacherProvider>
-                </ClassProvider>
-            </ModalProvider>
+          <ModalProvider>
+            <ClassProvider>
+              <TeacherProvider>
+                <ParentProvider>
+                  <SubjectProvider>
+                    <StudentProvider>
+                      <AttendanceProvider>
+                        <LoginProvider>
+                          <AppRoutes/>
+                        </LoginProvider>
+                      </AttendanceProvider>
+                    </StudentProvider>
+                  </SubjectProvider>
+                </ParentProvider>
+              </TeacherProvider>
+            </ClassProvider>
+          </ModalProvider>
         </MenuItemProvider>
     </React.Fragment>
   )
-}
+};
