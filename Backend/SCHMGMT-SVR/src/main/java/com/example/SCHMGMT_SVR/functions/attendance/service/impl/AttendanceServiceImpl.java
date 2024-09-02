@@ -1,5 +1,6 @@
-package com.example.SCHMGMT_SVR.functions.attendance.service;
+package com.example.SCHMGMT_SVR.functions.attendance.service.impl;
 
+import com.example.SCHMGMT_SVR.functions.attendance.service.AttendanceService;
 import com.example.SCHMGMT_SVR.models.Attendance;
 import com.example.SCHMGMT_SVR.models.Student;
 import com.example.SCHMGMT_SVR.functions.attendance.repository.AttendanceRepository;

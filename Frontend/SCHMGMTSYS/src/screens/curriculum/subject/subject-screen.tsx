@@ -80,12 +80,6 @@ export const SubjectScreen: React.FC = () => {
     }
   }, [selectedSubjects, form]);
 
-  /**
-   * Handles editing of a subject record.
-   *
-   * @param {Omit<SubjectData, 'id'>} record - The updated subject record data.
-   * @return {Promise<void>} A promise that resolves when the edit operation is complete.
-   */
   const handleEdit = async <T extends Omit<SubjectData, 'id'>>(
     record: T
   ): Promise<void> => {
@@ -95,12 +89,6 @@ export const SubjectScreen: React.FC = () => {
     }
   };
 
-  /**
-   * Handles the key down event for the input field.
-   *
-   * @param {React.KeyboardEvent<HTMLInputElement>} event - The keyboard event object.
-   * @return {Promise<void>} No return value.
-   */
   const handleKeyDown = async <T extends React.KeyboardEvent<HTMLInputElement>>(
     event: T
   ): Promise<void> => {

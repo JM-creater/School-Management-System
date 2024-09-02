@@ -1,8 +1,12 @@
 package com.example.SCHMGMT_SVR.functions.subject.dto;
 
 import com.example.SCHMGMT_SVR.functions.teacher.dto.TeacherResponseDto;
-import com.example.SCHMGMT_SVR.models.Teacher;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @Getter
 @Setter

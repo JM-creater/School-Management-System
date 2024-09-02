@@ -1,7 +1,8 @@
-package com.example.SCHMGMT_SVR.functions.parent.service;
+package com.example.SCHMGMT_SVR.functions.parent.service.impl;
 
 import com.example.SCHMGMT_SVR.exception.duplicate.DuplicateFieldException;
 import com.example.SCHMGMT_SVR.functions.parent.dto.ParentCreateDto;
+import com.example.SCHMGMT_SVR.functions.parent.service.ParentService;
 import com.example.SCHMGMT_SVR.models.Parent;
 import com.example.SCHMGMT_SVR.functions.parent.repository.ParentRepository;
 import org.springframework.beans.BeanUtils;
