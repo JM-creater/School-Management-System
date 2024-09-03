@@ -1,44 +1,21 @@
 import './App.css'
-import React from 'react'
+import React, { Suspense } from 'react'
 import { ToastContainer } from 'react-toastify'
 import { toastConfig } from './configs/toast-config'
 import 'react-toastify/dist/ReactToastify.css';
-import { AppRoutes } from './AppRoutes'
-import { MenuItemProvider } from './screens/main/context/menu-context';
-import { ModalProvider } from './components/modal/context/modal-context';
-import { ClassProvider } from './screens/curriculum/class/context/class-context';
-import { TeacherProvider } from './screens/teacher/context/teacher-context';
-import { ParentProvider } from './screens/parents/context/parent-context';
-import { SubjectProvider } from './screens/curriculum/subject/context/subject-context';
-import { StudentProvider } from './screens/student/context/student-context';
-import { AttendanceProvider } from './screens/attendance/context/attendance-context';
-import { LoginProvider } from './screens/auth/login/context/login-context';
+import { AppRoutes } from './routes'
+import { Spinner } from './components/spinner/spinner';
+import { RootProviders } from './configs/providers/rootproviders';
 
-export const App = () => {
+export default function App() {
   return (
     <React.Fragment>
-      <ToastContainer 
-        {...toastConfig} 
-      />
-        <MenuItemProvider>
-          <ModalProvider>
-            <ClassProvider>
-              <TeacherProvider>
-                <ParentProvider>
-                  <SubjectProvider>
-                    <StudentProvider>
-                      <AttendanceProvider>
-                        <LoginProvider>
-                          <AppRoutes/>
-                        </LoginProvider>
-                      </AttendanceProvider>
-                    </StudentProvider>
-                  </SubjectProvider>
-                </ParentProvider>
-              </TeacherProvider>
-            </ClassProvider>
-          </ModalProvider>
-        </MenuItemProvider>
+      <ToastContainer {...toastConfig} />
+      <Suspense fallback={<Spinner/>}>
+        <RootProviders>
+          <AppRoutes/>
+        </RootProviders>
+      </Suspense>
     </React.Fragment>
   )
 };
