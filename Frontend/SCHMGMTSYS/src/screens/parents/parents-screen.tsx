@@ -2,15 +2,16 @@ import React, { useEffect } from 'react';
 import { Col, Input, Row, Spin, Table } from 'antd';
 import { useModal } from '../../hooks/use-modal';
 import { CustomModal } from '../../components/modal/modal';
-import { buttonWidthStyles, fontWeightText, marginBottomStyles } from '../dashboard/themes/dashboard-styles';
+import { buttonWidthStyles, marginBottomStyles } from '../dashboard/themes/dashboard-styles';
 import { CustomButton } from '../../components/button/button';
 import { useParent } from '../../hooks/use-parent';
-import { DescriptionItemProps, ParentData } from './data/parents';
+import { ParentData } from './data/parents';
 import { ColumnTable } from './components/columns/columns';
 import { ButtonParentContainer, CenteredContainer, ErrorDiv } from './themes/parents-styles';
 import { ParentAddForm, ParentEditForm } from './components/form/form-parent';
 import { 
   ADD_PARENT, 
+  EDIT_PARENT, 
   EMAIL, 
   ENTER, 
   FIRST_NAME, 
@@ -19,8 +20,10 @@ import {
   PHONE_NUMBER, 
   SEARCH_PARENT 
 } from '../../configs/constants';
+import { observer } from 'mobx-react-lite';
+import { DescriptionItem } from '../../components/item-view/description-view';
 
-export const ParentsScreen: React.FC = () => {
+export const ParentsScreen: React.FC = observer(() => {
 
   const { 
     form, 
@@ -49,7 +52,7 @@ export const ParentsScreen: React.FC = () => {
   const columns = ColumnTable(
     showEditModal, 
     fetchParentById, 
-    (id: number) => removeParent({ id }),
+    removeParent,
     showDetailModal,
     rowClick
   );
@@ -90,13 +93,6 @@ export const ParentsScreen: React.FC = () => {
       searchParentQuery(value);
     }
   };
-
-  const DescriptionItem = ({ title, content }: DescriptionItemProps) => (
-    <div className="site-description-item-profile-wrapper" style={marginBottomStyles}>
-      <p className="site-description-item-profile-p-label" style={fontWeightText}>{title}:</p>
-      {content}
-    </div>
-  );
   
   return (
     <React.Fragment>
@@ -155,7 +151,7 @@ export const ParentsScreen: React.FC = () => {
 
        <CustomModal
           open={openEditModal}
-          title="Edit Parent"
+          title={EDIT_PARENT}
           onOk={form.submit}
           onCancel={() => {
             closeEditModal();
@@ -212,4 +208,4 @@ export const ParentsScreen: React.FC = () => {
       
     </React.Fragment>
   )
-}
+});

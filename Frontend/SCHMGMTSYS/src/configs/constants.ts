@@ -4,6 +4,7 @@ export const UNKOWN_PARENT = 'Unknown Parent';
 
 // PARENT CONSTANT
 export const ADD_PARENT = 'Add Parent';
+export const EDIT_PARENT = 'Edit Parent';
 export const PARENT_DETAILS = 'Parent Details';
 export const SEARCH_PARENT = 'Search by parent...';
 

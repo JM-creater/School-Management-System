@@ -1,7 +1,3 @@
-export interface Identifiable<T = number> {
-    id: T;
-};
-
 export interface ParentData {
     id: number,
     firstName: string,

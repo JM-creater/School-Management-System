@@ -1,5 +1,5 @@
 import { FormInstance } from "antd";
-import { Identifiable, ParentData } from "../../data/parents";
+import { ParentData } from "../../data/parents";
 
 export interface ParentProps {
     children: React.ReactNode;
@@ -38,7 +38,7 @@ export interface ParentContextType {
     ) => Promise<void>;
 
     removeParent: (
-        id: Identifiable<number>
+        id: number
     ) => Promise<void>;
 
     fetchParentById: (

@@ -1,6 +1,6 @@
 import React, { createContext, useCallback, useEffect, useState } from "react";
 import { ParentContextType, ParentProps } from "./props/parent-props";
-import { Identifiable, ParentData } from "../data/parents";
+import { ParentData } from "../data/parents";
 import { 
     createParent, 
     deleteParent, 
@@ -28,7 +28,7 @@ export const ParentProvider: React.FC<ParentProps> = ({ children }) => {
         getAllParent().then(async (response) => {
             setParents(response);
             setFilteredParents(response);
-            return await getAllCountParent<string>();
+            return await getAllCountParent<number>();
         }).then((overAllParentResponse) => {
             setOverAllParent(overAllParentResponse);
         }).catch((error) => {
@@ -87,7 +87,11 @@ export const ParentProvider: React.FC<ParentProps> = ({ children }) => {
         setError(null);
         return await updateParent<TNumber, TUpdate>(id, updatedParent)
             .then((response) => {
-                const editedParents = parents.map(parent => parent.id === id ? response : parent);
+                const editedParents = parents.map((parent) => 
+                    parent.id === id 
+                               ? response 
+                               : parent
+                            );
                 setParents(editedParents);
                 setFilteredParents(editedParents)
             }).catch((error) => {
@@ -98,15 +102,15 @@ export const ParentProvider: React.FC<ParentProps> = ({ children }) => {
             });
     };
 
-    const removeParent = async <TNumber = number>(
-        identifier: Identifiable<TNumber>
+    const removeParent = async <TNumber extends number>(
+        id: TNumber
     ): Promise<void> => {
         setLoading(true);
         setError(null);
-        return await deleteParent(identifier)
+        return await deleteParent(id)
             .then(() => {
-                setParents((prevParent) => prevParent.filter(p => p.id !== identifier.id));
-                setFilteredParents((prevParent) => prevParent.filter(p => p.id !== identifier.id));
+                setParents((prevParent) => prevParent.filter(p => p.id !== id));
+                setFilteredParents((prevParent) => prevParent.filter(p => p.id !== id));
             }).catch((error) => {
                 const errorMessage = handleError(error);
                 setError(errorMessage);
@@ -116,7 +120,7 @@ export const ParentProvider: React.FC<ParentProps> = ({ children }) => {
     };
 
     const searchParentQuery = async <
-        TString extends string | undefined
+        TString extends string
     >(
         name?: TString
     ): Promise<void> => {

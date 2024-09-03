@@ -7,14 +7,14 @@ import {
     SEARCH_PARENT_URL, 
     UPDATE_PARENT_URL 
 } from "../../configs/url";
-import { Identifiable, ParentData } from "../../screens/parents/data/parents";
+import { ParentData } from "../../screens/parents/data/parents";
 import { axiosInstance } from "../api/axiosInstance";
 
 export const createParent = async <
-    T extends Omit<ParentData, 'id'>
+    TParentData extends Omit<ParentData, 'id'>
 >(
-    parent: T
-): Promise<T extends Omit<ParentData, 'id'> ? ParentData : ParentData> => {
+    parent: TParentData
+): Promise<ParentData> => {
     return await axiosInstance.post(CREATE_PARENT_URL, parent)
         .then((response) => response.data)
         .catch((error) => {
@@ -32,8 +32,8 @@ export const getAllParent = async <
         });
 };
 
-export const getParentById = async <T extends number>(
-    id: T
+export const getParentById = async <TNumber extends number>(
+    id: TNumber
 ): Promise<ParentData> => {
     return await axiosInstance.get(`${GET_PARENT_BY_ID_URL}${id}`)
         .then((response) => response.data)
@@ -42,8 +42,8 @@ export const getParentById = async <T extends number>(
         });
 };
 
-export const getAllCountParent = async <T extends string | undefined>(): Promise<
-    T extends string ? number : number
+export const getAllCountParent = async <TNumber extends number>(): Promise<
+    TNumber
 > => {
     return await axiosInstance.get(GET_ALL_COUNT_PARENT)
         .then((response) => response.data)
@@ -53,10 +53,10 @@ export const getAllCountParent = async <T extends string | undefined>(): Promise
 };
 
 export const updateParent = async <
-    T extends number, 
+    TNumber extends number, 
     TUpdate extends Omit<ParentData, 'id'>
 >(
-    id: T, 
+    id: TNumber, 
     updatedParent: TUpdate
 ): Promise<ParentData> => {
    return await axiosInstance.put(`${UPDATE_PARENT_URL}${id}`, updatedParent)
@@ -66,9 +66,9 @@ export const updateParent = async <
     });
 };
 
-export const deleteParent = async <T = number>(
-    id: Identifiable<T>
-): Promise<void> => {
+export const deleteParent = async <TNumber extends number>(
+    id: TNumber
+): Promise<TNumber> => {
     return await axiosInstance.delete(`${DELETE_PARENT_URL}${id}`)
         .then((response) => response.data)
         .catch((error) => {
@@ -76,9 +76,9 @@ export const deleteParent = async <T = number>(
         });
 };
 
-export const searchParent = async <T extends string | undefined>(
-    name?: T
-): Promise<T extends string ? ParentData[] : ParentData[]> => {
+export const searchParent = async <TString extends string>(
+    name?: TString
+): Promise<ParentData[]> => {
     return await axiosInstance.get(SEARCH_PARENT_URL, {
         params: { name },
     }).then((response) => response.data)
