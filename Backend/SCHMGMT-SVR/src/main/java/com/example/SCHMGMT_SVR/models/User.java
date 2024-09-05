@@ -1,11 +1,9 @@
 package com.example.SCHMGMT_SVR.models;
 
+import com.example.SCHMGMT_SVR.models.base.BaseModel;
 import com.example.SCHMGMT_SVR.models.enums.UserStatus;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Table;
-import jakarta.persistence.Id;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Enumerated;
 import jakarta.persistence.EnumType;
@@ -15,8 +13,6 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.Builder;
 
-import java.time.LocalDateTime;
-
 @Entity
 @Getter
 @Setter
@@ -24,25 +20,24 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @Builder
 @Table(name = "user")
-public class User {
+public class User extends BaseModel {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    @Column(name = "firstName", length = 100)
+    private String firstName;
 
-    @Column(unique = true, nullable = false)
+    @Column(name = "middleName", length = 100)
+    private String middleName;
+
+    @Column(name = "lastName", length = 100)
+    private String lastName;
+
+    @Column(name = "email", unique = true, nullable = false)
     private String email;
 
-    @Column(nullable = false)
+    @Column(name = "password", nullable = false)
     private String password;
-
-    private String firstName;
-    private String middleName;
-    private String lastName;
 
     @Enumerated(EnumType.STRING)
     private UserStatus status;
 
-    private LocalDateTime createdAt;
-    private LocalDateTime updatedAt;
 }
