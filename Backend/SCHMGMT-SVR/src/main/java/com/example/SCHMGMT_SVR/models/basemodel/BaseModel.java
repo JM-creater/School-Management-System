@@ -1,4 +1,4 @@
-package com.example.SCHMGMT_SVR.models.base;
+package com.example.SCHMGMT_SVR.models.basemodel;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.GeneratedValue;
@@ -14,7 +14,6 @@ import java.time.LocalDateTime;
 @Setter
 @Getter
 public abstract class BaseModel {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;

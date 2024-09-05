@@ -1,6 +1,6 @@
 package com.example.SCHMGMT_SVR.models;
 
-import com.example.SCHMGMT_SVR.models.base.BaseModel;
+import com.example.SCHMGMT_SVR.models.basemodel.BaseModel;
 import com.example.SCHMGMT_SVR.models.enums.UserStatus;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Table;

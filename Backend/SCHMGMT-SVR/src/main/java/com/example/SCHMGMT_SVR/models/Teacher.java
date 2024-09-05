@@ -1,6 +1,6 @@
 package com.example.SCHMGMT_SVR.models;
 
-import com.example.SCHMGMT_SVR.models.base.BaseModel;
+import com.example.SCHMGMT_SVR.models.basemodel.BaseModel;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.Column;
