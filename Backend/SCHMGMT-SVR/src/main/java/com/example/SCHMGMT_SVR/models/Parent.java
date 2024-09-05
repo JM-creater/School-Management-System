@@ -1,11 +1,12 @@
 package com.example.SCHMGMT_SVR.models;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.example.SCHMGMT_SVR.models.base.BaseModel;
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import jakarta.persistence.CascadeType;
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.Table;
-import jakarta.persistence.Id;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
 import jakarta.persistence.OneToMany;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -13,8 +14,6 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.Builder;
 
-import java.time.LocalDateTime;
-import java.util.HashSet;
 import java.util.Set;
 
 @Entity
@@ -24,22 +23,27 @@ import java.util.Set;
 @AllArgsConstructor
 @Builder
 @Table(name = "parent")
-public class Parent {
+public class Parent extends BaseModel {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-
+    @Column(name = "firstName", length = 100)
     private String firstName;
+
+    @Column(name = "lastName", length = 100)
     private String lastName;
+
+    @Column(name = "email", length = 100)
     private String email;
+
+    @Column(name = "phoneNumber", length = 100)
     private String phoneNumber;
 
-    private LocalDateTime createdAt;
-    private LocalDateTime updatedAt;
-
-    @OneToMany(mappedBy = "parent")
-    @JsonIgnore
-    private Set<Student> students = new HashSet<>();
+    @OneToMany(mappedBy = "parent",
+            cascade = {
+                    CascadeType.PERSIST,
+                    CascadeType.MERGE,
+                    CascadeType.REMOVE
+            }, fetch = FetchType.LAZY)
+    @JsonBackReference
+    private Set<Student> students;
 
 }
