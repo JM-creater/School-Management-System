@@ -6,6 +6,9 @@ import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Column;
 import jakarta.persistence.FetchType;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.JoinTable;
+import jakarta.persistence.ManyToMany;
 import jakarta.persistence.Table;
 import jakarta.persistence.OneToMany;
 import lombok.AllArgsConstructor;
@@ -33,20 +36,35 @@ public class Classroom extends BaseModel {
 
     @OneToMany(mappedBy = "classroom",
             cascade = {
-                    CascadeType.PERSIST,
-                    CascadeType.MERGE,
-                    CascadeType.REMOVE
-            }, fetch = FetchType.LAZY)
+                CascadeType.PERSIST,
+                CascadeType.MERGE,
+                CascadeType.REMOVE
+            }, fetch = FetchType.LAZY
+    )
     @JsonBackReference
     private Set<Teacher> teachers;
 
     @OneToMany(mappedBy = "classroom",
             cascade = {
-                    CascadeType.PERSIST,
-                    CascadeType.MERGE,
-                    CascadeType.REMOVE
-            }, fetch = FetchType.LAZY)
+                CascadeType.PERSIST,
+                CascadeType.MERGE,
+                CascadeType.REMOVE
+            }, fetch = FetchType.LAZY
+    )
     @JsonBackReference
     private Set<Student> students;
 
+    @ManyToMany(cascade = {
+            CascadeType.PERSIST,
+            CascadeType.MERGE
+    }, fetch = FetchType.LAZY)
+    @JoinTable(
+            name = "classroom_course",
+            joinColumns = @JoinColumn(name = "classroomId"),
+            inverseJoinColumns = @JoinColumn(name = "courseId")
+    )
+    @JsonBackReference
+    private Set<Course> courses;
 }
+
+
