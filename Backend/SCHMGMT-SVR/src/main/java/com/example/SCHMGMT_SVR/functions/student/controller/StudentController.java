@@ -3,6 +3,7 @@ package com.example.SCHMGMT_SVR.functions.student.controller;
 import com.example.SCHMGMT_SVR.models.Student;
 import com.example.SCHMGMT_SVR.functions.student.service.StudentService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -15,6 +16,7 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import java.util.List;
 
 @RestController
+@RequestMapping("/api/v1/student")
 public class StudentController {
 
     @Autowired
@@ -24,54 +26,54 @@ public class StudentController {
         this.studentService = studentService;
     }
 
-    @PostMapping("/student")
+    @PostMapping
     public Student createStudent(@RequestBody Student student) {
         return studentService.createStudent(student);
     }
 
-    @GetMapping("/student/search")
+    @GetMapping("/search")
     public List<Student> searchByNameOrGrade(
             @RequestParam(required = false) String name
     ) {
         return studentService.searchStudentsByFirstName(name);
     }
 
-    @GetMapping("/student")
+    @GetMapping
     public List<Student> fetchAllStudents() {
         return studentService.fetchAllStudent();
     }
 
-    @GetMapping("/student/{id}")
+    @GetMapping("/{id}")
     public Student fetchStudentById(@PathVariable Long id) {
         return studentService.fetchStudentById(id);
     }
 
-    @PutMapping("/student/{id}")
+    @PutMapping("/{id}")
     public Student updateStudent(@PathVariable("id") Long id, @RequestBody Student student) {
         return studentService.updateStudentById(id, student);
     }
 
-    @DeleteMapping("/student/{id}")
+    @DeleteMapping("/{id}")
     public String deleteStudentId(@PathVariable("id") Long id) {
         return studentService.deleteStudentById(id);
     }
 
-    @GetMapping("/student/count")
+    @GetMapping("/count")
     public long countStudents() {
         return studentService.countStudents();
     }
 
-    @GetMapping("/student/count/present")
+    @GetMapping("/count/present")
     public long countPresentStudents() {
         return studentService.countPresentStudents();
     }
 
-    @GetMapping("/student/count/late")
+    @GetMapping("/count/late")
     public long countLateStudents() {
         return studentService.countLateStudents();
     }
 
-    @GetMapping("/student/count/absent")
+    @GetMapping("/count/absent")
     public long countAbsentStudents() {
         return studentService.countAbsentStudents();
     }

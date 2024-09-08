@@ -1,5 +1,4 @@
 package com.example.SCHMGMT_SVR.functions.subject.service.impl;
-;
 import com.example.SCHMGMT_SVR.functions.subject.dto.SubjectResponseListDto;
 import com.example.SCHMGMT_SVR.functions.subject.service.SubjectService;
 import com.example.SCHMGMT_SVR.functions.teacher.dto.TeacherResponseDto;
@@ -10,7 +9,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
-import java.util.*;
+import java.util.Comparator;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Objects;
+import java.util.Optional;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 @Service
@@ -31,7 +35,7 @@ public class SubjectServiceImpl implements SubjectService {
     @Override
     public List<Subject> searchSubjectsByName(String name) {
         if (Objects.nonNull(name) && !name.isEmpty()) {
-            return subjectRepository.findByNameIgnoreCase(name);
+            return subjectRepository.findBySubjectNameIgnoreCase(name);
         } else {
             return subjectRepository.findAll();
         }
@@ -70,10 +74,6 @@ public class SubjectServiceImpl implements SubjectService {
         }
 
         return subjectResponseListDto;
-
-//        return allSubjects.stream()
-//                .sorted(Comparator.comparing(Subject::getCreatedAt).reversed())
-//                .collect(Collectors.toList());
     }
 
     @Override
@@ -92,8 +92,8 @@ public class SubjectServiceImpl implements SubjectService {
         if (optionalSubject.isPresent()) {
             Subject originalSubject = optionalSubject.get();
 
-            if (Objects.nonNull(subject.getName()) && !"".equalsIgnoreCase(subject.getName())) {
-                originalSubject.setName(subject.getName());
+            if (Objects.nonNull(subject.getSubjectName()) && !"".equalsIgnoreCase(subject.getSubjectName())) {
+                originalSubject.setSubjectName(subject.getSubjectName());
             }
             if (Objects.nonNull(subject.getCode()) && !"".equalsIgnoreCase(subject.getCode())) {
                 originalSubject.setCode(subject.getCode());
