@@ -1,6 +1,6 @@
 import { Col, Input, Row, Spin, Table } from 'antd';
 import React, { useEffect } from 'react';
-import { buttonWidthStyles, fontWeightText, marginBottomStyles } from '../../dashboard/themes/dashboard-styles';
+import { buttonWidthStyles, marginBottomStyles } from '../../dashboard/themes/dashboard-styles';
 import { CustomButton } from '../../../components/button/button';
 import { useSubject } from '../../../hooks/use-subject';
 import { CenteredContainer, ErrorDiv } from '../../parents/themes/parents-styles';
@@ -10,20 +10,9 @@ import { SubjectData } from './data/subject';
 import { useTeacher } from '../../../hooks/use-teacher';
 import { ButtonSubjectContainer } from './styles/subject-styles';
 import { SubjectAddForm, SubjectEditForm } from './components/form/form-subject';
-import { ColumnTable } from './components/column/column';
 import { ENTER } from '../../../configs/constants';
-
-interface DescriptionItemProps {
-  title: string;
-  content: React.ReactNode;
-}
-
-const DescriptionItem = ({ title, content }: DescriptionItemProps) => (
-  <div className="site-description-item-profile-wrapper" style={marginBottomStyles}>
-    <p className="site-description-item-profile-p-label" style={fontWeightText}>{title}:</p>
-    {content}
-  </div>
-);
+import { DescriptionItem } from '../../../components';
+import { ColumnTable } from './components';
 
 export const SubjectScreen: React.FC = () => {
 

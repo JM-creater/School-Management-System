@@ -6,7 +6,7 @@ import { buttonWidthStyles, marginBottomStyles } from '../dashboard/themes/dashb
 import { CustomButton } from '../../components/button/button';
 import { useParent } from '../../hooks/use-parent';
 import { ParentData } from './data/parents';
-import { ColumnTable } from './components/columns/columns';
+import { ColumnTable } from './components/columns/column';
 import { ButtonParentContainer, CenteredContainer, ErrorDiv } from './themes/parents-styles';
 import { ParentAddForm, ParentEditForm } from './components/form/form-parent';
 import { 

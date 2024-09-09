@@ -105,17 +105,17 @@ export const MenuItemProvider: React.FC<MenuItemProps> = ({ children }) => {
         }
     };
 
-    const handleValues = {
-        renderHeader,
-        handleChangeHeader,
-        handleClickBreadCrumb,
-        handleChangeKey,
-        renderContent,
-        selectedKeyMenu
-    };
-
     return (
-        <MenuItemContext.Provider value={handleValues}>
+        <MenuItemContext.Provider 
+            value={{
+                renderHeader,
+                handleChangeHeader,
+                handleClickBreadCrumb,
+                handleChangeKey,
+                renderContent,
+                selectedKeyMenu
+            }}
+        >
             {children}
         </MenuItemContext.Provider>
     )
