@@ -3,7 +3,7 @@ import { Col, Input, Row, Spin, Table } from 'antd';
 import { ColumnTable } from './components/column/column';
 import { useClass } from '../../../hooks/use-class';
 import { CenteredContainer, ErrorDiv } from '../../parents/themes/parents-styles';
-import { buttonWidthStyles, fontWeightText, marginBottomStyles } from '../../dashboard/themes/dashboard-styles';
+import { buttonWidthStyles, marginBottomStyles } from '../../dashboard/themes/dashboard-styles';
 import { CustomButton } from '../../../components/button/button';
 import { useModal } from '../../../hooks/use-modal';
 import { CustomModal } from '../../../components/modal/modal';
@@ -11,20 +11,10 @@ import { ClassData } from './data/class';
 import { ButtonClassContainer } from './styles/class-style';
 import { ClassAddForm, ClassEditForm } from './components/form/form-class';
 import { ENTER } from '../../../configs/constants';
+import { observer } from 'mobx-react-lite';
+import { DescriptionItem } from '../../../components/item-view/description-view';
 
-interface DescriptionItemProps {
-  title: string;
-  content: React.ReactNode;
-}
-
-const DescriptionItem = ({ title, content }: DescriptionItemProps) => (
-  <div className="site-description-item-profile-wrapper" style={marginBottomStyles}>
-    <p className="site-description-item-profile-p-label" style={fontWeightText}>{title}:</p>
-    {content}
-  </div>
-);
-
-export const ClassScreen: React.FC = () => {
+export const ClassScreen: React.FC = observer(() => {
   const { 
     error, 
     loading, 
@@ -181,4 +171,4 @@ export const ClassScreen: React.FC = () => {
       </CustomModal>
     </React.Fragment>
   );
-};
+});

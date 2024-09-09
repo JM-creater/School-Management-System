@@ -1,5 +1,4 @@
 import { Space, Spin, Table } from "antd";
-import Column from "antd/es/table/Column";
 import ColumnGroup from "antd/es/table/ColumnGroup";
 import { useStudent } from "../../../../hooks/use-students";
 import React from "react";
@@ -9,6 +8,7 @@ import { StudentData } from "../../data/student";
 import { useParent } from "../../../../hooks/use-parent";
 import { useModal } from "../../../../hooks/use-modal";
 import { EyeOutlined } from "@ant-design/icons";
+import Column from "antd/es/table/Column";
 
 export const StudentTable: React.FC = () => {
 
@@ -109,5 +109,5 @@ export const StudentTable: React.FC = () => {
             }
             
         </React.Fragment>
-    )
-}
+    );
+};

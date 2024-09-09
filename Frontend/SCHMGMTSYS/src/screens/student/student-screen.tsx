@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import { Col, Input, Row } from 'antd';
 import { CustomButton } from '../../components/button/button';
-import { buttonWidthStyles, fontWeightText, marginBottomStyles } from '../dashboard/themes/dashboard-styles';
+import { buttonWidthStyles, marginBottomStyles } from '../dashboard/themes/dashboard-styles';
 import { useModal } from '../../hooks/use-modal';
 import { CustomModal } from '../../components/modal/modal';
 import { StudentData } from './data/student';
@@ -13,20 +13,10 @@ import moment from 'moment';
 import { ButtonStudentContainer } from './styles/student-styles';
 import { StudentAddForm, StudentEditForm } from './components/form/form-student';
 import { UKNOWN_CLASSROOM, UNKOWN_PARENT } from '../../configs/constants';
+import { observer } from 'mobx-react-lite';
+import { DescriptionItem } from '../../components/item-view/description-view';
 
-interface DescriptionItemProps {
-  title: string;
-  content: React.ReactNode;
-}
-
-const DescriptionItem = ({ title, content }: DescriptionItemProps) => (
-  <div className="site-description-item-profile-wrapper" style={marginBottomStyles}>
-    <p className="site-description-item-profile-p-label" style={fontWeightText}>{title}:</p>
-    {content}
-  </div>
-);
-
-export const StudentScreen: React.FC = () => {
+export const StudentScreen: React.FC = observer(() => {
 
   const {
     parents
@@ -82,12 +72,6 @@ export const StudentScreen: React.FC = () => {
       return parent ? `${parent.firstName} ${parent.lastName}` : UNKOWN_PARENT;
   };
 
-  /**
-   * Handles the editing of a student by updating their information with the provided data.
-   *
-   * @param {Omit<StudentData, 'id'>} student - The student data to update, excluding the 'id' field.
-   * @return {Promise<void>} A promise that resolves when the update operation completes.
-  */
   const handleEdit = async <T extends Omit<StudentData, 'id'>>(
     teacher: T
   ): Promise<void> => {
@@ -97,12 +81,6 @@ export const StudentScreen: React.FC = () => {
     }
   };
 
-  /**
-   * Handles the key down event for an input field. Triggers a search query when the Enter key is pressed.
-   *
-   * @param {React.KeyboardEvent<HTMLInputElement>} event - The keyboard event triggered by the user.
-   * @return {void}
-  */
   const handleKeyDown = async <T extends React.KeyboardEvent<HTMLInputElement>>(
     event: T
   ): Promise<void> => {
@@ -254,4 +232,4 @@ export const StudentScreen: React.FC = () => {
         </CustomModal>
     </React.Fragment>
   )
-};
+});

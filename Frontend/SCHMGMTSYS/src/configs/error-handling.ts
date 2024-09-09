@@ -1,4 +1,5 @@
 import axios from 'axios';
+import { errors } from './constants';
 
 export const handleError = (error: any): string => {
     if (axios.isAxiosError(error)) {
@@ -6,20 +7,22 @@ export const handleError = (error: any): string => {
             const status = error.response.status;
             switch (status) {
                 case 400:
-                    return 'Invalid request data.';
+                    return errors.ERROR_400;
+                case 403:
+                    return errors.ERROR_403;
                 case 404:
-                    return 'Resource not found.';
+                    return errors.ERROR_404;
                 case 500:
-                    return 'Internal server error. Please try again later.';
+                    return errors.ERROR_500;
                 default:
-                    return `An unexpected error occurred: ${error.response.statusText}`;
+                    return `${errors.ERROR_UNEXPECTED}: ${error.response.statusText}`;
             }
         } else if (error.request) {
-            return 'Network error. Please check your connection and try again.';
+            return errors.ERROR_NETWORK;
         } else {
-            return `Request error: ${error.message}`;
+            return `${errors.ERROR_REQUEST} ${error.message}`;
         }
     } else {
-        return 'An unexpected error occurred.';
+        return errors.ERROR_UNEXPECTED;
     }
 };
