@@ -1,6 +1,5 @@
 import React, { useEffect } from 'react';
 import { Col, Input, Row, Spin, Table } from 'antd';
-import { ColumnTable } from './components/column/column';
 import { useClass } from '../../../hooks/use-class';
 import { CenteredContainer, ErrorDiv } from '../../parents/themes/parents-styles';
 import { buttonWidthStyles, marginBottomStyles } from '../../dashboard/themes/dashboard-styles';
@@ -13,6 +12,7 @@ import { ClassAddForm, ClassEditForm } from './components/form/form-class';
 import { ENTER } from '../../../configs/constants';
 import { observer } from 'mobx-react-lite';
 import { DescriptionItem } from '../../../components/item-view/description-view';
+import { ColumnTable } from './components';
 
 export const ClassScreen: React.FC = observer(() => {
   const { 

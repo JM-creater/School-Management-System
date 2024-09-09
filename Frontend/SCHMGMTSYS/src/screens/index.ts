@@ -1,0 +1,11 @@
+export * from "./attendance";
+export * from "./auth";
+export * from "./curriculum";
+export * from "./dashboard";
+export * from "./exam";
+export * from "./feedback";
+export * from "./main";
+// export * from "./parents";
+export * from "./payment";
+export * from "./student";
+export * from "./teacher";
