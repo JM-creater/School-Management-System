@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { buttonWidthStyles, fontWeightText, marginBottomStyles } from '../dashboard/themes/dashboard-styles';
+import { buttonWidthStyles, marginBottomStyles } from '../dashboard/themes/dashboard-styles';
 import { CustomButton } from '../../components/button/button';
 import { TeacherTable } from './components/table/teacher-table';
 import { CustomModal } from '../../components/modal/modal';
@@ -12,20 +12,10 @@ import { useClass } from '../../hooks/use-class';
 import { ButtonTeacherContainer } from './styles/teacher-styles';
 import { TeacherAddForm, TeacherEditForm } from './components/form/form-teacher';
 import { ENTER, UKNOWN_CLASSROOM } from '../../configs/constants';
+import { observer } from 'mobx-react-lite';
+import { DescriptionItem } from '../../components/item-view/description-view';
 
-interface DescriptionItemProps {
-  title: string;
-  content: React.ReactNode;
-}
-
-const DescriptionItem = ({ title, content }: DescriptionItemProps) => (
-  <div className="site-description-item-profile-wrapper" style={marginBottomStyles}>
-    <p className="site-description-item-profile-p-label" style={fontWeightText}>{title}:</p>
-    {content}
-  </div>
-);
-
-export const TeacherScreen: React.FC = () => {
+export const TeacherScreen: React.FC = observer(() => {
 
   const { 
     form,
@@ -77,13 +67,6 @@ export const TeacherScreen: React.FC = () => {
     return classroom ? classroom.name : UKNOWN_CLASSROOM;
   };
 
-  /**
-   * Handles the editing of a teacher's data by calling the `editTeacher` function with the selected teacher's ID and updated data.
-   *
-   * @param {Omit<TeacherData, 'id'>} teacher - The updated teacher data excluding the 'id' field.
-   * @return {Promise<void>} Resolves when the teacher has been successfully updated.
-   * @throws {Error} If there is an error during the update process.
-  */
   const handleEdit = async <T extends Omit<TeacherData, 'id'>>(
     teacher: T
   ): Promise<void> => {
@@ -93,12 +76,6 @@ export const TeacherScreen: React.FC = () => {
     }
   };
   
-  /**
-   * Handles the keydown event for an input element by triggering a search when the "Enter" key is pressed.
-   *
-   * @param {React.KeyboardEvent<HTMLInputElement>} event - The keydown event from the input element.
-   * @return {Promise<void>} Resolves when the search query has been processed.
-  */
   const handleKeyDown = async <T extends React.KeyboardEvent<HTMLInputElement>>(
     event: T
   ): Promise<void> => {
@@ -247,4 +224,4 @@ export const TeacherScreen: React.FC = () => {
 
     </React.Fragment>
   )
-};
+});

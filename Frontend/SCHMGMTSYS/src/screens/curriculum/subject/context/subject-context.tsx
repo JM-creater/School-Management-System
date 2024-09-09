@@ -25,22 +25,15 @@ export const SubjectProvider: React.FC<SubjectProps> = ({ children }) => {
     const [loading, setLoading] = useState<boolean>(false);
     const [error, setError] = useState<string | null>(null);
     
-    /**
-     * Fetches all subjects from the server and updates the state when the component mounts.
-     * It also fetches the total count of subjects and updates the state.
-     * This function is called only once when the component mounts.
-     *
-     * @return {void} This function does not return anything.
-    */
     useEffect(() => {
         setLoading(true);
         setError(null);
-        getAllSubject<string>()
+        getAllSubject()
         getAllSubject()
             .then(async (response) => {
                 setSubjects(response);  
                 setFilteredSubjects(response);
-                return await getAllCountSubject<string>();
+                return await getAllCountSubject();
             }).then((overAllSubjectResponse) => {
                 setOverAllSubject(overAllSubjectResponse);
             }).catch((error) => {
@@ -51,7 +44,6 @@ export const SubjectProvider: React.FC<SubjectProps> = ({ children }) => {
             });
     }, []);
 
-
     const rowClick = async <T extends SubjectData>(
         record: T
     ): Promise<void> => {
@@ -59,16 +51,10 @@ export const SubjectProvider: React.FC<SubjectProps> = ({ children }) => {
         await fetchSubjectById(record.id as number);
     };
 
-    /**
-     * Fetches a subject by its ID from the server and updates the state.
-     *
-     * @param {T} subjectId - The ID of the subject to fetch.
-     * @return {Promise<void>} A promise that resolves when the subject is successfully fetched.
-     */
     const fetchSubjectById = useCallback(async <TNumber extends number>(
         subjectId: TNumber
     ): Promise<void> => {
-        return await getSubjectById<TNumber>(subjectId)
+        return await getSubjectById(subjectId)
             .then((response) => {
                 setSelectedSubjects(response);
             }).catch((error) => {
@@ -77,12 +63,6 @@ export const SubjectProvider: React.FC<SubjectProps> = ({ children }) => {
             });
     }, []);
 
-    /**
-     * Creates a new subject with the provided values and updates the list of subjects.
-     *
-     * @param {Omit<SubjectData, 'id'>} values - The values to create the new subject with.
-     * @return {Promise<void>} A promise that resolves when the subject is successfully created.
-    */
     const createNewSubject = async <TSubjectData extends Omit<SubjectData, 'id'>>(
         values: TSubjectData
     ): Promise<void> => {
@@ -95,7 +75,7 @@ export const SubjectProvider: React.FC<SubjectProps> = ({ children }) => {
             }
         } as TSubjectData;
     
-        return await createSubject<TSubjectData>(formattedValues)
+        return await createSubject(formattedValues)
             .then((response) => {
                 const addedSubject = [...subjects, response];
                 setSubjects(addedSubject);
@@ -111,13 +91,6 @@ export const SubjectProvider: React.FC<SubjectProps> = ({ children }) => {
             });
     };
     
-    /**
-     * Edits a subject by sending a PUT request to the subject update URL.
-     *
-     * @param {number} id - The ID of the subject to be updated.
-     * @param {Omit<SubjectData, 'id'>} updatedSubject - The updated subject data.
-     * @return {Promise<void>} A promise that resolves when the subject is successfully updated.
-    */
     const editSubject = async <TNumber extends number>(
         id: TNumber, 
         updatedSubject: Omit<SubjectData, 'id'>
@@ -130,7 +103,7 @@ export const SubjectProvider: React.FC<SubjectProps> = ({ children }) => {
                 id: updatedSubject.teacher_id
             }
         } as number extends TNumber ? Omit<SubjectData, 'id'> : SubjectData;
-        return await updateSubject<TNumber>(id, formattedValues)
+        return await updateSubject(id, formattedValues)
             .then((response) => {
                 const updatedSubjectList = subjects.map(s => s.id === id ? response : s)
                 setSubjects(updatedSubjectList);
@@ -143,20 +116,14 @@ export const SubjectProvider: React.FC<SubjectProps> = ({ children }) => {
                 setLoading(false);
             });
     };
-    
-    /**
-    * Removes a subject by sending a DELETE request to the subject delete URL.
-    *
-    * @param {number} id - The ID of the subject to be removed.
-    * @return {Promise<void>} A promise that resolves when the subject is successfully removed.
-    */
+
    const removeSubject = async <TNumber extends number>(
         id: TNumber
     ): Promise<void> => {
         setLoading(true);
         setError(null);
 
-        return await deleteSubject<TNumber>(id)
+        return await deleteSubject(id)
             .then(() => {
                 setSubjects((prevSubjects) => prevSubjects.filter(s => s.id !== id));
                 setFilteredSubjects((prevSubjects) => prevSubjects.filter(s => s.id !== id));
@@ -171,19 +138,13 @@ export const SubjectProvider: React.FC<SubjectProps> = ({ children }) => {
             });
     };
 
-    /**
-     * Searches for a subject by name and updates the filtered subjects list.
-     *
-     * @param {string | undefined} name - The name of the subject to search for.
-     * @return {Promise<void>} A promise that resolves when the search is complete.
-     */
     const searchSubjectQuery = async <TString extends string | undefined>(
         name?: TString
     ): Promise<void> => {
         setLoading(true);
         setError(null);
 
-        return await searchSubject<TString>(name)
+        return await searchSubject(name)
             .then((response) => {
                 setFilteredSubjects(response);
             })
@@ -196,23 +157,23 @@ export const SubjectProvider: React.FC<SubjectProps> = ({ children }) => {
             });
     };
 
-    const handleValue = {
-        searchSubjectQuery,
-        removeSubject,
-        editSubject,
-        fetchSubjectById,
-        createNewSubject,
-        rowClick,
-        selectedSubjects,
-        subjects,
-        loading,
-        error,
-        overAllSubject,
-        filteredSubjects
-    };
-
     return (
-        <SubjectContext.Provider value={handleValue}>
+        <SubjectContext.Provider 
+            value={{
+                searchSubjectQuery,
+                removeSubject,
+                editSubject,
+                fetchSubjectById,
+                createNewSubject,
+                rowClick,
+                selectedSubjects,
+                subjects,
+                loading,
+                error,
+                overAllSubject,
+                filteredSubjects
+            }}
+        >
             {children}
         </SubjectContext.Provider>
     )

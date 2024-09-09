@@ -127,20 +127,20 @@ export const AttendanceProvider: React.FC<AttendanceProps> = ({ children }) => {
             });
     };
 
-    const handleValues = {
-        loading,
-        error,
-        markedStudents,
-        markStudentAbsentStatus,
-        markStudentLateStatus,
-        markStudentPresentAttendance,
-        markStudentLateAttendance,
-        markStudentAbsentAttendance,
-        markStudentPresentStatus
-    };
-
     return (
-        <AttendanceContext.Provider value={handleValues}>
+        <AttendanceContext.Provider 
+            value={{
+                loading,
+                error,
+                markedStudents,
+                markStudentAbsentStatus,
+                markStudentLateStatus,
+                markStudentPresentAttendance,
+                markStudentLateAttendance,
+                markStudentAbsentAttendance,
+                markStudentPresentStatus
+            }}
+        >
             {children}
         </AttendanceContext.Provider>
     )

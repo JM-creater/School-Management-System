@@ -1,7 +1,7 @@
 import { EyeInvisibleOutlined, EyeTwoTone, LockOutlined, UserOutlined } from '@ant-design/icons';
 import { Button, Checkbox, Form, Input } from 'antd';
 import { Link } from 'react-router-dom';
-import { LoginFormContainer, LoginMainContainer } from '../../themes/login-themes';
+import { LoginFormContainer, LoginMainContainer } from '../../styles/login-themes';
 import { onFinishFailed } from '../../../../teacher/context/exception/finish-failed';
 import { FormProps } from './props/form-props';
 
