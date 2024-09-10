@@ -89,7 +89,7 @@ export const ParentProvider: React.FC<ParentProps> = observer(({ children }) => 
         rootStore.setError(null);
         return await updateParent<TNumber, TUpdate>(id, updatedParent)
             .then((response) => {
-                const editedParents = rootStore.parents.map((parent) => 
+                const editedParents = rootStore.parents.map((parent: ParentData) => 
                     parent.id === id 
                                ? response 
                                : parent
@@ -111,8 +111,8 @@ export const ParentProvider: React.FC<ParentProps> = observer(({ children }) => 
         rootStore.setError(null);
         return await deleteParent(id)
             .then(() => {
-                rootStore.setParents(rootStore.parents.filter(p => p.id !== id));
-                rootStore.setFilteredParents(rootStore.filteredParents.filter(p => p.id !== id));
+                rootStore.setParents(rootStore.parents.filter((p: ParentData) => p.id !== id));
+                rootStore.setFilteredParents(rootStore.filteredParents.filter((p: ParentData) => p.id !== id));
             }).catch((error) => {
                 const errorMessage = handleError(error);
                 rootStore.setError(errorMessage);
@@ -140,8 +140,6 @@ export const ParentProvider: React.FC<ParentProps> = observer(({ children }) => 
             });
     };
     
-    
-
     return (
         <ParentContext.Provider 
             value={{
@@ -157,7 +155,7 @@ export const ParentProvider: React.FC<ParentProps> = observer(({ children }) => 
                 filteredParents: rootStore.filteredParents,
                 selectedParent: rootStore.selectedParent,
                 overAllParent: rootStore.overAllParent
-            }}
+            } as ParentContextType}
         >
             {children}
         </ParentContext.Provider>
