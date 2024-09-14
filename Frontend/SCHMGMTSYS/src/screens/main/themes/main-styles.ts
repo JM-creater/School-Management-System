@@ -23,4 +23,8 @@ export const footerStyle: React.CSSProperties = {
 export const headerNameStyle: React.CSSProperties = {
     color: '#000000', 
     margin: 0
-}
+};
+
+export const layoutMainStyle: React.CSSProperties = {
+
+};

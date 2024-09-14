@@ -4,8 +4,6 @@ import React, {
     useContext, 
     useEffect 
 } from "react";
-import { ParentContextType, ParentProps } from "./props/parent-props";
-import { ParentData } from "../data/parents";
 import { 
     createParent, 
     deleteParent, 
@@ -17,9 +15,14 @@ import {
 } from "../../../services/parent/parent-service";
 import { handleError } from "../../../configs/error-handling";
 import { observer } from "mobx-react-lite";
-import { IParentStore, parentStore } from "../../../stores";
+import { 
+    parentStore, 
+    IParentStoreContextType
+} from "../../../stores";
+import { ParentContextProps, ParentProps } from "../../../configs/props";
+import { ParentData } from "../../../configs/interface";
 
-export const ParentContext = createContext<IParentStore>(parentStore);
+export const ParentContext = createContext<IParentStoreContextType>(parentStore as IParentStoreContextType);
 
 export const ParentProvider: React.FC<ParentProps> = observer(({ children }) => {
 
@@ -60,6 +63,7 @@ export const ParentProvider: React.FC<ParentProps> = observer(({ children }) => 
             });
     }, [rootStore]);
     
+
     const createNewParents = async <TValues extends Omit<ParentData, 'id'>>(
         values: TValues
     ): Promise<void> => {
@@ -120,7 +124,6 @@ export const ParentProvider: React.FC<ParentProps> = observer(({ children }) => 
                 rootStore.setLoading(false);
             });
     };
-    
 
     const searchParentQuery = async <
         TString extends string
@@ -143,19 +146,14 @@ export const ParentProvider: React.FC<ParentProps> = observer(({ children }) => 
     return (
         <ParentContext.Provider 
             value={{
-                rowClick, 
+                ...rootStore,
+                rowClick,
                 searchParentQuery,
+                createNewParents,
                 editParent,
                 removeParent,
                 fetchParentById,
-                createNewParents,
-                loading: rootStore.loading,
-                error: rootStore.error,
-                parents: rootStore.parents,
-                filteredParents: rootStore.filteredParents,
-                selectedParent: rootStore.selectedParent,
-                overAllParent: rootStore.overAllParent
-            } as ParentContextType}
+            } as ParentContextProps}
         >
             {children}
         </ParentContext.Provider>

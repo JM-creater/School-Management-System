@@ -1,6 +1,6 @@
 import { Space } from "antd";
-import { ParentData } from "../../data/parents";
 import { EyeOutlined } from "@ant-design/icons";
+import { ParentData } from "../../../../configs/interface";
 
 export const ColumnTable = (
   showEditModal: any, 

@@ -1,18 +1,25 @@
-import { Button } from "antd";
+import { Button as AntButton} from "antd";
 
 interface CustomButtonProps {
     label: string;
     onClick: () => void;
     type?: 'primary' | 'default' | 'dashed' | 'text' | 'link'; 
-    style: React.CSSProperties;
+    style?: React.CSSProperties;
     prefix?: React.ReactNode;
 }
 
-export const CustomButton: React.FC<CustomButtonProps> = ({ label, onClick, type = 'default', style, prefix }) => {
+export const CustomButton = (props: CustomButtonProps) => {
+    const { 
+        label, 
+        onClick, 
+        type = 'default', 
+        style, 
+        prefix 
+    } = props;
     return (
-        <Button type={type} onClick={onClick} style={style}>
+        <AntButton type={type} onClick={onClick} style={style}>
             {prefix && <span className="button-prefix">{prefix}</span>} 
             {label}
-        </Button>
+        </AntButton>
     );
 };
