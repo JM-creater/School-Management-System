@@ -6,6 +6,12 @@ export interface ParentData {
     phoneNumber: string
 };
 
+export interface ClassData {
+    id: number,
+    name: string,
+    grade: string,
+};
+
 export interface FormField {
     name: string;
     label: string;
@@ -21,6 +27,7 @@ export interface FormField {
              | number 
     }[]; 
     rules?: object[];
+    maxLength?: number | undefined;
 };
 
 export interface DetailField {
@@ -32,5 +39,3 @@ export interface DetailDisplay {
     data: DetailData; 
     fields: DetailField[];
 };
-
-export type MenuItem = Required<MenuProps>['items'][number];

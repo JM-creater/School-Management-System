@@ -23,7 +23,7 @@ export const CustomForms = (props: CustomFormProps) => {
     const renderFormField = (field: FormField): React.ReactNode => {
         switch (field.type) {
             case FieldType.Input:
-                return <AntInput placeholder={field.placeholder} />;
+                return <AntInput placeholder={field.placeholder} maxLength={field.maxLength}/>;
             case FieldType.Textarea:
                 return <AntInput.TextArea placeholder={field.placeholder} />;
             case FieldType.Select:

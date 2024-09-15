@@ -1,5 +1,6 @@
 import { 
   Layout, 
+  MenuProps, 
   theme 
 } from 'antd';
 import { 
@@ -7,19 +8,22 @@ import {
   shadowStyle, 
   sidebarBgColor 
 } from './themes/colors/main-colors';
-import React, { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { FooterComponent } from './components/footer/footer';
 import { BreadcrumbComponent } from './components/breadcrumb/breadcrumb';
 import { Sidebar } from './components/sidebar/sidebar';
 import { useItemMenu } from '../../hooks/use-item-menu';
-import { observer } from 'mobx-react-lite';
 
 import * as styles from './themes/main-styles';
+import { Spinner } from '../../components';
 
 const { Header, Content } = Layout;
 
-export const MainScreen: React.FC = observer(() => {
+export type MenuItem = Required<MenuProps>['items'][number];
+
+const MainScreen = () => {
   const [collapsed, setCollapsed] = useState<boolean>(false);
+  const [isLoading, setIsLoading] = useState<boolean>(true);
   const {
     token: { colorBgContainer, borderRadiusLG },
   } = theme.useToken();
@@ -28,6 +32,13 @@ export const MainScreen: React.FC = observer(() => {
     renderContent, 
     renderHeader 
   } = useItemMenu();
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setIsLoading(false);
+    }, 2000);
+    return () => clearTimeout(timer); 
+  }, []);
 
   return (
     <Layout style={{ 
@@ -76,11 +87,13 @@ export const MainScreen: React.FC = observer(() => {
               boxShadow: shadowStyle,
             }}
           >
-            {renderContent()}
+           {isLoading ? <Spinner /> : renderContent()}
           </div>
         </Content>
         <FooterComponent />
       </Layout>
     </Layout>
   );
-});
+};
+
+export default MainScreen;

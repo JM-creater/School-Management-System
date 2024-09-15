@@ -7,7 +7,7 @@ import {
 } from "mobx-state-tree";
 import { ParentData } from "../../configs/interface";
 
-export const ParentStore = types
+export const ParentStoreModel = types
     .model({
         parents: types.array(types.frozen<ParentData>()),
         filteredParents: types.array(types.frozen<ParentData>()),
@@ -32,22 +32,12 @@ export const ParentStore = types
         setLoading(loading: boolean) {
             self.loading = loading;
         },
-
         setError(error: string | null) {
             self.error = error;
         }
 }));
 
-export const parentStore = ParentStore.create({
-    parents: [],
-    filteredParents: [],
-    selectedParent: null,
-    overAllParent: 0, 
-    loading: false,
-    error: null
-});
-
-export type IParentStore = Instance<typeof ParentStore>;
-export type IParentStoreSnapshotIn = SnapshotIn<typeof ParentStore>;
-export type IParentStoreSnapshotOut = SnapshotOut<typeof ParentStore>;
+export type IParentStore = Instance<typeof ParentStoreModel>;
+export type IParentStoreSnapshotIn = SnapshotIn<typeof ParentStoreModel>;
+export type IParentStoreSnapshotOut = SnapshotOut<typeof ParentStoreModel>;
 export type IParentStoreContextType = IParentStore;

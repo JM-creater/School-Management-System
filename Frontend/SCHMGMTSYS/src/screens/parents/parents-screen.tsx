@@ -23,14 +23,14 @@ import React, { useEffect } from 'react';
 import { useModal } from '../../hooks/use-modal';
 import { CustomModal } from '../../components/modal/modal';
 import { CustomButton } from '../../components/button/button';
-import { useParent } from '../../hooks/use-parent';
-import { ColumnTable } from './components/columns/column';
+import { ColumnParentTable } from './components/columns/column';
 import { observer } from 'mobx-react-lite';
 import { ParentData } from '../../configs/interface';
 import { ParentForm } from './components';
 import { CustomDetailDisplay } from '../../components';
 import { InfoDisplay } from '../../components/details/detials-display';
 import { FieldName } from '../../components/forms/enums/form-enum';
+import { useParent } from '../../hooks';
 
 export const ParentsScreen: React.FC = observer(() => {
 
@@ -46,7 +46,7 @@ export const ParentsScreen: React.FC = observer(() => {
     closeDetailModal,
     showDetailModal
   } = useModal();
-  const { 
+  const {
     selectedParent,
     error, 
     loading, 
@@ -58,7 +58,8 @@ export const ParentsScreen: React.FC = observer(() => {
     searchParentQuery,
     rowClick
   } = useParent();
-  const columns = ColumnTable(
+  
+  const columns = ColumnParentTable(
     showEditModal, 
     fetchParentById, 
     removeParent,

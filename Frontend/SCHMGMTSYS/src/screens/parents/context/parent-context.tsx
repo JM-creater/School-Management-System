@@ -1,7 +1,6 @@
 import React, { 
     createContext, 
     useCallback, 
-    useContext, 
     useEffect 
 } from "react";
 import { 
@@ -13,41 +12,45 @@ import {
     searchParent, 
     updateParent 
 } from "../../../services/parent/parent-service";
+import { 
+    IParentStoreContextType,
+    rootStore,
+    useStore
+} from "../../../stores";
 import { handleError } from "../../../configs/error-handling";
 import { observer } from "mobx-react-lite";
-import { 
-    parentStore, 
-    IParentStoreContextType
-} from "../../../stores";
 import { ParentContextProps, ParentProps } from "../../../configs/props";
 import { ParentData } from "../../../configs/interface";
 
-export const ParentContext = createContext<IParentStoreContextType>(parentStore as IParentStoreContextType);
+export const ParentContext = createContext<IParentStoreContextType>(rootStore.parentStore);
 
 export const ParentProvider: React.FC<ParentProps> = observer(({ children }) => {
 
-    const rootStore = useContext(ParentContext);
-
+    const rootStore = useStore();
+    const parentStore = rootStore.parentStore;
+ 
     useEffect(() => {
-        rootStore.setLoading(true);
+        parentStore.setLoading(true);
         getAllParent().then(async (response) => {
-            rootStore.setParents(response);
-            rootStore.setFilteredParents(response);
+            console.log(response);
+            parentStore.setParents(response);
+            parentStore.setFilteredParents(response);
             return await getAllCountParent();
         }).then((overAllParentResponse) => {
-            rootStore.setOverAllParent(overAllParentResponse);
+            parentStore.setOverAllParent(overAllParentResponse);
         }).catch((error) => {
+            console.error("Error fetching parents: ", error);
             const errorMessage = handleError(error);
-            rootStore.setError(errorMessage);
+            parentStore.setError(errorMessage);
         }).finally(() => {
-            rootStore.setLoading(false);
+            parentStore.setLoading(false);
         });
-    }, [rootStore]);
+    }, [parentStore]);
 
     const rowClick = async (
         record: ParentData
     ): Promise<void> => {
-        rootStore.setSelectedParent(record);
+        parentStore.setSelectedParent(record);
         await fetchParentById(record.id as number);
     };
 
@@ -56,29 +59,28 @@ export const ParentProvider: React.FC<ParentProps> = observer(({ children }) => 
     ): Promise<void> => {
         return await getParentById<TNumber>(parentId)
             .then((response) => {
-                rootStore.setSelectedParent(response);
+                parentStore.setSelectedParent(response);
             }).catch((error) => {
                 const errorMessage = handleError(error);
-                rootStore.setError(errorMessage);
+                parentStore.setError(errorMessage);
             });
-    }, [rootStore]);
+    }, [parentStore]);
     
-
     const createNewParents = async <TValues extends Omit<ParentData, 'id'>>(
         values: TValues
     ): Promise<void> => {
-        rootStore.setLoading(true);
-        rootStore.setError(null);
+        parentStore.setLoading(true);
+        parentStore.setError(null);
         return await createParent<TValues>(values)
             .then((response) => {
-                const addedParents = [...rootStore.parents, response];
-                rootStore.setParents(addedParents);
-                rootStore.setFilteredParents(addedParents);
+                const addedParents = [...parentStore.parents, response];
+                parentStore.setParents(addedParents);
+                parentStore.setFilteredParents(addedParents);
             }).catch((error) => {
                 const errorMessage = handleError(error);
-                rootStore.setError(errorMessage);
+                parentStore.setError(errorMessage);
             }).finally(() => {
-                rootStore.setLoading(false);
+                parentStore.setLoading(false);
             });
     };
 
@@ -89,39 +91,43 @@ export const ParentProvider: React.FC<ParentProps> = observer(({ children }) => 
         id: TNumber, 
         updatedParent: TUpdate
     ): Promise<void> => {
-        rootStore.setLoading(true);
-        rootStore.setError(null);
+        parentStore.setLoading(true);
+        parentStore.setError(null);
         return await updateParent<TNumber, TUpdate>(id, updatedParent)
             .then((response) => {
-                const editedParents = rootStore.parents.map((parent: ParentData) => 
+                const editedParents = parentStore.parents.map((parent: ParentData) => 
                     parent.id === id 
                                ? response 
                                : parent
                             );
-                rootStore.setParents(editedParents);
-                rootStore.setFilteredParents(editedParents)
+                parentStore.setParents(editedParents);
+                parentStore.setFilteredParents(editedParents)
             }).catch((error) => {
                 const errorMessage = handleError(error);
-                rootStore.setError(errorMessage);
+                parentStore.setError(errorMessage);
             }).finally(() => {
-                rootStore.setLoading(false);
+                parentStore.setLoading(false);
             });
     };
 
     const removeParent = async <TNumber extends number>(
         id: TNumber
     ): Promise<void> => {
-        rootStore.setLoading(true);
-        rootStore.setError(null);
+        parentStore.setLoading(true);
+        parentStore.setError(null);
         return await deleteParent(id)
             .then(() => {
-                rootStore.setParents(rootStore.parents.filter((p: ParentData) => p.id !== id));
-                rootStore.setFilteredParents(rootStore.filteredParents.filter((p: ParentData) => p.id !== id));
+                parentStore.setParents(
+                    parentStore.parents.filter((p: ParentData) => p.id !== id)
+                );
+                parentStore.setFilteredParents(
+                    parentStore.filteredParents.filter((p: ParentData) => p.id !== id)
+                );
             }).catch((error) => {
                 const errorMessage = handleError(error);
-                rootStore.setError(errorMessage);
+                parentStore.setError(errorMessage);
             }).finally(() => {
-                rootStore.setLoading(false);
+                parentStore.setLoading(false);
             });
     };
 
@@ -130,23 +136,23 @@ export const ParentProvider: React.FC<ParentProps> = observer(({ children }) => 
     >(
         name?: TString
     ): Promise<void> => {
-        rootStore.setLoading(true);
-        rootStore.setError(null);
+        parentStore.setLoading(true);
+        parentStore.setError(null);
         return await searchParent<TString>(name)
             .then((response) => {
-                rootStore.setFilteredParents(response);
+                parentStore.setFilteredParents(response);
             }).catch((error) => {
                 const errorMessage = handleError(error);
-                rootStore.setError(errorMessage);
+                parentStore.setError(errorMessage);
             }).finally(() => {
-                rootStore.setLoading(false);
+                parentStore.setLoading(false);
             });
     };
     
     return (
         <ParentContext.Provider 
-            value={{
-                ...rootStore,
+            value={{    
+                ...rootStore.parentStore,
                 rowClick,
                 searchParentQuery,
                 createNewParents,

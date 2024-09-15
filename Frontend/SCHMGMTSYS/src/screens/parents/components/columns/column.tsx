@@ -2,7 +2,7 @@ import { Space } from "antd";
 import { EyeOutlined } from "@ant-design/icons";
 import { ParentData } from "../../../../configs/interface";
 
-export const ColumnTable = (
+export const ColumnParentTable = (
   showEditModal: any, 
   fetchParentById: (id: number) => void, 
   removeParent: (id: number) => void,

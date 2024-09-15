@@ -25,7 +25,7 @@ import {
     THREE_ITEM, 
     TWO_ITEM 
 } from '../../../../configs';
-import { MenuItem } from '../../../../configs/interface';
+import { MenuItem } from '../../main-screen';
 
 export function getItem(
     label: React.ReactNode,

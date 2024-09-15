@@ -33,7 +33,7 @@ export interface ParentEditModalProps {
     ) => Promise<void>;
 };
 
-export interface ParentContextProps extends IParentStore{
+export interface ParentContextProps extends IParentStore {
     rowClick: (
         record: ParentData
     ) => Promise<void>;
@@ -74,4 +74,8 @@ export interface CustomFormProps {
     onFinish: (values: FormValuesProps) => void;
     onFinishFailed?: FormProps['onFinishFailed'];
     layout?: 'vertical' | 'horizontal';
+};
+
+export interface SpinnerProps {
+    isLoading?: boolean;
 };

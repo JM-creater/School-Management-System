@@ -21,7 +21,6 @@ export const InfoDisplay = (entityType: 'parent'): DetailField[] => {
                     title: 'Phone Number', 
                     content: 'phoneNumber' 
                 },
-        
             ];
         default:
             return [];

@@ -1,2 +1,3 @@
 export * from "./parent";
-export * from "./model-store";
+export * from "./class";
+export * from "./root-store";

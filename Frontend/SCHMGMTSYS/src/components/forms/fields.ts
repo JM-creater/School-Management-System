@@ -10,7 +10,10 @@ export const FieldDetails = (entityType: 'parent'): FormField[] => {
                 label: 'First Name', 
                 type: FieldType.Input,
                 placeholder: 'Please enter first name', 
-                rules: [{ required: true, message: 'Please enter first name' }] 
+                rules: [{ 
+                    required: true, 
+                    message: 'Please enter first name' 
+                }]
             },
             { 
                 name: 'lastName', 
@@ -40,7 +43,8 @@ export const FieldDetails = (entityType: 'parent'): FormField[] => {
                 rules: [{ 
                     required: true, 
                     message: 'Please enter phone number' 
-                }] 
+                }],
+                maxLength: 11
             }
         ];
       default:
