@@ -1,27 +1,36 @@
-import React, { useEffect } from 'react';
-import { Col, Input, Row, Spin, Table } from 'antd';
-import { useModal } from '../../hooks/use-modal';
-import { CustomModal } from '../../components/modal/modal';
-import { buttonWidthStyles, marginBottomStyles } from '../dashboard/themes/dashboard-styles';
-import { CustomButton } from '../../components/button/button';
-import { useParent } from '../../hooks/use-parent';
-import { ParentData } from './data/parents';
-import { ColumnTable } from './components/columns/column';
-import { ButtonParentContainer, CenteredContainer, ErrorDiv } from './themes/parents-styles';
-import { ParentAddForm, ParentEditForm } from './components/form/form-parent';
+import { 
+  Input, 
+  Spin, 
+  Table 
+} from 'antd';
+import { 
+  ButtonParentContainer, 
+  CenteredContainer, 
+  ErrorDiv 
+} from './themes/parents-styles';
 import { 
   ADD_PARENT, 
   EDIT_PARENT, 
-  EMAIL, 
   ENTER, 
-  FIRST_NAME, 
-  LAST_NAME, 
   PARENT_DETAILS, 
-  PHONE_NUMBER, 
   SEARCH_PARENT 
 } from '../../configs/constants';
+import { 
+  buttonWidthStyles, 
+  marginBottomStyles 
+} from '../dashboard/themes/dashboard-styles';
+import React, { useEffect } from 'react';
+import { useModal } from '../../hooks/use-modal';
+import { CustomModal } from '../../components/modal/modal';
+import { CustomButton } from '../../components/button/button';
+import { ColumnParentTable } from './components/columns/column';
 import { observer } from 'mobx-react-lite';
-import { DescriptionItem } from '../../components/item-view/description-view';
+import { ParentData } from '../../configs/interface';
+import { ParentForm } from './components';
+import { CustomDetailDisplay } from '../../components';
+import { InfoDisplay } from '../../components/details/detials-display';
+import { FieldName } from '../../components/forms/enums/form-enum';
+import { useParent } from '../../hooks';
 
 export const ParentsScreen: React.FC = observer(() => {
 
@@ -37,7 +46,7 @@ export const ParentsScreen: React.FC = observer(() => {
     closeDetailModal,
     showDetailModal
   } = useModal();
-  const { 
+  const {
     selectedParent,
     error, 
     loading, 
@@ -49,7 +58,8 @@ export const ParentsScreen: React.FC = observer(() => {
     searchParentQuery,
     rowClick
   } = useParent();
-  const columns = ColumnTable(
+  
+  const columns = ColumnParentTable(
     showEditModal, 
     fetchParentById, 
     removeParent,
@@ -118,22 +128,20 @@ export const ParentsScreen: React.FC = observer(() => {
       </ButtonParentContainer>
 
       <React.Fragment>
-        {
-          loading ? (
-            <CenteredContainer>
-              <Spin size="large" />
-            </CenteredContainer>
-          ) : error ? (
-            <ErrorDiv>{error}</ErrorDiv>
-          ) : (
-            <React.Fragment>
-              <Table 
-                columns={columns} 
-                dataSource={filteredParents} 
-              />
-            </React.Fragment>
-          )
-        }
+        {loading ? (
+          <CenteredContainer>
+            <Spin size="large" />
+          </CenteredContainer>
+        ) : error ? (
+          <ErrorDiv>{error}</ErrorDiv>
+        ) : (
+          <React.Fragment>
+            <Table 
+              columns={columns} 
+              dataSource={filteredParents} 
+            />
+          </React.Fragment>
+        )}
       </React.Fragment>
        
       <CustomModal
@@ -143,7 +151,7 @@ export const ParentsScreen: React.FC = observer(() => {
         onCancel={closeModal}
         centered  
       >
-        <ParentAddForm
+        <ParentForm
           form={form}
           createNewParents={createNewParents}
         />
@@ -159,10 +167,10 @@ export const ParentsScreen: React.FC = observer(() => {
           }}
           centered
         >
-            <ParentEditForm
-              form={form}
-              handleEdit={handleEdit}
-            />
+          <ParentForm
+            form={form}
+            handleEdit={handleEdit}
+          />
         </CustomModal>
 
       <CustomModal
@@ -172,38 +180,12 @@ export const ParentsScreen: React.FC = observer(() => {
         onCancel={closeDetailModal}
         centered  
       >
-        {
-          selectedParent && (
-            <React.Fragment>
-              <Row>
-                <Col span={12}>
-                  <DescriptionItem 
-                    title={FIRST_NAME} 
-                    content={selectedParent.firstName} 
-                  />
-                </Col>
-                <Col span={12}>
-                  <DescriptionItem 
-                    title={LAST_NAME} 
-                    content={selectedParent.lastName} 
-                  />
-                </Col>
-                <Col span={12}>
-                  <DescriptionItem 
-                    title={EMAIL} 
-                    content={selectedParent.email} 
-                  />
-                </Col>
-                <Col span={12}>
-                  <DescriptionItem 
-                    title={PHONE_NUMBER} 
-                    content={selectedParent.phoneNumber} 
-                  />
-                </Col>
-              </Row>
-            </React.Fragment>
-          )
-        }
+        {selectedParent && (
+          <CustomDetailDisplay
+            data={selectedParent} 
+            fields={InfoDisplay(FieldName.Parent)} 
+          />
+        )}
       </CustomModal>
       
     </React.Fragment>

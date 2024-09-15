@@ -15,7 +15,7 @@ export const handleError = (error: any): string => {
                 case 500:
                     return errors.ERROR_500;
                 default:
-                    return `${errors.ERROR_UNEXPECTED}: ${error.response.statusText}`;
+                    return `${errors.ERROR_UNEXPECTED} ${error.response.statusText}`;
             }
         } else if (error.request) {
             return errors.ERROR_NETWORK;

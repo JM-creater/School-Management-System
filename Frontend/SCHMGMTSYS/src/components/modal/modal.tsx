@@ -1,10 +1,18 @@
-import React from 'react'
-import { CustomModalProps } from './props/modal-props'
-import { Button, Modal } from 'antd'
+import { Modal } from 'antd'
 import { useModal } from '../../hooks/use-modal'
+import { CustomButton } from '../button';
+import { CustomModalProps } from '../../configs/props';
 
-export const CustomModal: React.FC<CustomModalProps> = ({ open, title, onOk, onCancel, children, centered }) => {
+export const CustomModal = (props: CustomModalProps) => {
 
+  const { 
+    open, 
+    title, 
+    onOk, 
+    onCancel, 
+    children, 
+    centered 
+  } = props;
   const { form } = useModal();
 
   const handleSubmit = () => {
@@ -14,20 +22,25 @@ export const CustomModal: React.FC<CustomModalProps> = ({ open, title, onOk, onC
 
   return (
     <Modal
-        title={title}
-        open={open}
-        onOk={handleSubmit}
-        onCancel={onCancel}
-        footer={[
-            <Button key="cancel" onClick={onCancel}>
-              Cancel
-            </Button>,
-            <Button key="submit" type="primary" onClick={handleSubmit}>
-              Confirm
-            </Button>,
-        ]}
-        centered={centered}
-        maskClosable={false} 
+      title={title}
+      open={open}
+      onOk={handleSubmit}
+      onCancel={onCancel}
+      footer={[
+        <CustomButton 
+          key="cancel" 
+          onClick={onCancel} 
+          label='Cancel'
+        />,
+        <CustomButton 
+          key="submit" 
+          onClick={handleSubmit} 
+          label='Submit'
+          type='primary'
+        />
+      ]}
+      centered={centered}
+      maskClosable={false} 
     >   
         {children}
     </Modal>

@@ -12,7 +12,7 @@ import { ButtonSubjectContainer } from './styles/subject-styles';
 import { SubjectAddForm, SubjectEditForm } from './components/form/form-subject';
 import { ENTER } from '../../../configs/constants';
 import { DescriptionItem } from '../../../components';
-import { ColumnTable } from './components';
+import { ColumnSubjectTable } from './components';
 
 export const SubjectScreen: React.FC = () => {
 
@@ -44,7 +44,7 @@ export const SubjectScreen: React.FC = () => {
     closeDetailModal,
     showDetailModal
   } = useModal();
-  const columns = ColumnTable(
+  const columns = ColumnSubjectTable(
     showEditModal,
     teachers, 
     getTeacherFullNameById,

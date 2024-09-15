@@ -3,7 +3,7 @@ import { TeacherData } from "../../../../teacher/data/teachers";
 import { SubjectData } from "../../data/subject";
 import { EyeOutlined } from "@ant-design/icons";
 
-export const ColumnTable = (
+export const ColumnSubjectTable = (
     showEditModal: any, 
     teachers: TeacherData[],
     getTeacherFullNameById: (teacherId: number, teachers: TeacherData[]) => string,

@@ -1,26 +1,52 @@
-import { Layout, MenuProps, theme } from 'antd';
-import React, { useState } from 'react';
-import { contentStyle, minHeightLayout } from './themes/main-styles';
+import { 
+  Layout, 
+  MenuProps, 
+  theme 
+} from 'antd';
+import { 
+  contentBgColor, 
+  shadowStyle, 
+  sidebarBgColor 
+} from './themes/colors/main-colors';
+import { useEffect, useState } from 'react';
 import { FooterComponent } from './components/footer/footer';
 import { BreadcrumbComponent } from './components/breadcrumb/breadcrumb';
 import { Sidebar } from './components/sidebar/sidebar';
-import { contentBgColor, shadowStyle, sidebarBgColor } from './themes/colors/main-colors';
 import { useItemMenu } from '../../hooks/use-item-menu';
+
+import * as styles from './themes/main-styles';
+import { Spinner } from '../../components';
 
 const { Header, Content } = Layout;
 
 export type MenuItem = Required<MenuProps>['items'][number];
 
-const MainScreen: React.FC = () => {
-  const [collapsed, setCollapsed] = useState(false);
+const MainScreen = () => {
+  const [collapsed, setCollapsed] = useState<boolean>(false);
+  const [isLoading, setIsLoading] = useState<boolean>(true);
   const {
     token: { colorBgContainer, borderRadiusLG },
   } = theme.useToken();
 
-  const { renderContent, renderHeader } = useItemMenu();
+  const { 
+    renderContent, 
+    renderHeader 
+  } = useItemMenu();
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setIsLoading(false);
+    }, 2000);
+    return () => clearTimeout(timer); 
+  }, []);
 
   return (
-    <Layout style={{ ...minHeightLayout, backgroundColor: sidebarBgColor, boxShadow: shadowStyle }}>
+    <Layout style={{ 
+        ...styles.minHeightLayout, 
+        backgroundColor: sidebarBgColor, 
+        boxShadow: shadowStyle 
+      }}
+    >
       <Sidebar collapsed={collapsed} onCollapse={setCollapsed} />
       <Layout
         style={{
@@ -45,7 +71,12 @@ const MainScreen: React.FC = () => {
         >
           <h2>{renderHeader()}</h2>
         </Header>
-        <Content style={{ ...contentStyle, padding: '24px 32px' }}>
+        <Content 
+          style={{ 
+            ...styles.contentStyle, 
+            padding: '24px 32px' 
+          }}
+        >
           <BreadcrumbComponent />
           <div
             style={{
@@ -56,7 +87,7 @@ const MainScreen: React.FC = () => {
               boxShadow: shadowStyle,
             }}
           >
-            {renderContent()}
+           {isLoading ? <Spinner /> : renderContent()}
           </div>
         </Content>
         <FooterComponent />

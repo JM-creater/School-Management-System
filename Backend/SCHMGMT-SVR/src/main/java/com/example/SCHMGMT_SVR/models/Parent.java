@@ -2,6 +2,7 @@ package com.example.SCHMGMT_SVR.models;
 
 import com.example.SCHMGMT_SVR.models.base.BaseModel;
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -26,12 +27,15 @@ import java.util.Set;
 public class Parent extends BaseModel {
 
     @Column(name = "firstName", length = 100)
+    @JsonProperty(value = "firstName")
     private String firstName;
 
     @Column(name = "lastName", length = 100)
+    @JsonProperty(value = "lastName")
     private String lastName;
 
     @Column(name = "email", length = 100)
+    @JsonProperty(value = "email")
     private String email;
 
     @Column(name = "phoneNumber", length = 100)

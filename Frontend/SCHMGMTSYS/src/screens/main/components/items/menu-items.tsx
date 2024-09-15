@@ -7,7 +7,6 @@ import {
     UserAddOutlined, 
     UsergroupAddOutlined 
 } from '@ant-design/icons';
-import { MenuItem } from '../../main-screen';
 import { 
     ATTENDANCE_ITEM, 
     CLASS_ITEM, 
@@ -26,6 +25,7 @@ import {
     THREE_ITEM, 
     TWO_ITEM 
 } from '../../../../configs';
+import { MenuItem } from '../../main-screen';
 
 export function getItem(
     label: React.ReactNode,

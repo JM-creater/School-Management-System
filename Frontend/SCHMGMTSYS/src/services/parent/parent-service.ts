@@ -1,4 +1,7 @@
-import { AxiosError, AxiosResponse } from "axios";
+import { 
+    AxiosError, 
+    AxiosResponse 
+} from "axios";
 import { 
     CREATE_PARENT_URL, 
     DELETE_PARENT_URL, 
@@ -8,8 +11,8 @@ import {
     SEARCH_PARENT_URL, 
     UPDATE_PARENT_URL 
 } from "../../configs/url";
-import { ParentData } from "../../screens/parents/data/parents";
 import { axiosInstance } from "../api/axiosInstance";
+import { ParentData } from "../../configs/interface";
 
 export const createParent = async <
     TParentData extends Omit<ParentData, 'id'>
