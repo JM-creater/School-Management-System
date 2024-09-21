@@ -47,7 +47,10 @@ const MainScreen = () => {
         boxShadow: shadowStyle 
       }}
     >
-      <Sidebar collapsed={collapsed} onCollapse={setCollapsed} />
+      <Sidebar 
+        collapsed={collapsed} 
+        onCollapse={setCollapsed} 
+      />
       <Layout
         style={{
           marginLeft: collapsed ? 80 : 200,

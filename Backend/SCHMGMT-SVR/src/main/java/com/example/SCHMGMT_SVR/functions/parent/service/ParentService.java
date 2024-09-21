@@ -7,13 +7,6 @@ import java.util.List;
 
 public interface ParentService
 {
-
-    /**
-     * Creates a new parent in the database from the given DTO.
-     *
-     * @param dto the DTO containing the information about the parent to be created
-     * @return the created parent
-     */
     Parent createParent(ParentCreateDto dto);
 
     List<Parent> fetchAllParent();

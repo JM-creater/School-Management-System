@@ -23,8 +23,7 @@ export interface FormField {
     placeholder?: string;
     options?: { 
         label: string; 
-        value: string 
-             | number 
+        value: string | number 
     }[]; 
     rules?: object[];
     maxLength?: number | undefined;

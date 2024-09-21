@@ -17,18 +17,17 @@ import {
     rootStore,
     useStore
 } from "../../../stores";
-import { handleError } from "../../../configs/error-handling";
 import { observer } from "mobx-react-lite";
-import { ParentContextProps, ParentProps } from "../../../configs/props";
 import { ParentData } from "../../../configs/interface";
+import { handleError } from "../../../configs/error-handling";
+import { ParentContextProps, ParentProps } from "../../../configs/props";
 
 export const ParentContext = createContext<IParentStoreContextType>(rootStore.parentStore);
 
 export const ParentProvider: React.FC<ParentProps> = observer(({ children }) => {
 
-    const rootStore = useStore();
-    const parentStore = rootStore.parentStore;
- 
+    const { parentStore } = useStore();
+
     useEffect(() => {
         parentStore.setLoading(true);
         getAllParent().then(async (response) => {
@@ -101,7 +100,7 @@ export const ParentProvider: React.FC<ParentProps> = observer(({ children }) => 
                                : parent
                             );
                 parentStore.setParents(editedParents);
-                parentStore.setFilteredParents(editedParents)
+                parentStore.setFilteredParents(editedParents);
             }).catch((error) => {
                 const errorMessage = handleError(error);
                 parentStore.setError(errorMessage);
