@@ -72,7 +72,6 @@ export const ParentProvider: React.FC<ParentProps> = observer(
         .then((response) => {
           const addedParents = [...parentStore.parents, response];
           parentStore.setParents(addedParents);
-          console.log(parentStore.setParents(addedParents));
           parentStore.setFilteredParents(addedParents);
         })
         .catch((error) => {
