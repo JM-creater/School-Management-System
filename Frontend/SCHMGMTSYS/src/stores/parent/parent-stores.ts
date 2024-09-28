@@ -7,11 +7,19 @@ import {
 } from "mobx-state-tree";
 import { ParentData } from "../../configs/interface";
 
+export const ParentDataModel = types.model({
+    id: types.number,
+    firstName: types.string,
+    lastName: types.string,
+    email: types.string,
+    phoneNumber: types.string,
+});
+
 export const ParentStoreModel = types
     .model({
-        parents: types.array(types.frozen<ParentData>()),
-        filteredParents: types.array(types.frozen<ParentData>()),
-        selectedParent: types.maybeNull(types.frozen<ParentData>()),
+        parents: types.array(ParentDataModel),
+        filteredParents: types.array(ParentDataModel),
+        selectedParent: types.maybeNull(ParentDataModel),
         overAllParent: types.number,
         loading: types.boolean,
         error: types.maybeNull(types.string),

@@ -1,12 +1,12 @@
-server:
-  port: 8801
-  servlet:
-    context-path: /kafkaProducer
-
-spring:
-  kafka:
-    applicationId: ${KAFKA_APPLICATION_ID:HelloProducer}
-
-    bootstrap-server: ${KAFKA_HOST:Localhost:19092}
-
-    topic-name: ${KAFKA_TOPIC_NAME:kafka-producer-topic}
+#server:
+#  port: 8801
+#  servlet:
+#    context-path: /kafkaProducer
+#
+#spring:
+#  kafka:
+#    applicationId: ${KAFKA_APPLICATION_ID:HelloProducer}
+#
+#    bootstrap-server: ${KAFKA_HOST:Localhost:19092}
+#
+#    topic-name: ${KAFKA_TOPIC_NAME:kafka-producer-topic}

@@ -11,7 +11,7 @@
 	<groupId>com.example</groupId>
 	<artifactId>SCHMGMT-SVR</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<packaging>pom</packaging>
+	<packaging>jar</packaging>
 	<name>SCHMGMT-SVR</name>
 	<description>School Management System</description>
 	<url/>
@@ -21,9 +21,6 @@
 	<developers>
 		<developer/>
 	</developers>
-	<modules>
-		<module>kafka-producer</module>
-	</modules>
 	<scm>
 		<connection/>
 		<developerConnection/>
@@ -67,11 +64,11 @@
 			<artifactId>spring-security-test</artifactId>
 			<scope>test</scope>
 		</dependency>
-		<dependency>
-			<groupId>org.springframework.kafka</groupId>
-			<artifactId>spring-kafka</artifactId>
-			<version>2.1.0.RELEASE</version>
-		</dependency>
+<!--		<dependency>-->
+<!--			<groupId>org.springframework.kafka</groupId>-->
+<!--			<artifactId>spring-kafka</artifactId>-->
+<!--			<version>2.1.0.RELEASE</version>-->
+<!--		</dependency>-->
 	</dependencies>
 
 	<build>
@@ -88,7 +85,15 @@
 					</excludes>
 				</configuration>
 			</plugin>
-		</plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <configuration>
+                    <source>6</source>
+                    <target>6</target>
+                </configuration>
+            </plugin>
+        </plugins>
 	</build>
 
 </project>
