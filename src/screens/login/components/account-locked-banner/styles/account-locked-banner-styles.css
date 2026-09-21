@@ -1,0 +1,33 @@
+.login-locked-banner {
+    display: flex;
+    align-items: flex-start;
+    gap: var(--space-4);
+    padding: var(--space-4);
+    background-color: #FEF2F2;
+    border: 1px solid #FCA5A5;
+    border-radius: var(--radius-md);
+    margin-bottom: var(--space-5);
+}
+
+.login-locked-icon {
+    color: var(--color-danger);
+    flex-shrink: 0;
+    margin-top: 2px;
+}
+
+.login-locked-title {
+    font-size: var(--font-heading);
+    font-weight: var(--font-weight-bold);
+}
+
+.login-locked-support {
+    font-size: var(--text-xs);
+    color: #991B1B;
+    margin-top: var(--space-2);
+}
+
+.login-locked-support a {
+    color: #991B1B;
+    font-weight: var(--font-weight-semibold);
+    text-decoration: underline;
+}
